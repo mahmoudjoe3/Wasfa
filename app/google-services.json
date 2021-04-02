@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "484668208011",
+    "project_id": "wasfa-e07eb",
+    "storage_bucket": "wasfa-e07eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484668208011:android:54d6243e164ef0ac53b58e",
+        "android_client_info": {
+          "package_name": "com.mahmoudjoe3.wasfa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484668208011-liv4o7uj0b6d3srvshi1qv189e7v0qvm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mahmoudjoe3.wasfa",
+            "certificate_hash": "7540fab69384ced34f2e17bb3776e7fdc22ef6cd"
+          }
+        },
+        {
+          "client_id": "484668208011-vpc4s9d8ude1ndpg3g57cdo3jtgc4cmh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3loW3CykgW0LQI6vt62v8zsj5IltdowM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484668208011-vpc4s9d8ude1ndpg3g57cdo3jtgc4cmh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

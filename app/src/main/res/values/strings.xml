@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Wasfa</string>
+    <string name="follow">FOLLOW</string>
+    <string name="followers">Followers</string>
+    <string name="posts">Posts</string>
+    <string name="followings">Followings</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="bio">Bio</string>
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="youtube">Youtube</string>
+</resources>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/standered_margin"
+    tools:context=".ui.main.account.AccountFragment"
+    android:background="@drawable/account_red">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageButton
+            android:id="@+id/editProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ffffff"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_baseline_edit_24" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/editProfile">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/acc_image"
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:scaleType="centerCrop"
+                    app:civ_border_width="10dp"
+                    app:civ_border_color="#FFFFFFFF"
+                    android:src="@drawable/thanos_mcu" />
+                <TextView android:id="@+id/acc_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_24ssp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:text="Thanos"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_4sdp">
+
+                    <ImageButton
+                        android:id="@+id/instgram"
+                        android:layout_width="@dimen/_34sdp"
+                        android:layout_height="@dimen/_34sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:layout_gravity="center_vertical"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/button_shap"
+                        android:src="@drawable/icons8_instagram_500px_1"
+                        android:shadowColor="#000000" />
+                    <ImageButton
+                        android:id="@+id/youtube"
+                        android:layout_width="@dimen/_34sdp"
+                        android:layout_height="@dimen/_34sdp"
+                        android:layout_marginEnd="@dimen/_4sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_gravity="center_vertical"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/button_shap"
+                        android:src="@drawable/icons8_play_button_500px"
+                        android:shadowColor="#000000" />
+                    <ImageButton
+                        android:id="@+id/facebook"
+                        android:layout_width="@dimen/_34sdp"
+                        android:layout_height="@dimen/_34sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_gravity="center_vertical"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/button_shap"
+                        android:src="@drawable/icons8_facebook_500px"
+                        android:shadowColor="#000000" />
+                </LinearLayout>
+                <TextView android:id="@+id/address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_15ssp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:textColor="@color/colorSecText"
+                    android:text="Giza, Egypt"/>
+                <TextView android:id="@+id/bio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_15ssp"
+                    android:textColor="@color/colorSecText"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:text="King of the fucking world "/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:gravity="center_horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/colorSecText"
+                        android:text="@string/followers"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/colorSecText"
+                        android:text="@string/posts"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/colorSecText"
+                        android:text="@string/followings"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center_horizontal">
+                    <TextView
+                        android:id="@+id/followers"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_19ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="10K"/>
+                    <TextView
+                        android:id="@+id/posts"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_19ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="26"/>
+                    <TextView
+                        android:id="@+id/followings"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_19ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="191"/>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    android:layout_marginTop="@dimen/_24sdp"/>
+                <androidx.recyclerview.widget.RecyclerView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"/>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</FrameLayout>
