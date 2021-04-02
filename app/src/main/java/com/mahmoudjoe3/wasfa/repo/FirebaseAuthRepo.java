@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,11 +29,18 @@ public class FirebaseAuthRepo {
     }
 
     public Intent getAuthIntent() {
+        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
+                .Builder(R.layout.signin_layout_file)
+                .setGoogleButtonId(R.id.google_btn)
+                .setEmailButtonId(R.id.email_btn)
+                .setPhoneButtonId(R.id.phone_btn)
+                .build();
         return AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setIsSmartLockEnabled(false)
                 //.setLogo(R.drawable.logo)
-                //.setTheme(R.style.loginStyle)
+                .setTheme(R.style.loginStyle)
+                .setAuthMethodPickerLayout(customLayout)
                 .setAvailableProviders(Arrays.asList(
                         new AuthUI.IdpConfig.GoogleBuilder().build(),
                         new AuthUI.IdpConfig.EmailBuilder().build(),
