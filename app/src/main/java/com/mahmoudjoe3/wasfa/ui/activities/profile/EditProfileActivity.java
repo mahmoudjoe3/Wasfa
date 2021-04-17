@@ -12,12 +12,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.drjacky.imagepicker.ImagePicker;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
@@ -132,52 +134,34 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
     }
 
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(intent, prevalent.GALLERY_REQUEST_CODE);
+        ImagePicker.Companion.with(this).galleryOnly()
+                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .cropOval()             //Allow dimmed layer to have a circle inside
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .start(prevalent.GALLERY_REQUEST_CODE);
     }
 
     private void openCamera() {
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        Intent intent = new Intent();
-        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        Date date = new Date();
-        DateFormat df = new SimpleDateFormat("-mm-ss");
-
-        String newPicFile = df.format(date) + ".jpg";
-        String outPath = "/sdcard/" + newPicFile;
-        File outFile = new File(outPath);
-
-        mCameraFileName = outFile.toString();
-        Uri outuri = Uri.fromFile(outFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
-        startActivityForResult(intent, prevalent.CAMERA_REQUEST_CODE);
+        ImagePicker.Companion.with(this).cameraOnly()
+                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .cropOval()	    		//Allow dimmed layer to have a circle inside
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .start(prevalent.CAMERA_REQUEST_CODE);
     }
-    String mCameraFileName;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == prevalent.GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK
-                && data != null && data.getData() != null) {
+        if ((requestCode == prevalent.GALLERY_REQUEST_CODE||requestCode==prevalent.CAMERA_REQUEST_CODE)
+                && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             Picasso.get().load(imageUri).fit().centerCrop().into(accImage);
         }
-        else if (requestCode == prevalent.CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                imageUri = data.getData();
-                Picasso.get().load(imageUri).fit().centerCrop().into(accImage);
-                accImage.setVisibility(View.VISIBLE);
-            }
-            if (imageUri == null && mCameraFileName != null) {
-                imageUri = Uri.fromFile(new File(mCameraFileName));
-                Picasso.get().load(imageUri).fit().centerCrop().into(accImage);
-                accImage.setVisibility(View.VISIBLE);
-            }
-            File file = new File(mCameraFileName);
-            if (!file.exists()) {
-                file.mkdir();
-            }
+        else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.Companion.getError(data), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
         }
 
     }

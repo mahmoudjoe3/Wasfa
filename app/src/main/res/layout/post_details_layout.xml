@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/post_details_card"
+    android:orientation="vertical"
+    android:background="@drawable/bottom_sheet_dialog_shap">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/post_item_user_caption" />
+
+            <TextView
+                android:id="@+id/post_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standered_margin"
+                android:layout_marginTop="@dimen/standered_margin"
+                android:layout_marginEnd="@dimen/standered_margin"
+                android:maxLines="1"
+                android:text="this is title about the recipe that i make "
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+            <TextView
+                android:id="@+id/post_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standered_margin"
+                android:layout_marginTop="@dimen/standered_margin"
+                android:layout_marginEnd="@dimen/standered_margin"
+                android:text="this recipe is is easy and we can make it at home as we can make it with our family and friends  "
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/post_show_details_layout_btn_p_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/rectangle_ripple"
+                app:cardCornerRadius="@dimen/_10sdp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_ripple"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_4sdp"
+                    android:paddingEnd="@dimen/_4sdp">
+
+                    <TextView
+                        android:id="@+id/post_show_details_layout_btn_ch_1_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:gravity="center"
+                        android:text="Show more" />
+
+                    <ImageView
+                        android:id="@+id/post_show_details_layout_btn_ch_2_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/downbutton" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/post_details_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standered_margin"
+                android:layout_marginTop="@dimen/standered_margin"
+                android:layout_marginEnd="@dimen/standered_margin"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/pr_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prepare_time" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/post_username_margin"
+                        app:cardBackgroundColor="#2196F3"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:id="@+id/prepare_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="30 min"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standered_margin"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/cat_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/categories" />
+
+                    <HorizontalScrollView
+                        android:id="@+id/post_categories_hScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:measureAllChildren="false"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/post_categories_linerLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/post_username_margin"
+                                app:cardBackgroundColor="@color/material_green_500"
+                                app:cardCornerRadius="@dimen/standered_margin">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="@dimen/post_username_margin"
+                                    android:paddingEnd="@dimen/post_username_margin"
+                                    android:text="meets"
+                                    android:textColor="@color/colorWhite" />
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/post_username_margin"
+                                app:cardBackgroundColor="@color/material_green_500"
+                                app:cardCornerRadius="@dimen/standered_margin">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="@dimen/post_username_margin"
+                                    android:paddingEnd="@dimen/post_username_margin"
+                                    android:text="vegiterian"
+                                    android:textColor="@color/colorWhite" />
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/post_username_margin"
+                                app:cardBackgroundColor="@color/material_green_500"
+                                app:cardCornerRadius="@dimen/standered_margin">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="@dimen/post_username_margin"
+                                    android:paddingEnd="@dimen/post_username_margin"
+                                    android:text="fish"
+                                    android:textColor="@color/colorWhite" />
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/post_username_margin"
+                                app:cardBackgroundColor="@color/material_green_500"
+                                app:cardCornerRadius="@dimen/standered_margin">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="@dimen/post_username_margin"
+                                    android:paddingEnd="@dimen/post_username_margin"
+                                    android:text="well-cocked"
+                                    android:textColor="@color/colorWhite" />
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/post_username_margin"
+                                app:cardBackgroundColor="@color/material_green_500"
+                                app:cardCornerRadius="@dimen/standered_margin">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="@dimen/post_username_margin"
+                                    android:paddingEnd="@dimen/post_username_margin"
+                                    android:text="small meals"
+                                    android:textColor="@color/colorWhite" />
+                            </androidx.cardview.widget.CardView>
+
+                        </LinearLayout>
+
+
+                    </HorizontalScrollView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ing_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standered_margin"
+                    android:text="Ingredient: " />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/post_ing_ChipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/post_username_margin"
+                    app:lineSpacing="@dimen/post_username_margin">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="meets"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="fat"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="salad"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="parsley"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="Spices Kofta"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="Onions"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="garlic"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="latency"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/colorAccent"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="vinegar"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:id="@+id/ste_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/post_ing_ChipGroup"
+                    android:layout_marginTop="@dimen/standered_margin"
+                    android:text="Steps: " />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/post_steps_ChipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/post_username_margin"
+                    app:lineSpacing="@dimen/post_username_margin">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="@color/color_blue_green"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/post_username_margin"
+                            android:text="In the bottom of large mixing bowl, add the shawarma spices. Add the olive oil, vinegar, and zest and juice of one lemon. Using a spoon, mix to combine."
+                            android:textColor="@color/colorWhite"
+
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="#009688"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/post_username_margin"
+                            android:text=" Add the olive oil, vinegar. Using a spoon, mix to combine."
+                            android:textColor="@color/colorWhite"
+
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="#009688"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/post_username_margin"
+                            android:text="add the shawarma spices."
+                            android:textColor="@color/colorWhite"
+
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/post_username_margin"
+                        app:cardBackgroundColor="#009688"
+                        app:cardCornerRadius="@dimen/standered_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/post_username_margin"
+                            android:paddingStart="@dimen/post_username_margin"
+                            android:paddingEnd="@dimen/post_username_margin"
+                            android:text="add salad"
+                            android:textColor="@color/colorWhite" />
+                    </androidx.cardview.widget.CardView>
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/post_details_images_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/post_username_margin"
+                android:orientation="vertical">
+            </LinearLayout>
+
+            <include layout="@layout/post_item_user_interaction" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+
+

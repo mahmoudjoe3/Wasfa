@@ -1,46 +1,61 @@
 package com.mahmoudjoe3.wasfa.ui.main.home;
 
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.airbnb.lottie.L;
+import com.airbnb.lottie.LottieAnimationView;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.github.tntkhang.fullscreenimageview.library.FullScreenImageViewActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseUser;
 import com.mahmoudjoe3.wasfa.R;
-
-import com.mahmoudjoe3.wasfa.prevalent.prevalent;
+import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.repo.FirebaseAuthRepo;
 import com.mahmoudjoe3.wasfa.ui.main.SharedViewModel;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.mahmoudjoe3.wasfa.logic.MyLogic.getTimeFrom;
 
 
 public class HomeFragment extends Fragment {
-    private static final String TAG = "SVM";
+    private static final String TAG = "homey";
     HomeViewModel viewModel;
     SharedViewModel sharedViewModel;
-    private int REC_AUTH_CODE=1;
+    @BindView(R.id.shimmer_recycler_view)
+    RecyclerView RecyclerView;
+    private int REC_AUTH_CODE = 1;
+
+    RecipePostAdapter adapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -58,22 +73,292 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.bind(this,view);
+        //
+//        EditText text=view.findViewById(R.id.edit1);
+//        Button button=view.findViewById(R.id.btn);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewModel.SignOut(getActivity());
+//                //sharedViewModel.setData(text.getText().toString());
+//            }
+//        });
 
-        EditText text=view.findViewById(R.id.edit1);
-        Button button=view.findViewById(R.id.btn);
-        button.setOnClickListener(new View.OnClickListener() {
+        RecyclerView recyclerView =  view.findViewById(R.id.shimmer_recycler_view);
+        adapter=new RecipePostAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
+
+        return view;
+    }
+
+    private void init_post_details_sheet_dialog(Recipe recipe) {
+
+        BottomSheetDialog sheetDialog=new BottomSheetDialog(getActivity(),R.style.BottomSheetDialogTheme);
+        View sheetView= LayoutInflater.from(getActivity()).inflate(R.layout.post_details_layout,
+                (LinearLayout)getActivity().findViewById(R.id.post_details_card));
+
+        initUserCaption(sheetView,recipe);
+        initPostCaption(sheetView,recipe);
+
+        LinearLayout layout =sheetView.findViewById(R.id.post_details_images_frame);
+        for(String img:recipe.getImgUrls()) {
+            ImageView imageView = new ImageView(getActivity());
+            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0,18,0,0);
+            imageView.setLayoutParams(layoutParams);
+            imageView.setAdjustViewBounds(true);
+            Picasso.get().load(img).into(imageView);
+            layout.addView(imageView);
+        }
+
+        sheetDialog.setContentView(sheetView);
+        sheetDialog.show();
+    }
+
+    private void initUserCaption(View sheetView, Recipe recipe) {
+        //user captoin
+        LottieAnimationView lotti_post_user_follow_btn;
+        ImageView post_profile_img,post_user_nationality;
+        TextView post_username,post_from_time,post_user_follow_btn;
+
+
+        lotti_post_user_follow_btn=sheetView.findViewById(R.id.lotti_post_user_follow_btn);
+        post_profile_img=sheetView.findViewById(R.id.post_profile_img);
+        post_user_nationality=sheetView.findViewById(R.id.post_user_nationality);
+        post_user_follow_btn=sheetView.findViewById(R.id.post_user_follow_btn);
+        post_username=sheetView.findViewById(R.id.post_username);
+        post_from_time=sheetView.findViewById(R.id.post_from_time);
+
+        //user object
+        post_from_time.setText(getTimeFrom(recipe.getPostTime()));
+        post_username.setText(recipe.getUserName());
+//        Picasso.get().load(recipe.getUserProfileThumbnail())
+//                .into(vh.post_profile_img);
+
+        post_username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.SignOut(getActivity());
-                //sharedViewModel.setData(text.getText().toString());
+                //open prifile
             }
         });
-        return view;
+        post_profile_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open prifile
+            }
+        });
+        post_user_follow_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //follow user
+                lotti_post_user_follow_btn.playAnimation();
+                post_user_follow_btn.setVisibility(View.GONE);
+
+            }
+        });
+    }
+    private void initPostCaption(View sheetView, Recipe recipe) {
+
+        LottieAnimationView post_more_menu;
+        post_more_menu=sheetView.findViewById(R.id.post_more_menu);
+
+        //post caption
+        TextView post_title,post_description,prepare_time;
+        ImageView nationality;
+        CardView post_show_details_layout_btn_p_card;
+        ImageView post_show_details_layout_btn_ch_2_img;
+        TextView post_show_details_layout_btn_ch_1_txt;
+        LinearLayout post_details_layout;
+
+        //category view group
+        HorizontalScrollView post_categories_hScrollView;
+        LinearLayout post_categories_linerLayout;
+        //ingredients view group
+        ChipGroup post_ing_ChipGroup;
+        //steps view group
+        ChipGroup post_steps_ChipGroup;
+
+        //interaction caption
+        TextView post_love_number,post_comments_number,post_shares_number;
+        CardView post_love_btn,post_comment_btn,post_share_btn;
+        TextView post_love_txt;
+        LottieAnimationView post_love_btn_lotti,post_comment_btn_lotti,post_share_btn_lotti;
+        LinearLayout post_comment_share_love_RelativeLayout;
+
+        post_title=sheetView.findViewById(R.id.post_title);
+        //nationality=sheetView.findViewById(R.id.post_nationality);
+        post_description=sheetView.findViewById(R.id.post_description);
+
+        post_show_details_layout_btn_p_card=sheetView.findViewById(R.id.post_show_details_layout_btn_p_card);
+        post_show_details_layout_btn_ch_1_txt=sheetView.findViewById(R.id.post_show_details_layout_btn_ch_1_txt);
+        post_show_details_layout_btn_ch_2_img=sheetView.findViewById(R.id.post_show_details_layout_btn_ch_2_img);
+
+        post_details_layout=sheetView.findViewById(R.id.post_details_layout);
+        prepare_time=sheetView.findViewById(R.id.prepare_time);
+
+        post_categories_hScrollView=sheetView.findViewById(R.id.post_categories_hScrollView);
+        post_categories_linerLayout=sheetView.findViewById(R.id.post_categories_linerLayout);
+        post_ing_ChipGroup=sheetView.findViewById(R.id.post_ing_ChipGroup);
+        post_steps_ChipGroup=sheetView.findViewById(R.id.post_steps_ChipGroup);
+
+        post_love_number=sheetView.findViewById(R.id.post_love_number);
+        post_comments_number=sheetView.findViewById(R.id.post_comments_number);
+        post_shares_number=sheetView.findViewById(R.id.post_shares_number);
+        post_love_btn=sheetView.findViewById(R.id.post_love_btn);
+        post_love_txt=sheetView.findViewById(R.id.post_love_txt);
+        post_love_btn_lotti=sheetView.findViewById(R.id.post_love_btn_lotti);
+        post_comment_btn=sheetView.findViewById(R.id.post_comment_btn);
+        post_comment_btn_lotti=sheetView.findViewById(R.id.post_comment_btn_lotti);
+        post_share_btn_lotti=sheetView.findViewById(R.id.post_share_btn_lotti);
+        post_share_btn=sheetView.findViewById(R.id.post_share_btn);
+        post_comment_share_love_RelativeLayout=sheetView.findViewById(R.id.post_comment_share_love_RelativeLayout);
+
+
+
+        post_title.setText(recipe.getTitle());
+        post_description.setText(recipe.getDescription());
+        prepare_time.setText(recipe.getPrepareTime());
+
+        //inti cat list
+        post_categories_hScrollView.removeAllViews();
+        post_categories_linerLayout.removeAllViews();
+        for(String cat:recipe.getCategories()) {
+            View cardItem = LayoutInflater.from(getActivity()).inflate(R.layout.post_list_item, null, false);
+            TextView textView=cardItem.findViewById(R.id.contentText);
+            textView.setText(cat);
+            post_categories_linerLayout.addView(cardItem);
+        }
+        post_categories_hScrollView.addView(post_categories_linerLayout);
+
+        //init IngredientList
+        post_ing_ChipGroup.removeAllViews();
+        for(String ing:recipe.getIngredients()) {
+            View cardItem = LayoutInflater.from(getActivity()).inflate(R.layout.post_list_item, null, false);
+            CardView cardView=cardItem.findViewById(R.id.post_list_item_card);
+            cardView.setCardBackgroundColor(getActivity().getColor(R.color.colorAccent));
+            TextView textView=cardItem.findViewById(R.id.contentText);
+            textView.setText(ing);
+            post_ing_ChipGroup.addView(cardItem);
+        }
+
+        //init StepsList
+        post_steps_ChipGroup.removeAllViews();
+        for(String st:recipe.getSteps()) {
+            View cardItem = LayoutInflater.from(getActivity()).inflate(R.layout.post_list_item, null, false);
+            CardView cardView=cardItem.findViewById(R.id.post_list_item_card);
+            cardView.setCardBackgroundColor(getActivity().getColor(R.color.color_blue_green));
+            TextView textView=cardItem.findViewById(R.id.contentText);
+            textView.setText(st);
+            post_steps_ChipGroup.addView(cardItem);
+        }
+
+        post_love_number.setText(recipe.getNumberOfLike()+" Love");
+        post_comments_number.setText(recipe.getNumberOfComments()+" Comment");
+        post_shares_number.setText(recipe.getNumberOfShare()+" Share");
+
+        post_comment_btn_lotti.setProgress(1f);
+        post_share_btn_lotti.setProgress(2f);
+        post_more_menu.setProgress(0f);
+
+        post_show_details_layout_btn_p_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(post_details_layout.getVisibility()==View.GONE) {
+                    post_details_layout.setVisibility(View.VISIBLE);
+                    post_show_details_layout_btn_ch_2_img.setImageResource(R.drawable.upbutton);
+                    post_show_details_layout_btn_ch_1_txt.setText("Show less");
+                }else {
+                    post_details_layout.setVisibility(View.GONE);
+                    post_show_details_layout_btn_ch_2_img.setImageResource(R.drawable.downbutton);
+                    post_show_details_layout_btn_ch_1_txt.setText("Show more");
+
+                }
+            }
+        });
+
+        post_more_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //openMenu
+                post_more_menu.playAnimation();
+            }
+        });
+        post_love_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //make love
+                if(post_love_btn.getTag().toString().equals("of")){
+                    post_love_txt.setTextColor(getActivity().getColor(R.color.colorTap));
+                    post_love_btn.setTag("on");
+                    post_love_btn_lotti.playAnimation();
+
+                }else {
+                    post_love_txt.setTextColor(getActivity().getColor(R.color.colorPrimary));
+                    post_love_btn.setTag("of");
+                    post_love_btn_lotti.setProgress(0f);
+                }
+            }
+        });
+        post_comment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open comment sheet
+                post_comment_btn_lotti.playAnimation();
+            }
+        });
+        post_share_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //make share
+                post_share_btn_lotti.playAnimation();
+            }
+        });
+        post_comment_share_love_RelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //open comment sheet
+            }
+        });
+    }
+
+    private void openImage(List<String> uris, int pos) {
+
+        ArrayList arrayList=new ArrayList( uris);
+        Log.d(TAG, "openImage: pos ->> "+pos+"    arr ->> "+arrayList);
+        Intent fullImageIntent = new Intent(getActivity(), FullScreenImageViewActivity.class);
+        fullImageIntent.putExtra(FullScreenImageViewActivity.URI_LIST_DATA, arrayList);
+        fullImageIntent.putExtra(FullScreenImageViewActivity.IMAGE_FULL_SCREEN_CURRENT_POS, pos);
+        startActivity(fullImageIntent);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        viewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+                adapter.setRecipes(recipes);
+            }
+        });
+
+        adapter.setmOnImageClickListener(new RecipePostAdapter.OnImageClickListener() {
+            @Override
+            public void onNumberClick(Recipe recipe) {
+                init_post_details_sheet_dialog(recipe);
+            }
+
+            @Override
+            public void onImageClick(List<String> imgUrls, int pos) {
+                openImage(imgUrls,pos);
+            }
+        });
+
+
+
+
         viewModel.authStateListener(new FirebaseAuthRepo.OnAuthStateListener() {
             @Override
             public void onAuthSuccess(FirebaseUser user) {
@@ -82,11 +367,11 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onAuthFailed() {
-                startActivityForResult(viewModel.getAuthIntent(),REC_AUTH_CODE);
+                startActivityForResult(viewModel.getAuthIntent(), REC_AUTH_CODE);
             }
         });
 
-        sharedViewModel=new ViewModelProvider(getActivity()).get(SharedViewModel.class);
+        sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         sharedViewModel.getData().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {

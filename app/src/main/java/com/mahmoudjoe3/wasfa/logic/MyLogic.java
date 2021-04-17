@@ -34,4 +34,28 @@ public class MyLogic {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
+    public static String getTimeFrom(long PostTimeInMileSec){
+        long postFromInMile=System.currentTimeMillis()-PostTimeInMileSec;
+        System.out.println("current "+System.currentTimeMillis());
+        System.out.println("given "+PostTimeInMileSec);
+        int postFromInSec= (int) (postFromInMile/1000);
+        String time="";
+        if(postFromInSec<60){
+            time="Now";
+        }else if(postFromInSec<(60*60)){
+            time= (postFromInSec/60) +" Min";
+        }else if(postFromInSec<(60*60*24)){
+            time= (postFromInSec/(60*60)) +" Hour";
+        } else if(postFromInSec<(60*60*24*7)){
+            time= (postFromInSec/(60*60*24)) +" Day";
+        }else if(postFromInSec<(60*60*24*30)){
+            time= (postFromInSec/(60*60*24*7)) +" Week";
+        }else if(postFromInSec<(60*60*24*30*12)){
+            time= (postFromInSec/(60*60*24*30)) +" Month";
+        }else {
+            time= (postFromInSec/(60*60*24*30*12)) +" Year";
+        }
+        return time;
+    }
 }

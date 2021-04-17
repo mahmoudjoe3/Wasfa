@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="standered_margin">16dp</dimen>
+    <dimen name="post_margin">12dp</dimen>
+    <dimen name="post_profile_size">@dimen/_34sdp</dimen>
+    <dimen name="post_username_margin">@dimen/_5sdp</dimen>
 </resources>

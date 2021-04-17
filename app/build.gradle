@@ -64,6 +64,8 @@ dependencies {
 
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // Displaying images
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     //firebase
     // Import the Firebase BoM
@@ -88,6 +90,16 @@ dependencies {
     // firebase storage
     implementation 'com.google.firebase:firebase-storage'
 
+    //shimmer recycle view
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
 
+    def lottieVersion = "3.7.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    //view images
+    implementation 'com.github.tntkhang:full-screen-image-view-library:1.1.0'
+
+    //image picker
+    implementation 'com.github.Drjacky:ImagePicker:1.8.4'
 
 }
