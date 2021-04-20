@@ -23,11 +23,13 @@ import com.github.drjacky.imagepicker.ImagePicker;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
+import com.mahmoudjoe3.wasfa.ui.main.home.ViewImageActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -129,8 +131,12 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
     }
 
     private void viewPhoto() {
-        Viewphoto.setVisibility(View.VISIBLE);
-        Picasso.get().load(imageUri).fit().centerInside().into(Viewphoto);
+        Intent intent=new Intent(this, ViewImageActivity.class);
+        ArrayList<String > imgs=new ArrayList<>();
+        imgs.add(String.valueOf(imageUri));
+        intent.putStringArrayListExtra(ViewImageActivity.IMG_URLS,imgs);
+        intent.putExtra(ViewImageActivity.IMG_POS,0);
+        startActivity(intent);
     }
 
     private void openGallery() {

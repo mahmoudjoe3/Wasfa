@@ -2,16 +2,16 @@ package com.mahmoudjoe3.wasfa.ui.main.home;
 
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,20 +19,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
-import com.airbnb.lottie.L;
 import com.airbnb.lottie.LottieAnimationView;
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.bumptech.glide.Glide;
 import com.github.tntkhang.fullscreenimageview.library.FullScreenImageViewActivity;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.ChipGroup;
-import com.google.firebase.auth.FirebaseUser;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
-import com.mahmoudjoe3.wasfa.repo.FirebaseAuthRepo;
 import com.mahmoudjoe3.wasfa.ui.main.SharedViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -324,15 +325,14 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void openImage(List<String> uris, int pos) {
-
-        ArrayList arrayList=new ArrayList( uris);
-        Log.d(TAG, "openImage: pos ->> "+pos+"    arr ->> "+arrayList);
-        Intent fullImageIntent = new Intent(getActivity(), FullScreenImageViewActivity.class);
-        fullImageIntent.putExtra(FullScreenImageViewActivity.URI_LIST_DATA, arrayList);
-        fullImageIntent.putExtra(FullScreenImageViewActivity.IMAGE_FULL_SCREEN_CURRENT_POS, pos);
-        startActivity(fullImageIntent);
+    private void showImage(List<String> imgUrls, int pos) {
+        Intent intent=new Intent(getActivity(),ViewImageActivity.class);
+        intent.putStringArrayListExtra(ViewImageActivity.IMG_URLS,new ArrayList<>(imgUrls));
+        intent.putExtra(ViewImageActivity.IMG_POS,pos);
+        startActivity(intent);
     }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -352,24 +352,10 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onImageClick(List<String> imgUrls, int pos) {
-                openImage(imgUrls,pos);
+                showImage(imgUrls,pos);
             }
         });
 
-
-
-
-        viewModel.authStateListener(new FirebaseAuthRepo.OnAuthStateListener() {
-            @Override
-            public void onAuthSuccess(FirebaseUser user) {
-//                Toast.makeText(getActivity(), "SignIn successfully", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAuthFailed() {
-                startActivityForResult(viewModel.getAuthIntent(), REC_AUTH_CODE);
-            }
-        });
 
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         sharedViewModel.getData().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -393,4 +379,6 @@ public class HomeFragment extends Fragment {
             }
         }
     }
+
+
 }

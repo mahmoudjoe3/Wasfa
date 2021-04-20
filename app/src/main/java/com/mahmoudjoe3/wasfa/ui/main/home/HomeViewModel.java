@@ -8,13 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
-import com.mahmoudjoe3.wasfa.repo.FirebaseAuthRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeViewModel extends ViewModel {
-    private FirebaseAuthRepo authRepo;
     private MutableLiveData<List<Recipe>> recipeMutableLiveData=new MutableLiveData<>();
 
     public LiveData<List<Recipe>> getRecipeMutableLiveData() {
@@ -88,19 +86,5 @@ public class HomeViewModel extends ViewModel {
         return recipeMutableLiveData;
     }
 
-    public HomeViewModel() {
-        this.authRepo = FirebaseAuthRepo.getInstance();
-    }
 
-    public Intent getAuthIntent() {
-        return authRepo.getAuthIntent();
-    }
-
-    public void authStateListener(FirebaseAuthRepo.OnAuthStateListener onAuthStateListener) {
-        authRepo.authStateListener(onAuthStateListener);
-    }
-
-    public void SignOut(Context context) {
-        authRepo.SignOut(context);
-    }
 }

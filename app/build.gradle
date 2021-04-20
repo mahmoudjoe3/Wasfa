@@ -67,29 +67,6 @@ dependencies {
     // Displaying images
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
-    //firebase
-    // Import the Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:26.8.0')
-
-    // Add the dependency for the Firebase SDK for Google Analytics
-    // When using the BoM, don't specify versions in Firebase dependencies
-    implementation 'com.google.firebase:firebase-analytics'
-
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
-
-    //realtime database
-    implementation 'com.google.firebase:firebase-database'
-
-    //Auth
-    implementation 'com.google.firebase:firebase-auth'
-
-    // FirebaseUI for Firebase Auth
-    implementation 'com.firebaseui:firebase-ui-auth:7.0.0'
-
-    // firebase storage
-    implementation 'com.google.firebase:firebase-storage'
-
     //shimmer recycle view
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
 
