@@ -86,11 +86,9 @@ public class PostFragment3 extends Fragment {
                                 ).commit();
                                 //Todo send to api
                                 Toast.makeText(getActivity(), "Post Uplouded successfully", Toast.LENGTH_SHORT).show();
+                                removeData();
                                 getActivity().onBackPressed();
-                                //postSharedViewModel.getRecipeMutableLiveData().removeObservers(getViewLifecycleOwner());
-                                PostFragment1.removeFragment();
-                                PostFragment2.removeFragment();
-                                PostFragment3.removeFragment();
+                                
                             } else {
                                 Toast.makeText(getActivity(), "Complete All the recipe data", Toast.LENGTH_SHORT).show();
                             }
@@ -153,6 +151,15 @@ public class PostFragment3 extends Fragment {
             }
         });
         return view;
+    }
+
+    private void removeData() {
+        recipe.setDescription("");
+        recipe.setImgUrls(new ArrayList<>());
+        recipe.setCategories(new ArrayList<>());
+        recipe.setIngredients(new ArrayList<>());
+        recipe.setSteps(new ArrayList<>());
+        postSharedViewModel.setRecipe(recipe);
     }
 
     private boolean setPostData() {
