@@ -1,5 +1,7 @@
 package com.mahmoudjoe3.wasfa.pojo;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 public class Recipe {
@@ -10,6 +12,7 @@ public class Recipe {
     private String title;
     private String description;
     private String nationality;
+    private Bitmap flag;
     private long postTime;
     private String prepareTime;
     private List<String> categories;
@@ -19,6 +22,10 @@ public class Recipe {
     private int numberOfComments;
     private int numberOfShare;
     private List<String> imgUrls;
+
+
+    public Recipe() {
+    }
 
     public Recipe(int userId, String userName, String userProfileThumbnail, String title,
                   String description, long postTime, String prepareTime, List<String> categories,
@@ -38,6 +45,23 @@ public class Recipe {
         this.numberOfComments = numberOfComments;
         this.numberOfShare = numberOfShare;
         this.imgUrls = imgUrls;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Bitmap getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Bitmap flag) {
+        this.flag = flag;
     }
 
     public int getUserId() {
@@ -150,5 +174,13 @@ public class Recipe {
 
     public void setImgUrls(List<String> imgUrls) {
         this.imgUrls = imgUrls;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 }

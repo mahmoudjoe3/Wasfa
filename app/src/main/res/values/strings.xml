@@ -12,7 +12,23 @@
     <string name="youtube">Youtube</string>
     <string name="prepare_time">Prepare Time:</string>
     <string name="categories">Categories:</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="send_to">Send to</string>
+
+    <string name="next">Next</string>
+    <string name="choose_category">Choose Category</string>
+    <string name="add_photos">Add Photos / Videos</string>
+    <string name="desc_hint">What recipe do you want talk about?</string>
+    <string name="public_tag">Public</string>
+    <string name="post">Post</string>
+    <string name="category_msg">Recipe Category </string>
+    <string name="ingredients_msg">The Recipe ingredients</string>
+    <string name="no_ingredients">No ingredients yet</string>
+    <string name="who_can_msg">Who can see this post?</string>
+    <string name="privacy_msg">Your post will be visible on feed, on your profile and in search results</string>
+    <string name="followers_only">Followers only</string>
+    <string name="ingredient_hint">Enter the ingredient</string>
+    <string name="recipe_steps_hint">Enter the recipe steps</string>
+    <string name="recipe_from">Recipe from</string>
+    <string name="Recipe_prepare_time">Recipe prepare time</string>
+    <string name="Back">Back</string>
 </resources>

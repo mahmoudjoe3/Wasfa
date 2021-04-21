@@ -35,6 +35,10 @@ public class PostFragment extends Fragment   {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState == null) {
+            getChildFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    PostFragment1.getInstance()).commit();
+        }
     }
 
     @Override
@@ -50,6 +54,7 @@ public class PostFragment extends Fragment   {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
 
 

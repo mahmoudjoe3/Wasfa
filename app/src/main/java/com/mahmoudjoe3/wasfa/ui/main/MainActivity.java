@@ -100,6 +100,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if(navigationBar.getSelectedItemId()!=R.id.menu_home){
+            selectFragByiId(R.id.menu_home);
+            navigationBar.setItemSelected(R.id.menu_home,true);
+        }else
+            super.onBackPressed();
+    }
+
     private void selectFragByiId(int item_id) {
         switch (item_id) {
             case R.id.menu_search:
