@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.main.home;
+package com.mahmoudjoe3.wasfa.ui.main.viewImage;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

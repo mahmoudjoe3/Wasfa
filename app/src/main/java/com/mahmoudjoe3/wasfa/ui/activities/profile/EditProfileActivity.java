@@ -3,11 +3,8 @@ package com.mahmoudjoe3.wasfa.ui.activities.profile;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,16 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.mahmoudjoe3.wasfa.R;
-import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
-import com.mahmoudjoe3.wasfa.ui.main.home.ViewImageActivity;
+import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;

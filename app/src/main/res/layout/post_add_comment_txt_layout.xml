@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/standered_margin"
+    android:layout_below="@id/comment_sheet_recycle_view"
+    android:id="@+id/post_add_comment_text_layout_inner">
+
+    <EditText android:id="@+id/comment_sheet_add_comment_txt"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:minHeight="@dimen/_40sdp"
+        android:paddingTop="@dimen/standered_margin"
+        android:paddingBottom="@dimen/standered_margin"
+        android:hint="Add Comment"
+        />
+    <com.airbnb.lottie.LottieAnimationView android:id="@+id/comment_sheet_add_comment_btn"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="bottom"
+        app:lottie_rawRes="@raw/send"
+        android:layout_marginBottom="@dimen/_4sdp"
+        />
+
+</LinearLayout>

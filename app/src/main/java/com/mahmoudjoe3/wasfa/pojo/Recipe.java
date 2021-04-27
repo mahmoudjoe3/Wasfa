@@ -2,6 +2,7 @@ package com.mahmoudjoe3.wasfa.pojo;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe {
@@ -19,18 +20,19 @@ public class Recipe {
     private List<String> ingredients;
     private List<String> steps;
     private int numberOfLike;
-    private int numberOfComments;
     private int numberOfShare;
     private List<String> imgUrls;
+    private List<Comment> comments;
 
 
     public Recipe() {
     }
 
-    public Recipe(int userId, String userName, String userProfileThumbnail, String title,
+    public Recipe(int id, int userId, String userName, String userProfileThumbnail, String title,
                   String description, long postTime, String prepareTime, List<String> categories,
-                  List<String> ingredients, List<String> steps, int numberOfLike, int numberOfComments,
+                  List<String> ingredients, List<String> steps, int numberOfLike,
                   int numberOfShare, List<String> imgUrls) {
+        this.id=id;
         this.userId = userId;
         this.userName = userName;
         this.userProfileThumbnail = userProfileThumbnail;
@@ -42,9 +44,9 @@ public class Recipe {
         this.ingredients = ingredients;
         this.steps = steps;
         this.numberOfLike = numberOfLike;
-        this.numberOfComments = numberOfComments;
         this.numberOfShare = numberOfShare;
         this.imgUrls = imgUrls;
+        this.comments=new ArrayList<>();
     }
 
 
@@ -152,13 +154,6 @@ public class Recipe {
         this.numberOfLike = numberOfLike;
     }
 
-    public int getNumberOfComments() {
-        return numberOfComments;
-    }
-
-    public void setNumberOfComments(int numberOfComments) {
-        this.numberOfComments = numberOfComments;
-    }
 
     public int getNumberOfShare() {
         return numberOfShare;
@@ -182,5 +177,13 @@ public class Recipe {
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

@@ -37,10 +37,11 @@
             <TextView android:id="@+id/post_comments_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="43 Comments" />
+                android:text="43 Comments"
+                android:visibility="gone"/>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_dot"
+                android:id="@+id/share_card_dot"
                 android:layout_width="@dimen/_3sdp"
                 android:layout_height="@dimen/_3sdp"
                 android:elevation="0dp"
@@ -48,13 +49,15 @@
                 android:layout_marginStart="@dimen/post_username_margin"
                 android:layout_marginEnd="@dimen/post_username_margin"
                 app:cardBackgroundColor="@color/transparent"
-                app:cardCornerRadius="@dimen/_3sdp" />
+                app:cardCornerRadius="@dimen/_3sdp"
+                android:visibility="gone"/>
 
             <TextView android:id="@+id/post_shares_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:text="12 Shares" />
+                android:text="12 Shares"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -82,7 +85,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="end"
-                android:background="@drawable/rectangle_ripple_rd"
+                android:background="@drawable/rectangle_ripple"
                 >
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/post_love_btn_lotti"
@@ -98,6 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Love"
+                    android:textColor="@color/transparentDark"
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:gravity="start|center_vertical"/>
             </LinearLayout>
@@ -115,7 +119,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="end"
-                android:background="@drawable/rectangle_ripple_rd"
+                android:background="@drawable/rectangle_ripple"
                 >
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/post_comment_btn_lotti"
@@ -132,6 +136,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Comment"
+                    android:textColor="@color/transparentDark"
+
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:gravity="start|center_vertical"/>
             </LinearLayout>
@@ -149,7 +155,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="end"
-                android:background="@drawable/rectangle_ripple_rd"
+                android:background="@drawable/rectangle_ripple"
                 >
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/post_share_btn_lotti"
@@ -165,6 +171,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Share"
+                    android:textColor="@color/transparentDark"
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:gravity="start|center_vertical"/>
             </LinearLayout>

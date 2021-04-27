@@ -29,7 +29,6 @@ import static com.mahmoudjoe3.wasfa.logic.MyLogic.getTimeFrom;
 
 public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH> {
     List<Recipe> recipes;
-    Context context;
 
     public void setRecipes(List<Recipe> recipes) {
         if(recipes==null){
@@ -39,8 +38,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         notifyDataSetChanged();
     }
 
-    public RecipePostAdapter(Context context) {
-        this.context=context;
+    public RecipePostAdapter() {
     }
 
     @NonNull
@@ -96,9 +94,18 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         initIngredientList(vh,recipe.getIngredients());
         initStepsList(vh,recipe.getSteps());
         initImages(vh,recipe);
-        vh.post_love_number.setText(recipe.getNumberOfLike()+" Love");
-        vh.post_comments_number.setText(recipe.getNumberOfComments()+" Comment");
-        vh.post_shares_number.setText(recipe.getNumberOfShare()+" Share");
+        vh.post_love_number.setText(recipe.getNumberOfLike()+"");
+        if(recipe.getComments().size()>0) {
+            vh.post_comments_number.setText(recipe.getComments().size() + " Comment");
+            vh.post_comments_number.setVisibility(View.VISIBLE);
+        }
+        if(recipe.getNumberOfShare()>0) {
+            vh.post_shares_number.setText(recipe.getNumberOfShare() + " Share");
+            vh.post_shares_number.setVisibility(View.VISIBLE);
+            if(recipe.getComments().size()>0)
+                vh.itemView.findViewById(R.id.share_card_dot).setVisibility(View.VISIBLE);
+        }
+
 
         vh.post_comment_btn_lotti.setProgress(1f);
         vh.post_share_btn_lotti.setProgress(2f);
@@ -131,15 +138,18 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             @Override
             public void onClick(View v) {
                 //make love
-                if(vh.post_love_btn.getTag().toString().equals("of")){
-                    vh.post_love_txt.setTextColor(context.getColor(R.color.colorTap));
+                if(vh.post_love_btn.getTag().toString().equals("of")&&!vh.post_love_btn_lotti.isAnimating()){
+                    vh.post_love_txt.setTextColor(vh.itemView.getContext().getColor(R.color.colorTap));
                     vh.post_love_btn.setTag("on");
                     vh.post_love_btn_lotti.playAnimation();
-
+                    vh.post_love_number.setText((Integer.parseInt(vh.post_love_number.getText().toString())+1)+"");
                 }else {
-                    vh.post_love_txt.setTextColor(context.getColor(R.color.colorPrimary));
+                    vh.post_love_txt.setTextColor(vh.itemView.getContext().getColor(R.color.transparentDark));
                     vh.post_love_btn.setTag("of");
+                    vh.post_love_btn_lotti.pauseAnimation();
                     vh.post_love_btn_lotti.setProgress(0f);
+                    vh.post_love_number.setText((Integer.parseInt(vh.post_love_number.getText().toString())-1)+"");
+
                 }
             }
         });
@@ -148,6 +158,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             public void onClick(View v) {
                 //open comment sheet
                 vh.post_comment_btn_lotti.playAnimation();
+                mOnCommentClickListener.onClick(recipe);
             }
         });
         vh.post_share_btn.setOnClickListener(new View.OnClickListener() {
@@ -161,9 +172,11 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             @Override
             public void onClick(View v) {
                 //open comment sheet
+                mOnCommentClickListener.onClick(recipe);
             }
         });
     }
+
 
     private void initImages(VH vh,Recipe recipe ) {
         List<String> imgUrls=recipe.getImgUrls();
@@ -250,7 +263,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         vh.post_categories_hScrollView.removeAllViews();
         vh.post_categories_linerLayout.removeAllViews();
         for(String cat:categories) {
-            View cardItem = LayoutInflater.from(context).inflate(R.layout.post_list_item, null, false);
+            View cardItem = LayoutInflater.from(vh.itemView.getContext()).inflate(R.layout.post_list_item, null, false);
             TextView textView=cardItem.findViewById(R.id.contentText);
             textView.setText(cat);
             vh.post_categories_linerLayout.addView(cardItem);
@@ -261,9 +274,9 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
     private void initIngredientList(VH vh, List<String> ingredients) {
         vh.post_ing_ChipGroup.removeAllViews();
         for(String ing:ingredients) {
-            View cardItem = LayoutInflater.from(context).inflate(R.layout.post_list_item, null, false);
+            View cardItem = LayoutInflater.from(vh.itemView.getContext()).inflate(R.layout.post_list_item, null, false);
             CardView cardView=cardItem.findViewById(R.id.post_list_item_card);
-            cardView.setCardBackgroundColor(context.getColor(R.color.colorAccent));
+            cardView.setCardBackgroundColor(vh.itemView.getContext().getColor(R.color.colorAccent));
             TextView textView=cardItem.findViewById(R.id.contentText);
             textView.setText(ing);
             vh.post_ing_ChipGroup.addView(cardItem);
@@ -273,9 +286,9 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
     private void initStepsList(VH vh, List<String> steps) {
         vh.post_steps_ChipGroup.removeAllViews();
         for(String st:steps) {
-            View cardItem = LayoutInflater.from(context).inflate(R.layout.post_list_item, null, false);
+            View cardItem = LayoutInflater.from(vh.itemView.getContext()).inflate(R.layout.post_list_item, null, false);
             CardView cardView=cardItem.findViewById(R.id.post_list_item_card);
-            cardView.setCardBackgroundColor(context.getColor(R.color.color_blue_green));
+            cardView.setCardBackgroundColor(vh.itemView.getContext().getColor(R.color.color_blue_green));
             TextView textView=cardItem.findViewById(R.id.contentText);
             textView.setText(st);
             vh.post_steps_ChipGroup.addView(cardItem);
@@ -378,6 +391,16 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             post_comment_share_love_RelativeLayout=itemView.findViewById(R.id.post_comment_share_love_RelativeLayout);
 
         }
+    }
+
+    OnCommentClickListener mOnCommentClickListener;
+
+    public void setmOnCommentClickListener(OnCommentClickListener mOnCommentClickListener) {
+        this.mOnCommentClickListener = mOnCommentClickListener;
+    }
+
+    interface OnCommentClickListener{
+        void onClick(Recipe recipe);
     }
 
 

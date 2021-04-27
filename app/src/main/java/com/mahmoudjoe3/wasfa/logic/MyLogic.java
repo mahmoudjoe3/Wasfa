@@ -8,9 +8,12 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class MyLogic {
 
@@ -29,10 +32,21 @@ public class MyLogic {
         }
     }
     public static Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+        // for Image send ignore URI error
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        Uri bmpUri=null;
+        try {
+            File file = new File(inContext.getExternalCacheDir(), System.currentTimeMillis() + ".jpg");
+            FileOutputStream out = new FileOutputStream(file);
+            inImage.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
     }
 
     public static String getTimeFrom(long PostTimeInMileSec){

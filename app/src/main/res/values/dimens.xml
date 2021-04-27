@@ -3,5 +3,7 @@
     <dimen name="standered_margin">16dp</dimen>
     <dimen name="post_margin">12dp</dimen>
     <dimen name="post_profile_size">@dimen/_34sdp</dimen>
+    <dimen name="comment_profile_size">@dimen/_26sdp</dimen>
+
     <dimen name="post_username_margin">@dimen/_5sdp</dimen>
 </resources>
