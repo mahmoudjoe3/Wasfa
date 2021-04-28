@@ -3,12 +3,15 @@ package com.mahmoudjoe3.wasfa.ui.main.search;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.mahmoudjoe3.wasfa.R;
+import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 
 import java.util.ArrayList;
@@ -30,6 +33,29 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
     public void onBindViewHolder(@NonNull PeopleSearchViewHolder holder, int position) {
         holder.nameTextView.setText(userList.get(position).getName());
         holder.bioTextView.setText(userList.get(position).getBio());
+        holder.followUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.followUser.setVisibility(View.GONE);
+                holder.lotti_people_follow_btn.setVisibility(View.VISIBLE);
+                holder.lotti_people_follow_btn.playAnimation();
+                //todo follow user;
+            }
+        });
+
+        holder.nameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onClick(userList.get(position));
+            }
+        });
+        holder.profileCircleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onClick(userList.get(position));
+            }
+        });
+
     }
 
     @Override
@@ -45,11 +71,25 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
     public static class PeopleSearchViewHolder extends RecyclerView.ViewHolder {
         CircleImageView profileCircleImageView;
         TextView nameTextView, bioTextView;
+        LottieAnimationView lotti_people_follow_btn;
+        ImageButton followUser;
         public PeopleSearchViewHolder(@NonNull View itemView) {
             super(itemView);
             profileCircleImageView = itemView.findViewById(R.id.profile_imageView);
             nameTextView = itemView.findViewById(R.id.name_textView);
             bioTextView = itemView.findViewById(R.id.bio_textView);
+            lotti_people_follow_btn=itemView.findViewById(R.id.lotti_people_follow_btn);
+            followUser=itemView.findViewById(R.id.follow_imageButton);
         }
+    }
+
+    OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    interface OnItemClickListener{
+        void onClick(User user);
     }
 }

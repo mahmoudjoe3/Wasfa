@@ -1,47 +1,51 @@
 package com.mahmoudjoe3.wasfa.ui.main.search;
 
-import android.content.CursorLoader;
-import android.content.Intent;
-import android.database.Cursor;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.MediaStore;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.mahmoudjoe3.wasfa.R;
+import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
-import com.mahmoudjoe3.wasfa.ui.main.fav.FavoritesViewModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class SearchFragment extends Fragment {
     SearchViewModel viewModel;
+    @BindView(R.id.default_search_layout)
+    LinearLayout defaultSearchLayout;
+    @BindView(R.id.no_result_search_layout)
+    LinearLayout noResultSearchLayout;
+    @BindView(R.id.lotti_no_result)
+    LottieAnimationView lottiNoResult;
 
     private EditText searchEditText;
     private TextView peopleTextView, recipesTextView;
     private RecyclerView peopleRecyclerView, recipesRecyclerView;
     private View peopleView, recipesView;
     private ImageButton searchImageButton, backImageButton;
+    private LottieAnimationView lotti_search;
     private PeopleSearchRecyclerAdapter peopleSearchRecyclerAdapter;
     private List<User> userList;
+    User user=new User();
     private RecipeSearchRecyclerAdapter recipeSearchRecyclerAdapter;
     private List<Recipe> recipeList;
     private View view;
@@ -63,30 +67,46 @@ public class SearchFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
-
+        ButterKnife.bind(this, view);
         init();
         initPeopleRecycler();
         initRecipeRecycler();
 
+        recipeSearchRecyclerAdapter.setOnItemClickListener(new RecipeSearchRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(Recipe recipe) {
+                MyLogic.init_post_details_sheet_dialog(getActivity(),recipe,user);
+            }
+        });
+
+        peopleSearchRecyclerAdapter.setOnItemClickListener(new PeopleSearchRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(User user) {
+                //todo open profile
+            }
+        });
+
         peopleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                peopleView.setVisibility(View.VISIBLE);
-                recipesView.setVisibility(View.INVISIBLE);
                 peopleRecyclerView.setVisibility(View.VISIBLE);
                 recipesRecyclerView.setVisibility(View.GONE);
+                peopleView.setVisibility(View.VISIBLE);
+                recipesView.setVisibility(View.INVISIBLE);
                 searchImageButton.setTag("people");
+                searchEditText.setHint(R.string.search_people);
             }
         });
 
         recipesTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                peopleView.setVisibility(View.INVISIBLE);
-                recipesView.setVisibility(View.VISIBLE);
                 peopleRecyclerView.setVisibility(View.GONE);
                 recipesRecyclerView.setVisibility(View.VISIBLE);
+                peopleView.setVisibility(View.INVISIBLE);
+                recipesView.setVisibility(View.VISIBLE);
                 searchImageButton.setTag("recipes");
+                searchEditText.setHint(R.string.search_recipe);
             }
         });
 
@@ -100,16 +120,34 @@ public class SearchFragment extends Fragment {
         searchImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(searchImageButton.getTag().toString().equals("people")) {
-                    List<User> list = new ArrayList<>();
-                    for(int i = 0; i < userList.size(); i ++) {
-                        if(userList.get(i).getName().contains(searchEditText.getText().toString())) {
-                            list.add(userList.get(i));
+                lotti_search.setVisibility(View.VISIBLE);
+                lotti_search.playAnimation();
+                //todo after recive data puase lotti searh and hide
+                //todo if data is empty noResultSearchLayout.setVisibility(View.VISIBLE);
+                defaultSearchLayout.setVisibility(View.GONE);
+                if (searchImageButton.getTag().toString().equals("people")) {
+                    peopleRecyclerView.setVisibility(View.VISIBLE);
+                    recipesRecyclerView.setVisibility(View.GONE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            lotti_search.setVisibility(View.GONE);
+                            lotti_search.pauseAnimation();
+                            peopleSearchRecyclerAdapter.setUserList(userList);
                         }
-                    }
-                    peopleSearchRecyclerAdapter.setUserList(list);
+                    },1000);
+
                 } else {
-                    recipeSearchRecyclerAdapter.setRecipeList(recipeList);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            lotti_search.setVisibility(View.GONE);
+                            lotti_search.pauseAnimation();
+                            recipeSearchRecyclerAdapter.setRecipeList(recipeList);
+                        }
+                    },1000);
+                    peopleRecyclerView.setVisibility(View.GONE);
+                    recipesRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -118,6 +156,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void init() {
+        lotti_search = view.findViewById(R.id.lotti_search);
         searchEditText = view.findViewById(R.id.search_editText);
         peopleTextView = view.findViewById(R.id.people_textView);
         recipesTextView = view.findViewById(R.id.recipes_textView);
@@ -127,7 +166,7 @@ public class SearchFragment extends Fragment {
         backImageButton = view.findViewById(R.id.back_imageButton);
     }
 
-    private void  initPeopleRecycler() {
+    private void initPeopleRecycler() {
         peopleRecyclerView = view.findViewById(R.id.people_recyclerView);
         userList = new ArrayList<>();
         userList.add(new User(1, "Mahmoud Mamdouh", "", getString(R.string.bio_test), ""));
@@ -143,13 +182,13 @@ public class SearchFragment extends Fragment {
         peopleRecyclerView.setAdapter(peopleSearchRecyclerAdapter);
     }
 
-    private void initRecipeRecycler () {
+    private void initRecipeRecycler() {
         recipesRecyclerView = view.findViewById(R.id.recipes_recyclerView);
         recipeList = new ArrayList<>();
-        recipeList.add(new Recipe(1,2 , "Mahmoud Mamdouh Abdullah", "",
+        recipeList.add(new Recipe(1, 2, "Mahmoud Mamdouh Abdullah", "",
                 "", getString(R.string.tst), 1000000, "24min",
                 new ArrayList<String>(Arrays.asList("Healthy")), new ArrayList<String>(),
-                new ArrayList<String>(), 120, 50, new ArrayList<String>(Arrays.asList("a","b"))));
+                new ArrayList<String>(), 120, 50, new ArrayList<String>(Arrays.asList("a", "b"))));
         recipeSearchRecyclerAdapter = new RecipeSearchRecyclerAdapter();
         recipesRecyclerView.setAdapter(recipeSearchRecyclerAdapter);
     }

@@ -11,6 +11,9 @@ public class User {
     private List<Integer> following;
     private int follower;
 
+    public User() {
+    }
+
     public User(int id, String name, String imageUrl, String bio, String nationality) {
         this.id = id;
         this.name = name;

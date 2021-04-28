@@ -167,7 +167,6 @@ public class PostFragment1 extends Fragment {
             recipe.setUserId(1);
             recipe.setDescription(recipeDescriptionEditText.getText().toString());
             recipe.setImgUrls(imageUrls);
-            recipe.setFlag(((BitmapDrawable) countryCodePicker.getImageViewFlag().getDrawable()).getBitmap());
             recipe.setNationality(countryCodePicker.getSelectedCountryName());
             postSharedViewModel.setRecipe(recipe);
             return true;

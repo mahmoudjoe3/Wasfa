@@ -54,7 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/search_card"
         android:orientation="horizontal"
-        android:padding="10dp"
         android:weightSum="2"
         android:baselineAligned="false">
 
@@ -68,7 +67,7 @@
             <TextView
                 android:id="@+id/people_textView"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="45dp"
                 android:gravity="center"
                 android:text="People"
                 android:textColor="@color/black"
@@ -93,7 +92,7 @@
             <TextView
                 android:id="@+id/recipes_textView"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="45dp"
                 android:gravity="center"
                 android:text="Recipes"
                 android:textColor="@color/black"
@@ -116,8 +115,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tabs_layout"
+        tools:listitem="@layout/people_search_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:visibility="gone"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lotti_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="100dp"
+        app:lottie_repeatCount="100"
+        android:visibility="gone"
+        android:layout_below="@id/tabs_layout"
+        app:lottie_rawRes="@raw/search" />
+    <LinearLayout android:id="@+id/default_search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabs_layout"
+        android:orientation="vertical"
+        android:gravity="top"
+        android:layout_marginTop="@dimen/_100sdp"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/icons8_search_96px_1"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter a few words to search in \nWasfa"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/no_result_search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabs_layout"
+        android:orientation="vertical"
+        android:gravity="top"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_100sdp"
+        >
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lotti_no_result"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            app:lottie_rawRes="@raw/empty" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No result found"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipes_recyclerView"

@@ -24,8 +24,8 @@
         app:cnb_textColor="#ffffff"/>
     <item
         android:id="@+id/menu_favorites"
-        android:icon="@drawable/ic_fav"
-        android:title="Favorites"
+        android:icon="@drawable/ic_notify"
+        android:title="Notification"
         app:cnb_iconColor="#ffffff"
         app:cnb_backgroundColor="@color/colorTap"
         app:cnb_textColor="#ffffff"/>

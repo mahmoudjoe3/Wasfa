@@ -42,7 +42,7 @@
             android:layout_width="2dp"
             android:layout_height="2dp"
             android:layout_marginTop="@dimen/_1sdp"
-            android:layout_marginStart="@dimen/post_username_margin"
+            android:layout_marginStart="3dp"
             app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="@dimen/_3sdp" />
         <TextView
@@ -50,13 +50,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:layout_marginStart="@dimen/post_username_margin"
+            android:layout_marginStart="3dp"
             android:text="2m" />
         <TextView
             android:id="@+id/comment_creator_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/post_username_margin"
+            android:layout_marginStart="3dp"
             android:fontFamily="sans-serif-medium"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:text="Creator"

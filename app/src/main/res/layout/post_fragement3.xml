@@ -10,7 +10,7 @@
         android:layout_height="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="Share recipe"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -23,17 +23,17 @@
                 android:id="@+id/back_imageButton"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_arrow_back"
+                android:src="@drawable/ic_arrow_back_black"
                 android:background="@drawable/arrow_ripple"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Share recipe"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"/>
+                />
         </LinearLayout>
 
         <TextView
@@ -45,8 +45,7 @@
             android:textSize="16sp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:textColor="@color/white"
-
+            android:textColor="@color/black"
             android:background="@drawable/next_ripple"
             android:clickable="true"
             android:focusable="true"/>

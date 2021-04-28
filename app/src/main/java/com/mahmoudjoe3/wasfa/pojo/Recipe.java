@@ -13,7 +13,6 @@ public class Recipe {
     private String title;
     private String description;
     private String nationality;
-    private Bitmap flag;
     private long postTime;
     private String prepareTime;
     private List<String> categories;
@@ -56,14 +55,6 @@ public class Recipe {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Bitmap getFlag() {
-        return flag;
-    }
-
-    public void setFlag(Bitmap flag) {
-        this.flag = flag;
     }
 
     public int getUserId() {
