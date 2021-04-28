@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akexorcist.snaptimepicker.SnapTimePickerDialog;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 
@@ -88,7 +90,6 @@ public class PostFragment3 extends Fragment {
                                 Toast.makeText(getActivity(), "Post Uplouded successfully", Toast.LENGTH_SHORT).show();
                                 removeData();
                                 getActivity().onBackPressed();
-                                
                             } else {
                                 Toast.makeText(getActivity(), "Complete All the recipe data", Toast.LENGTH_SHORT).show();
                             }
