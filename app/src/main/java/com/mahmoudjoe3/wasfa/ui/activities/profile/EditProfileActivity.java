@@ -37,20 +37,6 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
 
     @BindView(R.id.acc_image)
     CircleImageView accImage;
-    @BindView(R.id.edit_acc_name)
-    EditText editAccName;
-    @BindView(R.id.edit_address)
-    EditText editAddress;
-    @BindView(R.id.edit_Bio)
-    EditText editBio;
-    @BindView(R.id.instagram)
-    EditText instagram;
-    @BindView(R.id.facebook)
-    EditText facebook;
-    @BindView(R.id.youtube)
-    EditText youtube;
-    @BindView(R.id.ViewImage)
-    ImageView Viewphoto;
 
     Uri imageUri;
     @Override
@@ -60,7 +46,7 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.edit_back, R.id.edit_save, R.id.edit_picture, R.id.ViewImage})
+    @OnClick({R.id.edit_back, R.id.edit_save, R.id.edit_picture})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.edit_back:
@@ -72,15 +58,10 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
             case R.id.edit_picture:
                 pic_Edit();
                 break;
-            case R.id.ViewImage:
-                HideImage();
-                break;
+
         }
     }
 
-    private void HideImage() {
-        Viewphoto.setVisibility(View.GONE);
-    }
 
     private void pic_Edit() {
 

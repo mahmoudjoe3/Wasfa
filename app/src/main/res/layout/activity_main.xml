@@ -4,22 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/NoActionAppTheme"
+    android:background="@color/black"
     tools:context=".ui.main.MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black"
+        android:theme="@style/NoActionAppTheme"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="wasfa"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_26sdp"
+            android:textStyle="bold|normal" />
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/navigationBar"/>
+        android:layout_below="@id/navigationBar" />
 
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/navigationBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:elevation="16dp"
+        android:layout_below="@id/toolbar"
         android:background="@drawable/nav_button_bg"
-        android:layout_alignParentBottom="true"
+        android:elevation="16dp"
+        android:padding="8dp"
         app:cnb_menuResource="@menu/main" />
 
 </RelativeLayout>

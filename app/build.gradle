@@ -100,4 +100,7 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxandroid:$rxJavaVersion"
     implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
 
+    //edit text design
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+
 }

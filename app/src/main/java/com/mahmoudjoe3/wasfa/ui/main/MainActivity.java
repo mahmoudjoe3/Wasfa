@@ -1,21 +1,27 @@
 package com.mahmoudjoe3.wasfa.ui.main;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
+import com.mahmoudjoe3.wasfa.ui.activities.profile.EditProfileActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
     ChipNavigationBar navigationBar;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
-
+    @BindView(R.id.logo)
+    TextView logo;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
 
     @Override
@@ -35,9 +44,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        setSupportActionBar(toolbar);
         SetUpNavViewWithViewPager(savedInstanceState);
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
@@ -52,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -102,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(navigationBar.getSelectedItemId()!=R.id.menu_home){
+        if (navigationBar.getSelectedItemId() != R.id.menu_home) {
             selectFragByiId(R.id.menu_home);
-            navigationBar.setItemSelected(R.id.menu_home,true);
-        }else
+            navigationBar.setItemSelected(R.id.menu_home, true);
+        } else
             super.onBackPressed();
     }
 
@@ -113,18 +122,23 @@ public class MainActivity extends AppCompatActivity {
         switch (item_id) {
             case R.id.menu_search:
                 viewPager.setCurrentItem(1);
+                toolbar.setVisibility(View.GONE);
                 break;
             case R.id.menu_post:
+                toolbar.setVisibility(View.GONE);
                 viewPager.setCurrentItem(2);
                 break;
             case R.id.menu_favorites:
                 viewPager.setCurrentItem(3);
+                toolbar.setVisibility(View.GONE);
                 break;
             case R.id.menu_account:
                 viewPager.setCurrentItem(4);
+                toolbar.setVisibility(View.GONE);
                 break;
             default:
                 viewPager.setCurrentItem(0);
+                toolbar.setVisibility(View.VISIBLE);
                 break;
         }
     }

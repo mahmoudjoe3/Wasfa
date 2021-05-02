@@ -1,43 +1,28 @@
 package com.mahmoudjoe3.wasfa.ui.main.home;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.chip.ChipGroup;
+import com.bumptech.glide.Glide;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
-import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.main.SharedViewModel;
-import com.mahmoudjoe3.wasfa.ui.main.home.comment.CommentAdapter;
+import com.mahmoudjoe3.wasfa.ui.main.account.profilePostItemAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,19 +30,22 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.mahmoudjoe3.wasfa.logic.MyLogic.getTimeFrom;
-
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "homey";
     HomeViewModel viewModel;
-    User user;
+    User mUser;
     SharedViewModel sharedViewModel;
     @BindView(R.id.shimmer_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.mostCommonRecycle)
+    RecyclerView mostCommonRecycle;
     private int REC_AUTH_CODE = 1;
 
     RecipePostAdapter adapter;
+
+
+    profilePostItemAdapter profilePostItemAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -79,9 +67,27 @@ public class HomeFragment extends Fragment {
                 adapter.setRecipes(recipes);
             }
         });
-        return view;
-    }
 
+        profilePostItemAdapter=new profilePostItemAdapter(prevalent.COMMON_ITEM);
+        mostCommonRecycle.setAdapter(profilePostItemAdapter);
+        mostCommonRecycle.setHasFixedSize(true);
+        viewModel.getRecipeMutableLiveData().observe(this, new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+                profilePostItemAdapter.setRecipeList(recipes);
+            }
+        });
+
+        profilePostItemAdapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(Recipe recipe) {
+                MyLogic.init_post_details_sheet_dialog(getActivity(),recipe,mUser);
+            }
+        });
+
+        return view;
+
+    }
 
 
     @Override
@@ -92,14 +98,14 @@ public class HomeFragment extends Fragment {
         viewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user1) {
-                user = user1;
+                mUser = user1;
             }
         });
 
         adapter.setmOnImageClickListener(new RecipePostAdapter.OnImageClickListener() {
             @Override
             public void onNumberClick(Recipe recipe) {
-                MyLogic.init_post_details_sheet_dialog(getActivity(),recipe,user);
+                MyLogic.init_post_details_sheet_dialog(getActivity(), recipe, mUser);
             }
 
             @Override
@@ -112,7 +118,7 @@ public class HomeFragment extends Fragment {
         adapter.setmOnCommentClickListener(new RecipePostAdapter.OnCommentClickListener() {
             @Override
             public void onClick(Recipe recipe) {
-                MyLogic.openCommentSheet(recipe,getActivity(),user);
+                MyLogic.openCommentSheet(recipe, getActivity(), mUser);
             }
         });
 
