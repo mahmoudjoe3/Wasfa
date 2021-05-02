@@ -88,4 +88,16 @@ dependencies {
     //images-picker
     implementation 'com.opensooq.supernova:gligar:1.1.0'
 
+    //Room
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    //room-rxjava
+    implementation "androidx.room:room-rxjava3:$room_version"
+
+    //rxJava
+    def rxJavaVersion = '3.0.0'
+    implementation "io.reactivex.rxjava3:rxandroid:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+
 }

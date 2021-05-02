@@ -20,6 +20,7 @@ public class InteractionsRecyclerAdapter extends RecyclerView.Adapter<Interactio
 
     private List<Interaction> interactionList = new ArrayList<>();
     private List<Interaction> copyList;
+    private onItemClickListener onItemClickListener;
 
     @NonNull
     @Override
@@ -38,7 +39,7 @@ public class InteractionsRecyclerAdapter extends RecyclerView.Adapter<Interactio
         holder.deleteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeAt(position);
+                onItemClickListener.onDeleteClick(interactionList.get(position));
             }
         });
     }
@@ -102,18 +103,27 @@ public class InteractionsRecyclerAdapter extends RecyclerView.Adapter<Interactio
         }
     };
 
+    public interface onItemClickListener {
+        void onDeleteClick(Interaction interaction);
+    }
+
+    public void setOnItemClickListener(InteractionsRecyclerAdapter.onItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public static class InteractionsViewHolder extends RecyclerView.ViewHolder {
         TextView interactWithTextView, dateTimeTextView, interactionTextView, postAccountTextView;
         ImageView profileImageView;
         ImageButton deleteImageButton;
         public InteractionsViewHolder(@NonNull View itemView) {
-            super(itemView);;
+            super(itemView);
             interactWithTextView = itemView.findViewById(R.id.interactsWith_textView);
             dateTimeTextView = itemView.findViewById(R.id.date_time_textView);
             interactionTextView = itemView.findViewById(R.id.interaction_textView);
             postAccountTextView = itemView.findViewById(R.id.post_account_textView);
             profileImageView = itemView.findViewById(R.id.profile_imageView);
             deleteImageButton = itemView.findViewById(R.id.delete_imageButton);
+
         }
     }
 }

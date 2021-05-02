@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
@@ -22,6 +23,12 @@ import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class FavoritesFragment extends Fragment {
@@ -56,14 +63,13 @@ public class FavoritesFragment extends Fragment {
 
         init();
         initInteractionsRecycler();
-        /*viewModel.setInteractions();
-        viewModel.getInteractionsMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Interaction>>() {
+        viewModel.getInteractionsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Interaction>>() {
             @Override
             public void onChanged(List<Interaction> interactions) {
-                interactionsRecyclerAdapter.setInteractionList(interactions);
+                interactionList = interactions;
+                interactionsRecyclerAdapter.setInteractionList(interactionList);
             }
-        });*/
-
+        });
         searchImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +85,14 @@ public class FavoritesFragment extends Fragment {
                     searchImageButton.setImageResource(R.drawable.ic_search_30);
                     searchEditText.setText("");
                 }
+                viewModel.insertInteraction(new Interaction("Mahmoud Mamdouh","", "Loved", "May 2, 2021 - 5:50Pm"));
+            }
+        });
+
+        interactionsRecyclerAdapter.setOnItemClickListener(new InteractionsRecyclerAdapter.onItemClickListener() {
+            @Override
+            public void onDeleteClick(Interaction interaction) {
+                viewModel.deleteInteraction(interaction);
             }
         });
 
@@ -97,7 +111,7 @@ public class FavoritesFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                interactionsRecyclerAdapter.getFilter().filter(s);
+                //interactionsRecyclerAdapter.getFilter().filter(s);
             }
 
             @Override
@@ -112,18 +126,6 @@ public class FavoritesFragment extends Fragment {
     private void initInteractionsRecycler() {
         interactionRecyclerView = view.findViewById(R.id.interactions_recyclerView);
         interactionsRecyclerAdapter = new InteractionsRecyclerAdapter();
-        interactionList = new ArrayList<>();
-        interactionList.add(new Interaction("Mahmoud Youssef", "", "Loved", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Mohamed Ayman", "", "Loved", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Mohamed Shafik", "", "Shared", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Morsi Mohsen", "", "Shared", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Afify", "", "Follow", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Bakr", "", "Follow", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Mostafa Adel", "", "Loved", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Afify", "", "Follow", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Bakr", "", "Follow", "May 1, 2021 - 3:56 AM"));
-        interactionList.add(new Interaction("Mostafa Adel", "", "Loved", "May 1, 2021 - 3:56 AM"));
-        interactionsRecyclerAdapter.setInteractionList(interactionList);
         interactionRecyclerView.setAdapter(interactionsRecyclerAdapter);
     }
 
