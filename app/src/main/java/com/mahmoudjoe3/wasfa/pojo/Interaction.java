@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.main.fav;
+package com.mahmoudjoe3.wasfa.pojo;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -10,13 +10,13 @@ public class Interaction {
     private String interactWith;
     private String imageUrl;
     private String interaction;
-    private String dateTime;
+    private long dateTime;
 
-    public Interaction(String interactWith, String imageUrl, String interaction, String dateTime) {
+    public Interaction(String interactWith, String imageUrl, String interaction) {
         this.interactWith = interactWith;
         this.imageUrl = imageUrl;
         this.interaction= interaction;
-        this.dateTime = dateTime;
+        dateTime = System.currentTimeMillis();
     }
 
     public void setId(int id) {
@@ -39,7 +39,23 @@ public class Interaction {
         return interaction;
     }
 
-    public String getDateTime() {
+    public long getDateTime() {
         return dateTime;
+    }
+
+    public void setInteractWith(String interactWith) {
+        this.interactWith = interactWith;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setInteraction(String interaction) {
+        this.interaction = interaction;
+    }
+
+    public void setDateTime(long dateTime) {
+        this.dateTime = dateTime;
     }
 }

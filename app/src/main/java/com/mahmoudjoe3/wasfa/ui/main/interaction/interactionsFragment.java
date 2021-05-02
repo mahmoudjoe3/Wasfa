@@ -1,12 +1,10 @@
-package com.mahmoudjoe3.wasfa.ui.main.fav;
+package com.mahmoudjoe3.wasfa.ui.main.interaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
@@ -19,20 +17,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.mahmoudjoe3.wasfa.R;
-import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.SingleObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
-
-public class FavoritesFragment extends Fragment {
-    FavoritesViewModel viewModel;
+public class interactionsFragment extends Fragment {
+    interactionsViewModel viewModel;
 
     private EditText searchEditText;
     private TextView interactionTextView;
@@ -42,7 +33,7 @@ public class FavoritesFragment extends Fragment {
     private List<Interaction> interactionList;
     View view;
 
-    public FavoritesFragment() {
+    public interactionsFragment() {
         // Required empty public constructor
     }
 
@@ -59,7 +50,7 @@ public class FavoritesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_favorites, container, false);
+        view = inflater.inflate(R.layout.fragment_interaction, container, false);
 
         init();
         initInteractionsRecycler();
@@ -85,7 +76,6 @@ public class FavoritesFragment extends Fragment {
                     searchImageButton.setImageResource(R.drawable.ic_search_30);
                     searchEditText.setText("");
                 }
-                viewModel.insertInteraction(new Interaction("Mahmoud Mamdouh","", "Loved", "May 2, 2021 - 5:50Pm"));
             }
         });
 
@@ -111,7 +101,7 @@ public class FavoritesFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //interactionsRecyclerAdapter.getFilter().filter(s);
+                interactionsRecyclerAdapter.getFilter().filter(s);
             }
 
             @Override
@@ -134,6 +124,6 @@ public class FavoritesFragment extends Fragment {
         interactionTextView = view.findViewById(R.id.interaction_label);
         searchEditText = view.findViewById(R.id.search_editText);
         backImageButton = view.findViewById(R.id.back_imageButton);
-        viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
+        viewModel = new ViewModelProvider(this).get(interactionsViewModel.class);
     }
 }

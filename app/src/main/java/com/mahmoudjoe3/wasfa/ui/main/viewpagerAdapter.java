@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.mahmoudjoe3.wasfa.ui.main.account.AccountFragment;
-import com.mahmoudjoe3.wasfa.ui.main.fav.FavoritesFragment;
+import com.mahmoudjoe3.wasfa.ui.main.interaction.interactionsFragment;
 import com.mahmoudjoe3.wasfa.ui.main.home.HomeFragment;
 import com.mahmoudjoe3.wasfa.ui.main.post.PostFragment;
 import com.mahmoudjoe3.wasfa.ui.main.search.SearchFragment;
@@ -25,7 +25,7 @@ public class viewpagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 return new PostFragment();
             case 3:
-                return new FavoritesFragment();
+                return new interactionsFragment();
             case 4:
                 return new AccountFragment();
             default:

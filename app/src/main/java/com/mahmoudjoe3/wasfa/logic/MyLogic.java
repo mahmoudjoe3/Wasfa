@@ -173,7 +173,6 @@ public class MyLogic {
     private static void initPostCaption(View sheetView, Recipe recipe,Activity context,User user) {
 
         LottieAnimationView post_more_menu;
-        post_more_menu = sheetView.findViewById(R.id.post_more_menu);
 
         //post caption
         TextView post_title, post_description, prepare_time;
@@ -277,7 +276,6 @@ public class MyLogic {
 
         post_comment_btn_lotti.setProgress(1f);
         post_share_btn_lotti.setProgress(2f);
-        post_more_menu.setProgress(0f);
 
         post_show_details_layout_btn_p_card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,13 +293,6 @@ public class MyLogic {
             }
         });
 
-        post_more_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //todo open post Menu
-                post_more_menu.playAnimation();
-            }
-        });
         post_love_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -25,7 +25,7 @@
     <item
         android:id="@+id/menu_favorites"
         android:icon="@drawable/ic_notify"
-        android:title="Notification"
+        android:title="Interaction"
         app:cnb_iconColor="#ffffff"
         app:cnb_backgroundColor="@color/colorTap"
         app:cnb_textColor="#ffffff"/>

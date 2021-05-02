@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
@@ -60,10 +61,11 @@ public class profileActivity extends AppCompatActivity {
 
     profilePostItemAdapter adapter;
     User mUser;
+    ProfileViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ProfileViewModel viewModel=new ViewModelProvider(this).get(ProfileViewModel.class);
+        viewModel =new ViewModelProvider(this).get(ProfileViewModel.class);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         viewModel.getUserLiveData().observe(this, new Observer<User>() {
@@ -103,6 +105,8 @@ public class profileActivity extends AppCompatActivity {
             case R.id.user_follow:
                 userFollow.setVisibility(View.GONE);
                 userChecked.setVisibility(View.VISIBLE);
+                viewModel.insertInteraction(new Interaction(mUser.getName(),mUser.getImageUrl(), "Follow"));
+
                 break;
             case R.id.user_checked:
                 userFollow.setVisibility(View.VISIBLE);

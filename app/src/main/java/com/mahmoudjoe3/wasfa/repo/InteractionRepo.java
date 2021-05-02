@@ -1,12 +1,13 @@
-package com.mahmoudjoe3.wasfa.ui.main.fav.repo;
+package com.mahmoudjoe3.wasfa.repo;
 
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Room;
 
-import com.mahmoudjoe3.wasfa.ui.main.fav.Interaction;
-import com.mahmoudjoe3.wasfa.ui.main.fav.database.InteractionsDao;
-import com.mahmoudjoe3.wasfa.ui.main.fav.database.InteractionsDatabase;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
+import com.mahmoudjoe3.wasfa.ui.main.interaction.database.InteractionsDao;
+import com.mahmoudjoe3.wasfa.ui.main.interaction.database.InteractionsDatabase;
 
 import java.util.List;
 
@@ -19,7 +20,16 @@ public class InteractionRepo {
     private InteractionsDao interactionsDao;
     private LiveData<List<Interaction>> interactionsLiveData;
 
-    public InteractionRepo(Context context) {
+    private static InteractionRepo instance;
+
+    public static synchronized InteractionRepo getInstance(Context context){
+        if(instance == null) {
+            instance=new InteractionRepo(context);
+        }
+        return instance;
+    }
+
+    private InteractionRepo(Context context) {
         InteractionsDatabase interactionsDatabase = InteractionsDatabase.getInstance(context);
         interactionsDao = interactionsDatabase.interactionsDao();
         interactionsLiveData = interactionsDao.getInteractions();

@@ -1,12 +1,16 @@
 package com.mahmoudjoe3.wasfa.ui.activities.profile;
 
+import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mahmoudjoe3.wasfa.pojo.Comment;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.repo.InteractionRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,5 +100,20 @@ public class ProfileViewModel extends ViewModel {
         return userLiveData;
     }
 
+    public ProfileViewModel(Application application) {
+        interactionRepo = InteractionRepo.getInstance(application);
+        interactionsLiveData = interactionRepo.getInteractionsLiveData();
+    }
+
+    private InteractionRepo interactionRepo;
+    private LiveData<List<Interaction>> interactionsLiveData;
+
+    public void insertInteraction(Interaction interaction) {
+        interactionRepo.insertInteraction(interaction);
+    }
+
+    public void deleteInteraction(Interaction interaction) {
+        interactionRepo.deleteInteraction(interaction);
+    }
 
 }

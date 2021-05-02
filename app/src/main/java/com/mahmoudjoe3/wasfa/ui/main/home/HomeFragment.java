@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
@@ -119,6 +120,29 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(Recipe recipe) {
                 MyLogic.openCommentSheet(recipe, getActivity(), mUser);
+            }
+        });
+
+        adapter.setOninteractionClickListener(new RecipePostAdapter.OninteractionClickListener() {
+            @Override
+            public void onshare(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
+            }
+
+            @Override
+            public void onlove(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
+            }
+
+            @Override
+            public void onDislove(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
+            }
+
+            @Override
+            public void onfollow(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+
             }
         });
 

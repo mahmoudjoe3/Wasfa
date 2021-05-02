@@ -1,20 +1,24 @@
 package com.mahmoudjoe3.wasfa.ui.main.home;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mahmoudjoe3.wasfa.pojo.Comment;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.repo.InteractionRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeViewModel extends ViewModel {
+public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<List<Recipe>> recipeMutableLiveData=new MutableLiveData<>();
 
     public MutableLiveData<List<Recipe>> getRecipeMutableLiveData() {
@@ -111,5 +115,22 @@ public class HomeViewModel extends ViewModel {
         return userLiveData;
     }
 
+
+    public HomeViewModel(Application application) {
+        super(application);
+        interactionRepo = InteractionRepo.getInstance(application);
+        interactionsLiveData = interactionRepo.getInteractionsLiveData();
+    }
+
+    private InteractionRepo interactionRepo;
+    private LiveData<List<Interaction>> interactionsLiveData;
+
+    public void insertInteraction(Interaction interaction) {
+        interactionRepo.insertInteraction(interaction);
+    }
+
+    public void deleteInteraction(Interaction interaction) {
+        interactionRepo.deleteInteraction(interaction);
+    }
 
 }

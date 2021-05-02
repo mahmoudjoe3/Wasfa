@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.main.fav;
+package com.mahmoudjoe3.wasfa.ui.main.interaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mahmoudjoe3.wasfa.R;
+import com.mahmoudjoe3.wasfa.logic.MyLogic;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
 public class InteractionsRecyclerAdapter extends RecyclerView.Adapter<InteractionsRecyclerAdapter.InteractionsViewHolder> {
 
     private List<Interaction> interactionList = new ArrayList<>();
-    private List<Interaction> copyList;
+    private List<Interaction> copyList=new ArrayList<>();
     private onItemClickListener onItemClickListener;
 
     @NonNull
@@ -35,7 +37,7 @@ public class InteractionsRecyclerAdapter extends RecyclerView.Adapter<Interactio
         String postAccount = getPostAccount(interactionList.get(position).getInteraction());
         holder.postAccountTextView.setText(postAccount);
         holder.interactWithTextView.setText(interactionList.get(position).getInteractWith());
-        holder.dateTimeTextView.setText(interactionList.get(position).getDateTime());
+        holder.dateTimeTextView.setText(MyLogic.getTimeFrom(interactionList.get(position).getDateTime()));
         holder.deleteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,14 +7,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.home.HomeFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/interaction_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Most common"
+                android:background="@color/white"
+                android:paddingStart="12dp"
+                android:paddingTop="11dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mostCommonRecycle"
                 android:layout_width="match_parent"
@@ -28,6 +39,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginTop="@dimen/post_username_margin"
                 android:layout_below="@id/mostCommonRecycle"
+                android:nestedScrollingEnabled="false"
                 android:id="@+id/shimmer_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -36,7 +48,7 @@
                 tools:listitem="@layout/post_item_layout"
                 />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 </RelativeLayout>

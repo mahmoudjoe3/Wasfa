@@ -19,6 +19,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfa.R;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.squareup.picasso.Picasso;
 
@@ -80,7 +81,8 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                 //follow user
                 vh.lotti_post_user_follow_btn.playAnimation();
                 vh.post_user_follow_btn.setVisibility(View.GONE);
-
+                if(mOninteractionClickListener!=null)
+                    mOninteractionClickListener.onfollow(recipe);
             }
         });
     }
@@ -109,7 +111,6 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
         vh.post_comment_btn_lotti.setProgress(1f);
         vh.post_share_btn_lotti.setProgress(2f);
-        vh.post_more_menu.setProgress(0f);
 
         vh.post_show_details_layout_btn_p_card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +119,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     vh.post_details_layout.setVisibility(View.VISIBLE);
                     vh.post_show_details_layout_btn_ch_2_img.setImageResource(R.drawable.upbutton);
                     vh.post_show_details_layout_btn_ch_1_txt.setText("Show less");
+
                 }else {
                     vh.post_details_layout.setVisibility(View.GONE);
                     vh.post_show_details_layout_btn_ch_2_img.setImageResource(R.drawable.downbutton);
@@ -127,13 +129,6 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             }
         });
 
-        vh.post_more_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //openMenu
-                vh.post_more_menu.playAnimation();
-            }
-        });
         vh.post_love_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,13 +138,17 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     vh.post_love_btn.setTag("on");
                     vh.post_love_btn_lotti.playAnimation();
                     vh.post_love_number.setText((Integer.parseInt(vh.post_love_number.getText().toString())+1)+"");
+                    if(mOninteractionClickListener!=null)
+                        mOninteractionClickListener.onlove(recipe);
+
                 }else {
                     vh.post_love_txt.setTextColor(vh.itemView.getContext().getColor(R.color.transparentDark));
                     vh.post_love_btn.setTag("of");
                     vh.post_love_btn_lotti.pauseAnimation();
                     vh.post_love_btn_lotti.setProgress(0f);
                     vh.post_love_number.setText((Integer.parseInt(vh.post_love_number.getText().toString())-1)+"");
-
+                    if(mOninteractionClickListener!=null)
+                        mOninteractionClickListener.onDislove(recipe);
                 }
             }
         });
@@ -166,6 +165,8 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             public void onClick(View v) {
                 //make share
                 vh.post_share_btn_lotti.playAnimation();
+                if(mOninteractionClickListener!=null)
+                    mOninteractionClickListener.onshare(recipe);
             }
         });
         vh.post_comment_share_love_RelativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -348,7 +349,6 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
             post_profile_img=itemView.findViewById(R.id.post_profile_img);
             post_user_nationality=itemView.findViewById(R.id.post_user_nationality);
-            post_more_menu=itemView.findViewById(R.id.post_more_menu);
             post_user_follow_btn=itemView.findViewById(R.id.post_user_follow_btn);
             post_username=itemView.findViewById(R.id.post_username);
             post_from_time=itemView.findViewById(R.id.post_from_time);
@@ -401,6 +401,19 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
     interface OnCommentClickListener{
         void onClick(Recipe recipe);
+    }
+
+    OninteractionClickListener mOninteractionClickListener;
+
+    public void setOninteractionClickListener(OninteractionClickListener mOnCommentClickListener) {
+        this.mOninteractionClickListener = mOninteractionClickListener;
+    }
+
+    interface OninteractionClickListener{
+        void onshare(Recipe recipe);
+        void onlove(Recipe recipe);
+        void onDislove(Recipe recipe);
+        void onfollow(Recipe recipe);
     }
 
 
