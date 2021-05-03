@@ -41,14 +41,14 @@ public class InteractionsRecyclerAdapter extends RecyclerView.Adapter<Interactio
         holder.deleteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onDeleteClick(interactionList.get(position));
+                onItemClickListener.onDeleteClick(position);
             }
         });
     }
 
     private String getPostAccount(String interaction) {
         String str;
-        if(interaction.equals("Loved") || interaction.equals("Shared")) {
+        if(interaction.equals("Loved") || interaction.equals("Shared") || interaction.equals("DisLoved") || interaction.equals("Commented on")) {
             str = "'s post";
         } else {
             str = "'s account";
@@ -106,7 +106,7 @@ public class InteractionsRecyclerAdapter extends RecyclerView.Adapter<Interactio
     };
 
     public interface onItemClickListener {
-        void onDeleteClick(Interaction interaction);
+        void onDeleteClick(int position);
     }
 
     public void setOnItemClickListener(InteractionsRecyclerAdapter.onItemClickListener onItemClickListener) {

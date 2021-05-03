@@ -140,8 +140,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
-            android:src="@drawable/icons8_search_96px_1"
-            />
+            android:src="@drawable/search_icon_default"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -405,11 +405,11 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
     OninteractionClickListener mOninteractionClickListener;
 
-    public void setOninteractionClickListener(OninteractionClickListener mOnCommentClickListener) {
+    public void setOninteractionClickListener(OninteractionClickListener mOninteractionClickListener) {
         this.mOninteractionClickListener = mOninteractionClickListener;
     }
 
-    interface OninteractionClickListener{
+    public interface OninteractionClickListener{
         void onshare(Recipe recipe);
         void onlove(Recipe recipe);
         void onDislove(Recipe recipe);

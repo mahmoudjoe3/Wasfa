@@ -22,14 +22,14 @@ public class InteractionRepo {
 
     private static InteractionRepo instance;
 
-    public static synchronized InteractionRepo getInstance(Context context){
+    public static synchronized InteractionRepo getInstance(Context context) {
         if(instance == null) {
             instance=new InteractionRepo(context);
         }
         return instance;
     }
 
-    private InteractionRepo(Context context) {
+    public InteractionRepo(Context context) {
         InteractionsDatabase interactionsDatabase = InteractionsDatabase.getInstance(context);
         interactionsDao = interactionsDatabase.interactionsDao();
         interactionsLiveData = interactionsDao.getInteractions();

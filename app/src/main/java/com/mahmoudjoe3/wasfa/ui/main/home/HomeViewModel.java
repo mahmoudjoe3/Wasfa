@@ -118,7 +118,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     public HomeViewModel(Application application) {
         super(application);
-        interactionRepo = InteractionRepo.getInstance(application);
+        interactionRepo = new InteractionRepo(application);
         interactionsLiveData = interactionRepo.getInteractionsLiveData();
     }
 

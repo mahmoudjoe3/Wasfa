@@ -17,7 +17,7 @@ public class interactionsViewModel extends AndroidViewModel {
 
     public interactionsViewModel(Application application) {
         super(application);
-        interactionRepo = InteractionRepo.getInstance(application);
+        interactionRepo = new InteractionRepo(application);
         interactionsLiveData = interactionRepo.getInteractionsLiveData();
     }
 

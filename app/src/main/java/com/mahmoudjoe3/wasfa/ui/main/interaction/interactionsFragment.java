@@ -81,8 +81,8 @@ public class interactionsFragment extends Fragment {
 
         interactionsRecyclerAdapter.setOnItemClickListener(new InteractionsRecyclerAdapter.onItemClickListener() {
             @Override
-            public void onDeleteClick(Interaction interaction) {
-                viewModel.deleteInteraction(interaction);
+            public void onDeleteClick(int position) {
+                viewModel.deleteInteraction(interactionList.get(position));
             }
         });
 
