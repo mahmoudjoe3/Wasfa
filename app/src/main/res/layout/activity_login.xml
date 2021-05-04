@@ -34,14 +34,14 @@
             android:hint="@string/user_name"
             app:boxStrokeColor="@color/colorPrimary"
             app:counterEnabled="true"
-            app:counterMaxLength="14">
+            app:counterMaxLength="20">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:textSize="@dimen/_12ssp"
-                android:maxLength="14"/>
+                android:maxLength="20"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

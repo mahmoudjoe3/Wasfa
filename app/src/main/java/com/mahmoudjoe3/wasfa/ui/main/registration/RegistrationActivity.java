@@ -1,16 +1,20 @@
 package com.mahmoudjoe3.wasfa.ui.main.registration;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.mahmoudjoe3.wasfa.R;
+import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.ui.main.login.LoginActivity;
 
 import butterknife.BindView;
@@ -38,11 +42,37 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.register_button)
     Button registerButton;
 
+    private Gson gson;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
+    private String name = "", email = "", password = "", phone = "", gender = "", nationality = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
+
+        init();
+    }
+
+    private void init() {
+        gson = new Gson();
+        sharedPreferences = getSharedPreferences("new_user", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+    }
+
+    private void initData() {
+        name = fullNameTextInput.getEditText().getText().toString().trim();
+        email = emailTextInput.getEditText().getText().toString().trim();
+        password = passwordTextInput.getEditText().getText().toString().trim();
+        phone = phoneTextInput.getEditText().getText().toString().trim();
+        if(maleRadio.isChecked())
+            gender = "male";
+        else if (femaleRadio.isChecked())
+            gender = "female";
+        nationality = countryCodePicker.getSelectedCountryName();
     }
 
     @OnClick(R.id.back_imageButton)
@@ -53,7 +83,48 @@ public class RegistrationActivity extends AppCompatActivity {
 
     @OnClick(R.id.register_button)
     public void onRegisterButtonClicked() {
-        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
-        finish();
+        initData();
+        boolean allValid = allIsValid();
+        if(allValid) {
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setPhone(phone);
+            user.setGender(gender);
+            user.setNationality(nationality);
+            String userJson = gson.toJson(user);
+            editor.putString("user", userJson);
+            editor.apply();
+            startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+            finish();
+        } else {
+            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean allIsValid() {
+        boolean isValid = true;
+        if(name.isEmpty()) {
+            fullNameTextInput.getEditText().setError("Please, Enter your name");
+            isValid = false;
+        }
+        if(email.isEmpty()) {
+            emailTextInput.getEditText().setError("Please, Enter your email");
+            isValid = false;
+        }
+        if(password.isEmpty()) {
+            passwordTextInput.setError("Please, Enter your password");
+            isValid = false;
+        }
+        if(phone.isEmpty()) {
+            phoneTextInput.getEditText().setError("Please, Enter your phone number");
+            isValid = false;
+        }
+        if(!maleRadio.isChecked() && !femaleRadio.isChecked()) {
+            Toast.makeText(RegistrationActivity.this, "choose your gender", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
+        return isValid;
     }
 }

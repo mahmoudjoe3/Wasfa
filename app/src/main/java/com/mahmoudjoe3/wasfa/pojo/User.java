@@ -6,7 +6,7 @@ import java.util.List;
 public class User {
     private int id;
     private long createdDate;
-    private String name, email, password, imageUrl, bio, nationality;
+    private String name, email, password,phone, imageUrl, bio, nationality, gender;
     private List<String> links;
     private List<Integer> following;
     private int follower;
@@ -66,6 +66,14 @@ public class User {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -112,5 +120,13 @@ public class User {
 
     public void setFollower(int follower) {
         this.follower = follower;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
