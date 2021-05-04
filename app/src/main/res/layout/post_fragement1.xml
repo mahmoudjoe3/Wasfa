@@ -196,7 +196,7 @@
                 app:ccp_showNameCode="false"
                 app:ccp_showPhoneCode="false"
                 app:ccp_textSize="14sp"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginStart="5dp"/>
         </LinearLayout>
     </RelativeLayout>
 

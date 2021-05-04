@@ -59,4 +59,6 @@
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="splash_msg">The best place to find your recipe</string>
     <string name="copy_right">Copyright © 2021 WASFA. All right reserved</string>
+    <string name="remember_me">Remember me</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
 </resources>

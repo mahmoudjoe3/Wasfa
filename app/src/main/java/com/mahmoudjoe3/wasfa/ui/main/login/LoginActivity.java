@@ -3,7 +3,7 @@ package com.mahmoudjoe3.wasfa.ui.main.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,12 +27,12 @@ public class LoginActivity extends AppCompatActivity {
     TextView forgetPassTextView;
     @BindView(R.id.login_button)
     Button loginButton;
-    @BindView(R.id.facebook_imageView)
-    ImageView facebookImageView;
-    @BindView(R.id.google_imageView)
-    ImageView googleImageView;
     @BindView(R.id.register_textView)
     TextView registerTextView;
+    @BindView(R.id.remember_checkBox)
+    CheckBox rememberCheckBox;
+    @BindView(R.id.google_sign)
+    Button googleSign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,5 +55,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onRegisterTextViewClicked() {
         startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
         finish();
+    }
+
+    @OnClick(R.id.google_sign)
+    public void onViewClicked() {
     }
 }
