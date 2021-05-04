@@ -2,6 +2,7 @@ package com.mahmoudjoe3.wasfa.ui.activities.profile;
 
 import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,7 +16,7 @@ import com.mahmoudjoe3.wasfa.repo.InteractionRepo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileViewModel extends ViewModel {
+public class ProfileViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Recipe>> recipeMutableLiveData=new MutableLiveData<>();
     public MutableLiveData<List<Recipe>> getRecipeMutableLiveData() {
@@ -304,6 +305,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public ProfileViewModel(Application application) {
+        super(application);
         interactionRepo = InteractionRepo.getInstance(application);
         interactionsLiveData = interactionRepo.getInteractionsLiveData();
     }

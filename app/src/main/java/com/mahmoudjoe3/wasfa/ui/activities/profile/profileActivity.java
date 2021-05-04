@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -75,7 +76,7 @@ public class profileActivity extends AppCompatActivity {
         user_name.setText("@" + mUser.getName());
         user_name_toolbar.setText(mUser.getName());
         //userFacebook.setTag(user.getLinks().get());
-
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
         MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
             @Override
