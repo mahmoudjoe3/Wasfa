@@ -24,10 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.registration.RegistrationActivity"
-            android:launchMode="singleInstance"/>
-        <activity android:name=".ui.activities.login.LoginActivity"
-            android:launchMode="singleInstance"/>
+        <activity android:name=".ui.activities.registration.RegistrationActivity" />
+        <activity android:name=".ui.activities.login.LoginActivity" />
         <activity android:name=".ui.main.viewImage.ViewImageActivity" />
         <activity android:name=".ui.activities.profile.EditProfileActivity" />
         <activity android:name=".ui.activities.profile.profileActivity" />

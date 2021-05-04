@@ -33,8 +33,7 @@ public class HomeViewModel extends AndroidViewModel {
                                 "vinegar, and zest and juice of one lemon. Using a spoon, mix to combine.",
                         "Add the olive oil, vinegar. Using a spoon, mix to combine.","add the apples","add ice cteam"),
                 203,3,
-                List.of("https://adminassets.devops.arabiaweather.com/sites/default/files/field/image/arabiaweatehr2324.jpg",
-                        "https://www.simplyrecipes.com/recipes/old_fashioned_apple_pie/"
+                List.of("https://adminassets.devops.arabiaweather.com/sites/default/files/field/image/arabiaweatehr2324.jpg"
 
                 )
         );

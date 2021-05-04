@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         String userJson = sharedPreferences.getString("user", null);
         if(userJson != null) {
             user = gson.fromJson(userJson, User.class);
-        }
+        }else Toast.makeText(this, "hhhhhhhh", Toast.LENGTH_SHORT).show();
         Boolean remember = sharedPreferences.getBoolean("remember_me", false);
         if(remember) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));

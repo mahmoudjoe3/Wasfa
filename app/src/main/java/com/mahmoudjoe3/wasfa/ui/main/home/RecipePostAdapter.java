@@ -60,8 +60,8 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         //user object
         vh.post_from_time.setText(getTimeFrom(recipe.getPostTime()));
         vh.post_username.setText(recipe.getUserName());
-//        Picasso.get().load(recipe.getUserProfileThumbnail())
-//                .into(vh.post_profile_img);
+        Picasso.get().load(recipe.getUserProfileThumbnail())
+                .into(vh.post_profile_img);
 
         vh.post_username.setOnClickListener(new View.OnClickListener() {
             @Override
