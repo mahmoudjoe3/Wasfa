@@ -71,30 +71,8 @@
         android:layout_toEndOf="@id/card"
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginStart="@dimen/post_username_margin"
-        android:maxWidth="260dp"
         android:text="U can tell she wanted to hilt tou but then remembered you have a broken collar bone then remembered you have a broken collar bone"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-
-    <LinearLayout android:id="@+id/comment_love_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tag="of"
-        android:orientation="vertical"
-        android:layout_alignParentEnd="true"
-        android:gravity="center">
-        <ImageView
-            android:id="@+id/comment_love_btn"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:src="@drawable/ic_love_invers" />
-        <TextView
-            android:id="@+id/comment_loves_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textColor="@color/transparent"
-            android:text="4514" />
-    </LinearLayout>
 
 
 </RelativeLayout>

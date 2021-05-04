@@ -11,11 +11,11 @@ public class Comment {
     private String commentText;
     private int loveCount;
 
-    public Comment(int recipeId,String username, String userImageUrl, boolean creator, String commentText) {
+    public Comment(int recipeId,String username, String userImageUrl, String commentText) {
         this.recipeId=recipeId;
         this.username = username;
         this.userImageUrl = userImageUrl;
-        this.creator = creator;
+        this.creator = false;
         this.commentText = commentText;
         createdTime=System.currentTimeMillis();
         loveCount=0;

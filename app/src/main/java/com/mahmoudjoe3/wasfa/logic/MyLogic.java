@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -34,7 +35,10 @@ import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.ui.main.home.RecipePostAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.home.comment.CommentAdapter;
+import com.mahmoudjoe3.wasfa.ui.main.interaction.InteractionsRecyclerAdapter;
+import com.mahmoudjoe3.wasfa.ui.main.interaction.interactionsViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -59,6 +63,7 @@ public class MyLogic {
             return nwInfo != null && nwInfo.isConnected();
         }
     }
+
     public static Uri getImageUri(Context inContext, Bitmap inImage) {
         // for Image send ignore URI error
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -151,12 +156,18 @@ public class MyLogic {
             @Override
             public void onClick(View v) {
                 //open prifile
+                if(mOnProfileClickListener1!=null) {
+                    mOnProfileClickListener1.onClick(recipe.getUserId());
+                }
             }
         });
         post_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //open prifile
+                if(mOnProfileClickListener1!=null) {
+                    mOnProfileClickListener1.onClick(recipe.getUserId());
+                }
             }
         });
         post_user_follow_btn.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +176,9 @@ public class MyLogic {
                 //follow user
                 lotti_post_user_follow_btn.playAnimation();
                 post_user_follow_btn.setVisibility(View.GONE);
+                if(mOninteractionClickListener1!=null){
+                    mOninteractionClickListener1.onfollow(recipe);
+                }
 
             }
         });
@@ -298,11 +312,17 @@ public class MyLogic {
             public void onClick(View v) {
                 //todo make love
                 if(post_love_btn.getTag().toString().equals("of")&&!post_love_btn_lotti.isAnimating()){
+                    if(mOninteractionClickListener1!=null){
+                        mOninteractionClickListener1.onlove(recipe);
+                    }
                     post_love_txt.setTextColor(context.getColor(R.color.colorTap));
                     post_love_btn.setTag("on");
                     post_love_btn_lotti.playAnimation();
                     post_love_number.setText((Integer.parseInt(post_love_number.getText().toString())+1)+"");
                 }else {
+                    if(mOninteractionClickListener1!=null){
+                        mOninteractionClickListener1.onDislove(recipe);
+                    }
                     post_love_txt.setTextColor(context.getColor(R.color.transparentDark));
                     post_love_btn.setTag("of");
                     post_love_btn_lotti.pauseAnimation();
@@ -325,6 +345,9 @@ public class MyLogic {
             public void onClick(View v) {
                 //todo make share
                 post_share_btn_lotti.playAnimation();
+                if(mOninteractionClickListener1!=null){
+                    mOninteractionClickListener1.onshare(recipe);
+                }
             }
         });
         post_comment_share_love_RelativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -367,24 +390,13 @@ public class MyLogic {
 
         commentAdapter.setCommentList(recipe.getComments());
 
-        commentAdapter.setmOnLoveListenner(new CommentAdapter.OnLoveCommentListener() {
-            @Override
-            public void onLove(Comment comment) {
-                //todo increase comment love count
 
-            }
-
-            @Override
-            public void onDisLove(Comment comment) {
-                //todo decraese comment love count
-
-            }
-        });
 
         commentAdapter.setOnOpenProfileListenner(new CommentAdapter.OnOpenProfileListenner() {
             @Override
             public void onClick(int userid) {
                 //todo open user profile whose comment
+                mOnProfileClickListener1.onClick(userid);
 
             }
         });
@@ -426,7 +438,11 @@ public class MyLogic {
                     public void onClick(View v) {
                         //todo send comment to database
                         boolean isCreator = (user.getId() == recipe.getUserId());
-                        //addComment(new Comment(recipe.getId(), user.getName(), user.getImageUrl(), isCreator, commentTxt.getText().toString()));
+                        Comment comment=new Comment(recipe.getId(), user.getName(), user.getImageUrl(), commentTxt.getText().toString());
+                        comment.setCreator(isCreator);
+                        if(mOnProfileClickListener1!=null){
+                            mOnProfileClickListener1.onAddComment(comment);
+                        }
                         sendComment.setMinAndMaxProgress(0.33f, 1f);
                         sendComment.playAnimation();
                         //sendComment.setProgress(0.6f);
@@ -455,6 +471,30 @@ public class MyLogic {
 
         sheetDialog.setContentView(sheetView);
         sheetDialog.show();
+    }
+
+    static OnProfileClickListener mOnProfileClickListener1;
+
+    public static void setOnProfileClickListener(OnProfileClickListener mOnProfileClickListener) {
+        mOnProfileClickListener1 = mOnProfileClickListener;
+    }
+
+    public interface OnProfileClickListener{
+        void onClick(int userid);
+        void onAddComment(Comment comment);
+    }
+
+    static OninteractionClickListener mOninteractionClickListener1;
+
+    public static void setOninteractionClickListener(OninteractionClickListener mOninteractionClickListener) {
+        mOninteractionClickListener1 = mOninteractionClickListener;
+    }
+
+    public interface OninteractionClickListener{
+        void onshare(Recipe recipe);
+        void onlove(Recipe recipe);
+        void onDislove(Recipe recipe);
+        void onfollow(Recipe recipe);
     }
 
 }

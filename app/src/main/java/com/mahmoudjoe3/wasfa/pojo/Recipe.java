@@ -28,7 +28,7 @@ public class Recipe {
     }
 
     public Recipe(int id, int userId, String userName, String userProfileThumbnail, String title,
-                  String description, long postTime, String prepareTime, List<String> categories,
+                  String description, String nationality, long postTime, String prepareTime, List<String> categories,
                   List<String> ingredients, List<String> steps, int numberOfLike,
                   int numberOfShare, List<String> imgUrls) {
         this.id=id;
@@ -37,6 +37,7 @@ public class Recipe {
         this.userProfileThumbnail = userProfileThumbnail;
         this.title = title;
         this.description = description;
+        this.nationality = nationality;
         this.postTime = postTime;
         this.prepareTime = prepareTime;
         this.categories = categories;

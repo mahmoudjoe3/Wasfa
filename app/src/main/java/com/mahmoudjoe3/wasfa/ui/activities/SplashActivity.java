@@ -1,14 +1,13 @@
-package com.mahmoudjoe3.wasfa.ui.main;
+package com.mahmoudjoe3.wasfa.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.mahmoudjoe3.wasfa.R;
-import com.mahmoudjoe3.wasfa.ui.main.login.LoginActivity;
+import com.mahmoudjoe3.wasfa.ui.activities.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

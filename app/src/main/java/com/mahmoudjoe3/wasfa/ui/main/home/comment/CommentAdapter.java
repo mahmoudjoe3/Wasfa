@@ -51,25 +51,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.VH> {
 
         vh.comment_text.setText(comment.getCommentText());
         vh.comment_from_time.setText(MyLogic.getTimeFrom(comment.getCreatedTime()));
-        vh.comment_loves_count.setText(""+comment.getLoveCount());
-        vh.comment_love_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(vh.comment_love_layout.getTag().equals("of")){
-                    vh.comment_love_btn.setImageResource(R.drawable.ic_love);
-                    vh.comment_loves_count.setTextColor(vh.itemView.getContext().getColor(R.color.colorTap));
-                    vh.comment_love_layout.setTag("on");
-                    vh.comment_loves_count.setText((Integer.parseInt(vh.comment_loves_count.getText().toString())+1)+"");
-                    mOnLoveCommentListener.onLove(comment);
-                }else {
-                    vh.comment_love_btn.setImageResource(R.drawable.ic_love_invers);
-                    vh.comment_loves_count.setTextColor(vh.itemView.getContext().getColor(R.color.transparentDark));
-                    vh.comment_love_layout.setTag("of");
-                    vh.comment_loves_count.setText((Integer.parseInt(vh.comment_loves_count.getText().toString())-1)+"");
-                    mOnLoveCommentListener.onDisLove(comment);
-                }
-            }
-        });
+
         vh.comment_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,9 +72,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.VH> {
     }
 
     static class VH extends RecyclerView.ViewHolder{
-        TextView comment_username, comment_from_time, comment_creator_tag, comment_text, comment_loves_count;
-        ImageView comment_profile_img, comment_love_btn;
-        LinearLayout comment_love_layout;
+        TextView comment_username, comment_from_time, comment_creator_tag, comment_text;
+        ImageView comment_profile_img;
         public VH(@NonNull View itemView) {
             super(itemView);
 
@@ -101,18 +82,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.VH> {
             comment_from_time=itemView.findViewById(R.id.comment_from_time);
             comment_creator_tag=itemView.findViewById(R.id.comment_creator_tag);
             comment_text=itemView.findViewById(R.id.comment_text);
-            comment_loves_count=itemView.findViewById(R.id.comment_loves_count);
-            comment_love_btn=itemView.findViewById(R.id.comment_love_btn);
-            comment_love_layout=itemView.findViewById(R.id.comment_love_layout);
+
         }
-    }
-    OnLoveCommentListener mOnLoveCommentListener;
-    public void setmOnLoveListenner(OnLoveCommentListener mOnLoveCommentListener) {
-        this.mOnLoveCommentListener = mOnLoveCommentListener;
-    }
-    public interface OnLoveCommentListener{
-        void onLove(Comment comment);
-        void onDisLove(Comment comment);
     }
 
     OnOpenProfileListenner mOnOpenProfileListenner;

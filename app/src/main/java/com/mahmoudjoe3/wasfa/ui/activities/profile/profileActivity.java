@@ -8,12 +8,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
+import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
@@ -31,6 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class profileActivity extends AppCompatActivity {
 
+    public static final String USER_INTENT = "profileActivity.USER_INTENT";
 
     @BindView(R.id.user_name)
     TextView user_name;
@@ -62,39 +63,67 @@ public class profileActivity extends AppCompatActivity {
     profilePostItemAdapter adapter;
     User mUser;
     ProfileViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel =new ViewModelProvider(this).get(ProfileViewModel.class);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
-        viewModel.getUserLiveData().observe(this, new Observer<User>() {
-                    @Override
-                    public void onChanged(User user) {
-                        mUser=user;
-                        Glide.with(user_Image.getContext()).load(user.getImageUrl())
-                                .into(user_Image);
-                        user_name.setText("@"+user.getName());
-                        user_name_toolbar.setText(user.getName());
-                        //userFacebook.setTag(user.getLinks().get());
-                    }
-                });
+        mUser = (User) getIntent().getSerializableExtra(USER_INTENT);
+        Glide.with(user_Image.getContext()).load(mUser.getImageUrl())
+                .into(user_Image);
+        user_name.setText("@" + mUser.getName());
+        user_name_toolbar.setText(mUser.getName());
+        //userFacebook.setTag(user.getLinks().get());
 
 
-        adapter=new profilePostItemAdapter(prevalent.PROFILE_ITEM);
-        postRecycle.setAdapter(adapter);
-        postRecycle.setHasFixedSize(true);
-        viewModel.getRecipeMutableLiveData().observe(this, new Observer<List<Recipe>>() {
+        MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
             @Override
-            public void onChanged(List<Recipe> recipes) {
-                adapter.setRecipeList(recipes);
+            public void onshare(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
+
+            }
+
+            @Override
+            public void onlove(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
+
+            }
+
+            @Override
+            public void onDislove(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
+
+            }
+
+            @Override
+            public void onfollow(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+
+            }
+        });
+        MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {
+            @Override
+            public void onClick(int userid) {
+
+            }
+
+            @Override
+            public void onAddComment(Comment comment) {
+                viewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
             }
         });
 
+
+        adapter = new profilePostItemAdapter(prevalent.PROFILE_ITEM);
+        postRecycle.setAdapter(adapter);
+        postRecycle.setHasFixedSize(true);
+
+        adapter.setRecipeList(mUser.getRecipes());
         adapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
             @Override
             public void onClick(Recipe recipe) {
-                MyLogic.init_post_details_sheet_dialog(profileActivity.this,recipe,mUser);
+                MyLogic.init_post_details_sheet_dialog(profileActivity.this, recipe, mUser);
             }
         });
     }
@@ -105,7 +134,7 @@ public class profileActivity extends AppCompatActivity {
             case R.id.user_follow:
                 userFollow.setVisibility(View.GONE);
                 userChecked.setVisibility(View.VISIBLE);
-                viewModel.insertInteraction(new Interaction(mUser.getName(),mUser.getImageUrl(), "Follow"));
+                viewModel.insertInteraction(new Interaction(mUser.getName(), mUser.getImageUrl(), "Follow"));
 
                 break;
             case R.id.user_checked:
@@ -122,7 +151,7 @@ public class profileActivity extends AppCompatActivity {
             case R.id.user_facebook:
                 break;
             case R.id.user_image:
-                showImage(List.of("https://i.pinimg.com/1200x/11/c7/35/11c7359cc1bf8d43011a58c0b9fe1ef2.jpg"), 0);
+                showImage(List.of(mUser.getImageUrl()), 0);
                 break;
         }
     }

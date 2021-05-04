@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.main.registration;
+package com.mahmoudjoe3.wasfa.ui.activities.registration;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.User;
-import com.mahmoudjoe3.wasfa.ui.main.login.LoginActivity;
+import com.mahmoudjoe3.wasfa.ui.activities.login.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

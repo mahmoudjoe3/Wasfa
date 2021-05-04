@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.main.login;
+package com.mahmoudjoe3.wasfa.ui.activities.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.ui.main.MainActivity;
-import com.mahmoudjoe3.wasfa.ui.main.registration.RegistrationActivity;
+import com.mahmoudjoe3.wasfa.ui.activities.registration.RegistrationActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.register_textView)
     public void onRegisterTextViewClicked() {
         startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
-        finish();
+        //finish();
     }
 
     @OnClick(R.id.google_sign)

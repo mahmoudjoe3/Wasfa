@@ -1,5 +1,6 @@
 package com.mahmoudjoe3.wasfa.ui.main.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,14 +12,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
+import com.mahmoudjoe3.wasfa.pojo.Comment;
+import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,12 +70,64 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
         init();
         initPeopleRecycler();
         initRecipeRecycler();
+
+        MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
+            @Override
+            public void onshare(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
+
+            }
+
+            @Override
+            public void onlove(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
+
+            }
+
+            @Override
+            public void onDislove(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
+
+            }
+
+            @Override
+            public void onfollow(Recipe recipe) {
+                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+
+            }
+        });
+        MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {
+            @Override
+            public void onClick(int userid) {
+                viewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+                    @Override
+                    public void onChanged(List<User> users) {
+                        for (User user : users){
+                            if(userid==user.getId()){
+                                Intent intent=new Intent(getActivity(), profileActivity.class );
+                                intent.putExtra(profileActivity.USER_INTENT,user);
+                                startActivity(intent);
+                                break;
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onAddComment(Comment comment) {
+                viewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
+            }
+        });
+
 
         recipeSearchRecyclerAdapter.setOnItemClickListener(new RecipeSearchRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -83,6 +140,19 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(User user) {
                 //todo open profile
+                viewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+                    @Override
+                    public void onChanged(List<User> users) {
+                        for (User user1 : users){
+                            if(user.getId()==user1.getId()){
+                                Intent intent=new Intent(getActivity(), profileActivity.class );
+                                intent.putExtra(profileActivity.USER_INTENT,user);
+                                startActivity(intent);
+                                break;
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -169,15 +239,15 @@ public class SearchFragment extends Fragment {
     private void initPeopleRecycler() {
         peopleRecyclerView = view.findViewById(R.id.people_recyclerView);
         userList = new ArrayList<>();
-        userList.add(new User(1, "Mahmoud Mamdouh", "", getString(R.string.bio_test), ""));
-        userList.add(new User(1, "Mahmoud Mamdouh", "", getString(R.string.bio_test), ""));
-        userList.add(new User(1, "Mahmoud Mamdouh", "", "bio", ""));
-        userList.add(new User(1, "Mahmoud Mamdouh", "", "bio", ""));
-        userList.add(new User(1, "Youssef Shafik", "", getString(R.string.bio_test), ""));
-        userList.add(new User(1, "Youssef Shafik", "", "bio", ""));
-        userList.add(new User(1, "Youssef Shafik", "", "bio", ""));
-        userList.add(new User(1, "Youssef Shafik", "", getString(R.string.bio_test), ""));
-        userList.add(new User(1, "Youssef Shafik", "", "bio", ""));
+        userList.add(new User(1, "Mahmoud Mamdouh","123", "", getString(R.string.bio_test), ""));
+        userList.add(new User(1, "Mahmoud Mamdouh","123", "", getString(R.string.bio_test), ""));
+        userList.add(new User(1, "Mahmoud Mamdouh","123", "", "bio", ""));
+        userList.add(new User(1, "Mahmoud Mamdouh","123", "", "bio", ""));
+        userList.add(new User(1, "Youssef Shafik","123", "", getString(R.string.bio_test), ""));
+        userList.add(new User(1, "Youssef Shafik","123", "", "bio", ""));
+        userList.add(new User(1, "Youssef Shafik","123", "", "bio", ""));
+        userList.add(new User(1, "Youssef Shafik","123", "", getString(R.string.bio_test), ""));
+        userList.add(new User(1, "Youssef Shafik","123", "", "bio", ""));
         peopleSearchRecyclerAdapter = new PeopleSearchRecyclerAdapter();
         peopleRecyclerView.setAdapter(peopleSearchRecyclerAdapter);
     }
@@ -186,7 +256,7 @@ public class SearchFragment extends Fragment {
         recipesRecyclerView = view.findViewById(R.id.recipes_recyclerView);
         recipeList = new ArrayList<>();
         recipeList.add(new Recipe(1, 2, "Mahmoud Mamdouh Abdullah", "",
-                "", getString(R.string.tst), 1000000, "24min",
+                "", getString(R.string.tst),"eg", 1000000, "24min",
                 new ArrayList<String>(Arrays.asList("Healthy")), new ArrayList<String>(),
                 new ArrayList<String>(), 120, 50, new ArrayList<String>(Arrays.asList("a", "b"))));
         recipeSearchRecyclerAdapter = new RecipeSearchRecyclerAdapter();

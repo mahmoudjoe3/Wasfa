@@ -67,12 +67,14 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             @Override
             public void onClick(View v) {
                 //open prifile
+                mOnProfileClickListener.onClick(recipe.getUserId());
             }
         });
         vh.post_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //open prifile
+                mOnProfileClickListener.onClick(recipe.getUserId());
             }
         });
         vh.post_user_follow_btn.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +91,6 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
 
     private void initPostCaption(VH vh, Recipe recipe) {
-        vh.post_title.setText(recipe.getTitle());
         vh.post_description.setText(recipe.getDescription());
         vh.prepare_time.setText(recipe.getPrepareTime());
         initCategoryList(vh,recipe.getCategories());
@@ -353,7 +354,6 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             post_username=itemView.findViewById(R.id.post_username);
             post_from_time=itemView.findViewById(R.id.post_from_time);
 
-            post_title=itemView.findViewById(R.id.post_title);
             //nationality=itemView.findViewById(R.id.post_nationality);
             post_description=itemView.findViewById(R.id.post_description);
 
@@ -416,5 +416,15 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         void onfollow(Recipe recipe);
     }
 
+
+    OnProfileClickListener mOnProfileClickListener;
+
+    public void setOnProfileClickListener(OnProfileClickListener mOnProfileClickListener) {
+        this.mOnProfileClickListener = mOnProfileClickListener;
+    }
+
+    public interface OnProfileClickListener{
+        void onClick(int userid);
+    }
 
 }

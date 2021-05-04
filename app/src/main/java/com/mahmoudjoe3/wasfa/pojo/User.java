@@ -1,20 +1,22 @@
 package com.mahmoudjoe3.wasfa.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private int id;
     private long createdDate;
     private String name, email, password,phone, imageUrl, bio, nationality, gender;
     private List<String> links;
-    private List<Integer> following;
+    private List<Following> followings;
+    private List<Recipe> recipes;
     private int follower;
 
     public User() {
     }
 
-    public User(int id, String name, String imageUrl, String bio, String nationality) {
+    public User(int id, String name, String password, String imageUrl, String bio, String nationality) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -22,7 +24,8 @@ public class User {
         this.nationality = nationality;
         createdDate=System.currentTimeMillis();
         links=new ArrayList<>();
-        following=new ArrayList<>();
+        followings=new ArrayList<>();
+        recipes=new ArrayList<>();
         follower=0;
     }
 
@@ -106,12 +109,12 @@ public class User {
         this.links = links;
     }
 
-    public List<Integer> getFollowing() {
-        return following;
+    public List<Following> getFollowing() {
+        return followings;
     }
 
     public void setFollowing(List<Integer> following) {
-        this.following = following;
+        this.followings = followings;
     }
 
     public int getFollower() {
@@ -128,5 +131,21 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public void setFollowings(List<Following> followings) {
+        this.followings = followings;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
+
+    public List<Following> getFollowings() {
+        return followings;
+    }
+
+    public List<Recipe> getRecipes() {
+        return recipes;
     }
 }

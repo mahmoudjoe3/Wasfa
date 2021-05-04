@@ -16,84 +16,287 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileViewModel extends ViewModel {
-    private MutableLiveData<List<Recipe>> recipeMutableLiveData=new MutableLiveData<>();
 
+    private MutableLiveData<List<Recipe>> recipeMutableLiveData=new MutableLiveData<>();
     public MutableLiveData<List<Recipe>> getRecipeMutableLiveData() {
         List<Recipe> recipes=new ArrayList<>();
 
-        Recipe recipe = new Recipe(1,1,"Mahmoud Youseef",null,"this is title about the recipe that i make ",
-                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ",
-                System.currentTimeMillis()-100000,"40 Min",List.of("meets","vegiterian","fish","well-cocked","small meals"),
-                List.of("meets","fat","salad","parsley","Spices Kofta","Onions","garlic","latency","vinegar"),
-                List.of("In the bottom of large mixing bowl, add the shawarma spices. Add the olive oil, " +
+        Recipe recipe = new Recipe(1,1,"MahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                ,"Apple Pie",
+                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ","french",
+                System.currentTimeMillis()-100000,"40 Min",List.of("dessert","vegiterian","well-cocked"),
+                List.of("apples","butter","flour","eggs","Soda","vinegar","ice cream","cinnamon"),
+                List.of("In the bottom of large mixing bowl, add the flour . Add the  butter, " +
                                 "vinegar, and zest and juice of one lemon. Using a spoon, mix to combine.",
-                        "Add the olive oil, vinegar. Using a spoon, mix to combine.","add the shawarma spices.","add salad"),
+                        "Add the olive oil, vinegar. Using a spoon, mix to combine.","add the apples","add ice cteam"),
                 203,3,
-                List.of("http://wallpoper.com/images/00/36/49/53/food-cookies_00364953.jpg")
+                List.of("https://adminassets.devops.arabiaweather.com/sites/default/files/field/image/arabiaweatehr2324.jpg",
+                        "https://www.simplyrecipes.com/recipes/old_fashioned_apple_pie/"
+
+                )
         );
         recipe.setComments(
                 List.of(
-                        new Comment(1,"Jakwatre","https://i.pinimg.com/1200x/11/c7/35/11c7359cc1bf8d43011a58c0b9fe1ef2.jpg"
-                                ,false,"this recipe is very good")
+                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"this recipe is very good")
                         ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,true,"thanks bro")
-                        ,new Comment(1,"mamdoh2","http://fuckingyoung.es/wp-content/uploads/2015/02/Billy-Reid-FW15-Backstage_fy1.jpg"
-                                ,false,"bad smill")
+                                ,"thanks bro")
+                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"bad smell")
                         ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,true,"Ok")
+                                ,"Ok")
                 )
         );
         recipes.add(recipe);
 
-        recipes.add(new Recipe(2,1,"Mahmoud Youseef",null,"this is title about the recipe that i make ",
-                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ",
-                System.currentTimeMillis()-100000,"40 Min",List.of("meets","vegiterian","fish","well-cocked","small meals"),
-                List.of("meets","fat","salad","parsley","Spices Kofta","Onions","garlic","latency","vinegar"),
-                List.of("In the bottom of large mixing bowl, add the shawarma spices. Add the olive oil, " +
-                        "vinegar, and zest and juice of one lemon. Using a spoon, mix to combine.",
-                        "Add the olive oil, vinegar. Using a spoon, mix to combine.","add the shawarma spices.","add salad"),
-                203,12,
-                List.of("https://weneedfun.com/wp-content/uploads/2015/10/Beautiful-Food-Photos-25.jpg")
-                ));
-        recipes.add(new Recipe(3,1,"Mahmoud Youseef",null,"this is title about the recipe that i make ",
-                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ",
+        recipe=new Recipe(2,2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1","this is title about the recipe that i make ",
+                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ","syria",
                 System.currentTimeMillis()-100000,"40 Min",List.of("meets","vegiterian","fish","well-cocked","small meals"),
                 List.of("meets","fat","salad","parsley","Spices Kofta","Onions","garlic","latency","vinegar"),
                 List.of("In the bottom of large mixing bowl, add the shawarma spices. Add the olive oil, " +
                                 "vinegar, and zest and juice of one lemon. Using a spoon, mix to combine.",
                         "Add the olive oil, vinegar. Using a spoon, mix to combine.","add the shawarma spices.","add salad"),
                 203,12,
-                List.of("https://www.englishclub.com/images/vocabulary/food/italian/italian-food-1024.jpg")
-        ));
-        recipes.add(new Recipe(4,1,"Mahmoud Youseef",null,"this is title about the recipe that i make ",
-                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ",
-                System.currentTimeMillis()-100000,"40 Min",List.of("meets","vegiterian","fish","well-cocked","small meals"),
-                List.of("meets","fat","salad","parsley","Spices Kofta","Onions","garlic","latency","vinegar"),
-                List.of("In the bottom of large mixing bowl, add the shawarma spices. Add the olive oil, " +
-                                "vinegar, and zest and juice of one lemon. Using a spoon, mix to combine.",
-                        "Add the olive oil, vinegar. Using a spoon, mix to combine.","add the shawarma spices.","add salad"),
-                203,12,
-                List.of("https://weneedfun.com/wp-content/uploads/2015/10/Beautiful-Food-Photos-2.jpg",
-                        "https://weneedfun.com/wp-content/uploads/2015/10/Beautiful-Food-Photos-9.jpg")
-        ));
-        recipe=new Recipe(5,1,"Mahmoud Youseef",null,"this is title about the recipe that i make ",
-                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ",
-                System.currentTimeMillis()-100000,"40 Min",List.of("meets","vegiterian","fish","well-cocked","small meals"),
-                List.of("meets","fat","salad","parsley","Spices Kofta","Onions","garlic","latency","vinegar"),
-                List.of("In the bottom of large mixing bowl, add the shawarma spices. Add the olive oil, " +
-                                "vinegar, and zest and juice of one lemon. Using a spoon, mix to combine.",
-                        "Add the olive oil, vinegar. Using a spoon, mix to combine.","add the shawarma spices.","add salad"),
-                3,0,
-                List.of("https://weneedfun.com/wp-content/uploads/2015/10/Beautiful-Food-Photos-2.jpg")
+                List.of("https://www.englishclub.com/images/vocabulary/food/italian/italian-food-1024.jpg",
+                        "https://weneedfun.com/wp-content/uploads/2015/10/Beautiful-Food-Photos-9.jpg",
+                        "https://weneedfun.com/wp-content/uploads/2015/10/Beautiful-Food-Photos-2.jpg",
+                        "https://weneedfun.com/wp-content/uploads/2015/10/Beautiful-Food-Photos-25.jpg")
         );
+        recipe.setComments(
+                List.of(
+                        new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"the taste is amazing")
+                        ,new Comment(2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"i'm glad you like it")
+
+                        ,new Comment(3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"bad smell")
+                        ,new Comment(4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"good job")
+                )
+        );
+        recipes.add(recipe);
+        recipe=new Recipe(3,3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg","Pizza Recipe ",
+                "this recipe does not take time ","italian",
+                System.currentTimeMillis()-100000,"30 Min",List.of("meets","vegiterian","well-cocked","small meals"),
+                List.of("meets","fat","machroom","cheese","Spices ","Onions","garlic","sauce","vinegar","flour","oliv oil"),
+                List.of("In the bottom of large mixing bowl, add the spices and the floor. Add the olive oil, " +
+                        "garlic, and zest and juice of one lemon. Using a spoon, mix to combine.","add sauce"),203,12,
+                List.of("https://www.glutenfreepalate.com/wp-content/uploads/2018/08/Gluten-Free-Pizza-3.2-480x360.jpg",
+                        "https://www.glutenfreepalate.com/wp-content/uploads/2018/08/Gluten-Free-Pizza-1.2.jpg",
+                        "https://i.pinimg.com/originals/dc/e2/97/dce297f1f308d8efc128de4925e4597e.jpg"
+                )
+        );
+        recipe.setComments(
+                List.of(
+                        new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"the taste is amazing")
+                        ,new Comment(2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"great pizza")
+
+                        ,new Comment(3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"thanks guys")
+                        ,new Comment(4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"good job")
+                )
+        );
+
+        recipes.add(recipe);
+
+
+        recipes.add(recipe);
+        recipe=new Recipe(4,4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU","Pizza Recipe ",
+                "grap leaves ","turkish",
+                System.currentTimeMillis()-100000,"50 Min",List.of("meats","vegiterian","well-cocked","small meals","rice"),
+                List.of("meats","fat","parsley","cheese","Spices ","Onions","garlic","grap leaves","lemon juice","olive oil"),
+                List.of("mix the meat , rice, parsley and onions, add the spices and the mix. fill the grap leaves with the mix and roll them " +
+                                "garlic, and zest and juice of one lemon. Using a spoon, mix to combine."
+                        ,"add tomatosauce on the top"),
+                203,12,
+                List.of("https://feelgoodfoodie.net/wp-content/uploads/2017/06/Lebanese-Stuffed-Grape-Leaves-30.jpg",
+                        "https://i.pinimg.com/originals/6e/20/c3/6e20c3ec14a75c15f5d1e511f112496c.jpg",
+                        "https://i.pinimg.com/originals/dc/49/9e/dc499e481d2def2dc2fc72103b8d4c63.jpg"
+                )
+        );
+        recipe.setComments(
+                List.of(
+                        new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"the taste is amazing great job")
+                        ,new Comment(2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"i loved it")
+
+                        ,new Comment(3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"i was happy with the results")
+                        ,new Comment(4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"i'm glad you like it guys")
+                )
+        );
+
+        recipes.add(recipe);
+
+        recipe=new Recipe(5,5,"MariamJemy","https://harrypotterfanfiction.com/var/covers/340413.jpg?1595391755","ceaser salad",
+                "grap leaves ","turkish",
+                System.currentTimeMillis()-100000,"50 Min",List.of("chicken","vegiterian","well-cocked","small meals","rice"),
+                List.of("mayo","chicken","parmisain","Spices ","garlic","olive oil"),
+                List.of("mix the chicken , mayo, spices " ),
+                203,12,
+                List.of("https://natashaskitchen.com/wp-content/uploads/2019/01/Caesar-Salad-Recipe-3.jpg",
+                        "https://feelgoodfoodie.net/wp-content/uploads/2020/04/Caesar-Salad-6.jpg",
+                        "https://www.jessicagavin.com/wp-content/uploads/2019/07/caesar-salad-9-600x900.jpg"
+                )
+        );
+        recipe.setComments(
+                List.of(
+                        new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"the taste is amazing great job")
+                        ,new Comment(2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"i loved it")
+
+                        ,new Comment(3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"i was happy with the results")
+                        ,new Comment(4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"greate job darling")
+                )
+        );
+
+        recipes.add(recipe);
+
+        recipe = new Recipe(6,1,"MahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                ,"Roasted chicken",
+                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ","England",
+                System.currentTimeMillis()-100000,"40 Min",List.of("chicken","well-cocked"),
+                List.of("chicken","butter","garlic","basil","Spices","lemon","oil"),
+                List.of(" mixing all the ingredients with the chicken then put it in oven "
+                ),
+                203,3,
+                List.of("https://static.toiimg.com/thumb/53007558.cms?width=1200&height=900",
+                        "https://keviniscooking.com/wp-content/uploads/2019/04/Tropical-Roasted-Chicken-square.jpg"
+
+                )
+        );
+        recipe.setComments(
+                List.of(
+                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"this recipe is very good")
+                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"thanks bro")
+                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"bad smell")
+                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"Ok")
+                )
+        );
+
+        recipes.add(recipe);
+        recipe = new Recipe(7,1,"MahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                ,"Lazagnia",
+                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ","french",
+                System.currentTimeMillis()-100000,"40 Min",List.of("chicken","well-cocked"),
+                List.of("chicken","carrots","mashroom","milk","Onions","flour","cheese","butter","spices"),
+                List.of("large mixing bowl, add the flour . Add the  butter, " +
+                        "onions, and zest and juice of one lemon. Using a spoon, mix to combine."
+                ),
+                203,3,
+                List.of("https://demos.ithemelandco.com/woocommerce-dynamic-prices-by-user-role/wp-content/uploads/sites/70/2020/02/Lazania-600x425.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRC7rxGuTUsfYIvoQ7b-1yM5Jbfbb84EXrppA&usqp=CAU",
+                        "https://d3fch0cwivr6nf.cloudfront.net/system/uploads/medium/data/12688/recipe_main_lazania-site.jpg"
+
+                )
+        );
+        recipe.setComments(
+                List.of(
+                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"this recipe is very good")
+                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"thanks bro")
+                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"bad smell")
+                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"Ok")
+                )
+        );
+
+        recipes.add(recipe);
+        recipe = new Recipe(8,1,"MahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                ,"ice cream",
+                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ","italian",
+                System.currentTimeMillis()-100000,"40 Min",List.of("dessert","vegiterian","fruits","frozen"),
+                List.of("milk","fruits","chocolate"),
+                List.of(" whip the milk with the fruits and put chocolate on top"
+                ),
+                203,3,
+                List.of("https://cleobuttera.com/wp-content/uploads/2019/06/kk-ice-cream-full-mood-720x405.jpg",
+                        "https://media.blogto.com/articles/20191217-swensons.jpg?w=1200&cmd=resize_then_crop&height=630&quality=70",
+                        "https://c8.alamy.com/comp/JGH5P8/icecream-swensons-icecream-parlor-vientiane-laos-JGH5P8.jpg"
+
+                )
+        );
+        recipe.setComments(
+                List.of(
+                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"this recipe is very good")
+                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"thanks bro")
+                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"bad smell")
+                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"Ok")
+                )
+        );
+
+        recipes.add(recipe);
+        recipe = new Recipe(9,1,"MahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                ,"Pasta",
+                "this recipe is is easy and we can make it at home as we can make it with our family and friends  ","italian",
+                System.currentTimeMillis()-100000,"40 Min",List.of("pastries","vegiterian","well-cocked"),
+                List.of("chicken","garlic","cheese","tomatosauce","olive oil"),
+                List.of(" put the tomatosauce on the oven","add olive oil and garlic ","wait untill it boils then add the pasta","add cheese on the top"),
+                203,3,
+                List.of("https://www.femalefoodie.com/wp-content/uploads/2020/07/mama-ds-pink-sauce-pasta-2.jpg",
+                        "https://everylittlecrumb.com/wp-content/uploads/pinksaucepasta-scaled.jpg"
+
+
+                )
+        );
+        recipe.setComments(
+                List.of(
+                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"this recipe is very good")
+                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"thanks bro")
+                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"bad smell")
+                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"Ok")
+                )
+        );
+
+        recipes.add(recipe);
+
+
+
+
+
+        recipes.add(new Recipe(10,1,"Mahmoud Youseef","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4","this is title about the recipe that i make ",
+                "chocolate cake ","English",
+                System.currentTimeMillis()-100000,"40 Min",List.of("dessert","vegiterian","well-backed","pastries"),
+                List.of("flour","butter","eggs","vanila","chocolate","milk"),
+                List.of("mix all the ingredients and put it in the oven","put fruits on the top"),
+                203,12,
+                List.of("https://i0.wp.com/www.society19.com/wp-content/uploads/2018/06/chocolate-cake-houston.jpg?fit=1000%2C750&ssl=1"
+                        ,"https://cdn.sallysbakingaddiction.com/wp-content/uploads/2013/04/triple-chocolate-cake-4.jpg",
+                        "https://cdn.sallysbakingaddiction.com/wp-content/uploads/2013/04/triple-chocolate-cake-4.jpg")
+        ));
+
         recipes.add(recipe);
         recipeMutableLiveData.setValue(recipes);
         return recipeMutableLiveData;
     }
 
+
     private MutableLiveData<User> userLiveData=new MutableLiveData<>();
     public LiveData<User> getUserLiveData() {
-        User user=new User(1,"MahmoudJoe3"
+        User user=new User(1,"MahmoudJoe3","123"
                 ,"https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
                 , "your are the best of yourself", "eg");
         userLiveData.setValue(user);
