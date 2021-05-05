@@ -117,22 +117,7 @@ public class AccountFragment extends Fragment {
             }
         });
         MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {
-            @Override
-            public void onClick(int userid) {
-                viewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
-                    @Override
-                    public void onChanged(List<User> users) {
-                        for (User user : users){
-                            if(userid==user.getId()){
-                                Intent intent=new Intent(getActivity(), profileActivity.class );
-                                intent.putExtra(profileActivity.USER_INTENT,user);
-                                startActivity(intent);
-                                break;
-                            }
-                        }
-                    }
-                });
-            }
+
 
             @Override
             public void onAddComment(Comment comment) {

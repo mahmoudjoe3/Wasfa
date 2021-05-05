@@ -39,13 +39,13 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                        new Comment(3,2,"Mahmoud mamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
                                 ,"this recipe is very good")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                        ,new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
                                 ,"thanks bro")
-                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                        ,new Comment(2,3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
                                 ,"bad smell")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                        ,new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
                                 ,"Ok")
                 )
         );
@@ -66,14 +66,14 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                        new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
                                 ,"the taste is amazing")
-                        ,new Comment(2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                        ,new Comment(2,2,"Mahmoud mamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
                                 ,"i'm glad you like it")
 
-                        ,new Comment(3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                        ,new Comment(3,3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
                                 ,"bad smell")
-                        ,new Comment(4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                        ,new Comment(4,4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
                                 ,"good job")
                 )
         );
@@ -91,14 +91,14 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                        new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
                                 ,"the taste is amazing")
-                        ,new Comment(2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                        ,new Comment(2,2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
                                 ,"great pizza")
 
-                        ,new Comment(3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                        ,new Comment(3,1,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
                                 ,"thanks guys")
-                        ,new Comment(4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                        ,new Comment(4,5,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
                                 ,"good job")
                 )
         );
@@ -122,14 +122,14 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                        new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
                                 ,"the taste is amazing great job")
-                        ,new Comment(2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                        ,new Comment(2,2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
                                 ,"i loved it")
 
-                        ,new Comment(3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                        ,new Comment(3,2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
                                 ,"i was happy with the results")
-                        ,new Comment(4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                        ,new Comment(4,2,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
                                 ,"i'm glad you like it guys")
                 )
         );
@@ -149,15 +149,15 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                        new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
                                 ,"the taste is amazing great job")
-                        ,new Comment(2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                        ,new Comment(2,2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
                                 ,"i loved it")
 
-                        ,new Comment(3,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                        ,new Comment(3,2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
                                 ,"i was happy with the results")
-                        ,new Comment(4,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
-                                ,"greate job darling")
+                        ,new Comment(4,2,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"i'm glad you like it guys")
                 )
         );
 
@@ -178,14 +178,15 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
-                                ,"this recipe is very good")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,"thanks bro")
-                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
-                                ,"bad smell")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,"Ok")
+                        new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"the taste is amazing great job")
+                        ,new Comment(2,2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"i loved it")
+
+                        ,new Comment(3,2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"i was happy with the results")
+                        ,new Comment(4,2,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"i'm glad you like it guys")
                 )
         );
 
@@ -207,14 +208,15 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
-                                ,"this recipe is very good")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,"thanks bro")
-                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
-                                ,"bad smell")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,"Ok")
+                        new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"the taste is amazing great job")
+                        ,new Comment(2,2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"i loved it")
+
+                        ,new Comment(3,2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"i was happy with the results")
+                        ,new Comment(4,2,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"i'm glad you like it guys")
                 )
         );
 
@@ -235,14 +237,15 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
-                                ,"this recipe is very good")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,"thanks bro")
-                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
-                                ,"bad smell")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,"Ok")
+                        new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"the taste is amazing great job")
+                        ,new Comment(2,2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"i loved it")
+
+                        ,new Comment(3,2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"i was happy with the results")
+                        ,new Comment(4,2,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"i'm glad you like it guys")
                 )
         );
 
@@ -262,14 +265,15 @@ public class HomeViewModel extends AndroidViewModel {
         );
         recipe.setComments(
                 List.of(
-                        new Comment(3,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
-                                ,"this recipe is very good")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,"thanks bro")
-                        ,new Comment(2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
-                                ,"bad smell")
-                        ,new Comment(1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                                ,"Ok")
+                        new Comment(1,1,"mahmoudJoe3","https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                                ,"the taste is amazing great job")
+                        ,new Comment(2,2,"Mahmoudmamdouh","https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
+                                ,"i loved it")
+
+                        ,new Comment(3,2,"MahmoudEmad","https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
+                                ,"i was happy with the results")
+                        ,new Comment(4,2,"NadaAhmed","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
+                                ,"i'm glad you like it guys")
                 )
         );
 

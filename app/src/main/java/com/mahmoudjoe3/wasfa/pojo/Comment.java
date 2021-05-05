@@ -11,8 +11,9 @@ public class Comment {
     private String commentText;
     private int loveCount;
 
-    public Comment(int recipeId,String username, String userImageUrl, String commentText) {
+    public Comment(int recipeId,int userId,String username, String userImageUrl, String commentText) {
         this.recipeId=recipeId;
+        this.userId=userId;
         this.username = username;
         this.userImageUrl = userImageUrl;
         this.creator = false;

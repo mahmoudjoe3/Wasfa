@@ -2,6 +2,7 @@ package com.mahmoudjoe3.wasfa.logic;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -35,6 +36,7 @@ import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
 import com.mahmoudjoe3.wasfa.ui.main.home.RecipePostAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.home.comment.CommentAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.interaction.InteractionsRecyclerAdapter;
@@ -113,7 +115,7 @@ public class MyLogic {
         View sheetView = LayoutInflater.from(context).inflate(R.layout.post_details_layout,
                 (LinearLayout) context.findViewById(R.id.post_details_card));
 
-        initUserCaption(sheetView, recipe);
+        initUserCaption(context,sheetView, recipe);
         initPostCaption(sheetView, recipe,context,user);
 
         LinearLayout layout = sheetView.findViewById(R.id.post_details_images_frame);
@@ -132,7 +134,7 @@ public class MyLogic {
         sheetDialog.show();
     }
 
-    private static void initUserCaption(View sheetView, Recipe recipe) {
+    private static void initUserCaption(Activity context, View sheetView, Recipe recipe) {
         //user captoin
         LottieAnimationView lotti_post_user_follow_btn;
         ImageView post_profile_img, post_user_nationality;
@@ -149,25 +151,26 @@ public class MyLogic {
         //user object
         post_from_time.setText(getTimeFrom(recipe.getPostTime()));
         post_username.setText(recipe.getUserName());
-//        Picasso.get().load(recipe.getUserProfileThumbnail())
-//                .into(vh.post_profile_img);
+        Picasso.get().load(recipe.getUserProfileThumbnail())
+                .into(post_profile_img);
 
         post_username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //open prifile
-                if(mOnProfileClickListener1!=null) {
-                    mOnProfileClickListener1.onClick(recipe.getUserId());
-                }
+                Intent intent=new Intent(context, profileActivity.class );
+                intent.putExtra(profileActivity.USER_INTENT,recipe.getUserId());
+                context.startActivity(intent);
+
             }
         });
         post_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //open prifile
-                if(mOnProfileClickListener1!=null) {
-                    mOnProfileClickListener1.onClick(recipe.getUserId());
-                }
+                Intent intent=new Intent(context, profileActivity.class );
+                intent.putExtra(profileActivity.USER_INTENT,recipe.getUserId());
+                context.startActivity(intent);
             }
         });
         post_user_follow_btn.setOnClickListener(new View.OnClickListener() {
@@ -391,13 +394,13 @@ public class MyLogic {
         commentAdapter.setCommentList(recipe.getComments());
 
 
-
         commentAdapter.setOnOpenProfileListenner(new CommentAdapter.OnOpenProfileListenner() {
             @Override
             public void onClick(int userid) {
                 //todo open user profile whose comment
-                mOnProfileClickListener1.onClick(userid);
-
+                Intent intent=new Intent(activity, profileActivity.class );
+                intent.putExtra(profileActivity.USER_INTENT,userid);
+                activity.startActivity(intent);
             }
         });
 
@@ -438,7 +441,7 @@ public class MyLogic {
                     public void onClick(View v) {
                         //todo send comment to database
                         boolean isCreator = (user.getId() == recipe.getUserId());
-                        Comment comment=new Comment(recipe.getId(), user.getName(), user.getImageUrl(), commentTxt.getText().toString());
+                        Comment comment=new Comment(recipe.getId(),user.getId(), user.getName(), user.getImageUrl(), commentTxt.getText().toString());
                         comment.setCreator(isCreator);
                         if(mOnProfileClickListener1!=null){
                             mOnProfileClickListener1.onAddComment(comment);
@@ -479,8 +482,11 @@ public class MyLogic {
         mOnProfileClickListener1 = mOnProfileClickListener;
     }
 
+    public static void removeOnProfileClickListener() {
+        mOnProfileClickListener1 = null;
+    }
+
     public interface OnProfileClickListener{
-        void onClick(int userid);
         void onAddComment(Comment comment);
     }
 

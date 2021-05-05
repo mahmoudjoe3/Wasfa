@@ -13,6 +13,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
     public void onBindViewHolder(@NonNull PeopleSearchViewHolder holder, int position) {
         holder.nameTextView.setText(userList.get(position).getName());
         holder.bioTextView.setText(userList.get(position).getBio());
+        Picasso.get().load(userList.get(position).getImageUrl()).fit().centerCrop().into(holder.profileCircleImageView);
         holder.followUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +42,7 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
                 holder.lotti_people_follow_btn.setVisibility(View.VISIBLE);
                 holder.lotti_people_follow_btn.playAnimation();
                 //todo follow user;
+                onItemClickListener.onFollow(userList.get(position));
             }
         });
 
@@ -91,5 +94,6 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
 
     interface OnItemClickListener{
         void onClick(User user);
+        void onFollow(User user);
     }
 }

@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecipeSearchRecyclerAdapter extends RecyclerView.Adapter<RecipeSearchRecyclerAdapter.RecipeSearchViewHolder> {
 
@@ -32,6 +35,9 @@ public class RecipeSearchRecyclerAdapter extends RecyclerView.Adapter<RecipeSear
         holder.nameTextView.setText(recipeList.get(position).getUserName());
         holder.createdDateTextView.setText(MyLogic.getTimeFrom(recipeList.get(position).getPostTime()));
         String desc = recipeList.get(position).getDescription();
+        Picasso.get().load(recipeList.get(position).getImgUrls().get(0)).fit().centerCrop().into(holder.postImageView);
+        Picasso.get().load(recipeList.get(position).getUserProfileThumbnail()).fit().centerCrop().into(holder.profile_circleImageView);
+
         if(desc.length() > 250) {
             desc = desc.substring(0,247);
             desc += "...";
@@ -69,6 +75,7 @@ public class RecipeSearchRecyclerAdapter extends RecyclerView.Adapter<RecipeSear
     public static class RecipeSearchViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView, createdDateTextView, descriptionTextView, topCategoryTextView, loveCountTextView, commentCountTextView, imageCountTextView;
         ImageView postImageView;
+        CircleImageView profile_circleImageView;
         View imageBackgroundView;
         public RecipeSearchViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +88,7 @@ public class RecipeSearchRecyclerAdapter extends RecyclerView.Adapter<RecipeSear
             postImageView = itemView.findViewById(R.id.post_imageView);
             imageCountTextView = itemView.findViewById(R.id.imageCount_textView);
             imageBackgroundView = itemView.findViewById(R.id.imageBackground_view);
+            profile_circleImageView=itemView.findViewById(R.id.profile_circleImageView);
         }
     }
 

@@ -70,13 +70,28 @@ public class profileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
-        mUser = (User) getIntent().getSerializableExtra(USER_INTENT);
-        Glide.with(user_Image.getContext()).load(mUser.getImageUrl())
-                .into(user_Image);
-        user_name.setText("@" + mUser.getName());
-        user_name_toolbar.setText(mUser.getName());
-        //userFacebook.setTag(user.getLinks().get());
         viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
+        int id =  getIntent().getIntExtra(USER_INTENT,1);
+        viewModel.getUserListLiveData().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                for(User u:users){
+                    if(u.getId()==id){
+                        mUser=u;
+                        Glide.with(user_Image.getContext()).load(mUser.getImageUrl())
+                                .into(user_Image);
+                        user_name.setText("@" + mUser.getName());
+                        user_name_toolbar.setText(mUser.getName());
+                        adapter.setRecipeList(mUser.getRecipes());
+
+                        break;
+                    }
+                }
+            }
+        });
+
+        //userFacebook.setTag(user.getLinks().get());
 
         MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
             @Override
@@ -104,10 +119,6 @@ public class profileActivity extends AppCompatActivity {
             }
         });
         MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {
-            @Override
-            public void onClick(int userid) {
-
-            }
 
             @Override
             public void onAddComment(Comment comment) {
@@ -120,7 +131,6 @@ public class profileActivity extends AppCompatActivity {
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
 
-        adapter.setRecipeList(mUser.getRecipes());
         adapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
             @Override
             public void onClick(Recipe recipe) {
@@ -144,6 +154,7 @@ public class profileActivity extends AppCompatActivity {
                 break;
             case R.id.back:
                 profileActivity.this.onBackPressed();
+                finish();
                 break;
             case R.id.user_instgram:
                 break;
@@ -162,5 +173,11 @@ public class profileActivity extends AppCompatActivity {
         intent.putStringArrayListExtra(ViewImageActivity.IMG_URLS, new ArrayList<>(imgUrls));
         intent.putExtra(ViewImageActivity.IMG_POS, pos);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

@@ -105,22 +105,6 @@ public class SearchFragment extends Fragment {
             }
         });
         MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {
-            @Override
-            public void onClick(int userid) {
-                viewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
-                    @Override
-                    public void onChanged(List<User> users) {
-                        for (User user : users){
-                            if(userid==user.getId()){
-                                Intent intent=new Intent(getActivity(), profileActivity.class );
-                                intent.putExtra(profileActivity.USER_INTENT,user);
-                                startActivity(intent);
-                                break;
-                            }
-                        }
-                    }
-                });
-            }
 
             @Override
             public void onAddComment(Comment comment) {
@@ -140,19 +124,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(User user) {
                 //todo open profile
-                viewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
-                    @Override
-                    public void onChanged(List<User> users) {
-                        for (User user1 : users){
-                            if(user.getId()==user1.getId()){
-                                Intent intent=new Intent(getActivity(), profileActivity.class );
-                                intent.putExtra(profileActivity.USER_INTENT,user);
-                                startActivity(intent);
-                                break;
-                            }
-                        }
-                    }
-                });
+                Intent intent=new Intent(getActivity(), profileActivity.class );
+                intent.putExtra(profileActivity.USER_INTENT,user.getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFollow(User user) {
+                viewModel.insertInteraction(new Interaction(user.getName(),user.getImageUrl(),"Followed"));
             }
         });
 
@@ -203,7 +182,13 @@ public class SearchFragment extends Fragment {
                         public void run() {
                             lotti_search.setVisibility(View.GONE);
                             lotti_search.pauseAnimation();
-                            peopleSearchRecyclerAdapter.setUserList(userList);
+                            List<User> temp=new ArrayList<>();
+                            for(User u:userList){
+                                if(u.getName().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())){
+                                    temp.add(u);
+                                }
+                            }
+                            peopleSearchRecyclerAdapter.setUserList(temp);
                         }
                     },1000);
 
@@ -213,7 +198,18 @@ public class SearchFragment extends Fragment {
                         public void run() {
                             lotti_search.setVisibility(View.GONE);
                             lotti_search.pauseAnimation();
-                            recipeSearchRecyclerAdapter.setRecipeList(recipeList);
+                            List<Recipe> temp=new ArrayList<>();
+                            for(Recipe r:recipeList){
+                                if(r.getCategories().toString().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
+                                    ||r.getIngredients().toString().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
+                                        ||r.getDescription().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
+                                        ||r.getNationality().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
+                                        ||r.getUserName().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
+                                ){
+                                    temp.add(r);
+                                }
+                            }
+                            recipeSearchRecyclerAdapter.setRecipeList(temp);
                         }
                     },1000);
                     peopleRecyclerView.setVisibility(View.GONE);
@@ -238,28 +234,25 @@ public class SearchFragment extends Fragment {
 
     private void initPeopleRecycler() {
         peopleRecyclerView = view.findViewById(R.id.people_recyclerView);
-        userList = new ArrayList<>();
-        userList.add(new User(1, "Mahmoud Mamdouh","123", "", getString(R.string.bio_test), ""));
-        userList.add(new User(1, "Mahmoud Mamdouh","123", "", getString(R.string.bio_test), ""));
-        userList.add(new User(1, "Mahmoud Mamdouh","123", "", "bio", ""));
-        userList.add(new User(1, "Mahmoud Mamdouh","123", "", "bio", ""));
-        userList.add(new User(1, "Youssef Shafik","123", "", getString(R.string.bio_test), ""));
-        userList.add(new User(1, "Youssef Shafik","123", "", "bio", ""));
-        userList.add(new User(1, "Youssef Shafik","123", "", "bio", ""));
-        userList.add(new User(1, "Youssef Shafik","123", "", getString(R.string.bio_test), ""));
-        userList.add(new User(1, "Youssef Shafik","123", "", "bio", ""));
+        viewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                userList=users;
+            }
+        });
         peopleSearchRecyclerAdapter = new PeopleSearchRecyclerAdapter();
         peopleRecyclerView.setAdapter(peopleSearchRecyclerAdapter);
     }
 
     private void initRecipeRecycler() {
         recipesRecyclerView = view.findViewById(R.id.recipes_recyclerView);
-        recipeList = new ArrayList<>();
-        recipeList.add(new Recipe(1, 2, "Mahmoud Mamdouh Abdullah", "",
-                "", getString(R.string.tst),"eg", 1000000, "24min",
-                new ArrayList<String>(Arrays.asList("Healthy")), new ArrayList<String>(),
-                new ArrayList<String>(), 120, 50, new ArrayList<String>(Arrays.asList("a", "b"))));
         recipeSearchRecyclerAdapter = new RecipeSearchRecyclerAdapter();
+        viewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+                recipeList=recipes;
+            }
+        });
         recipesRecyclerView.setAdapter(recipeSearchRecyclerAdapter);
     }
 }

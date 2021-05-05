@@ -1,6 +1,7 @@
 package com.mahmoudjoe3.wasfa.ui.main.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
+import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -67,14 +69,18 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             @Override
             public void onClick(View v) {
                 //open prifile
-                mOnProfileClickListener.onClick(recipe.getUserId());
+                Intent intent=new Intent(v.getContext(), profileActivity.class );
+                intent.putExtra(profileActivity.USER_INTENT,recipe.getUserId());
+                v.getContext().startActivity(intent);
             }
         });
         vh.post_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //open prifile
-                mOnProfileClickListener.onClick(recipe.getUserId());
+                Intent intent=new Intent(v.getContext(), profileActivity.class );
+                intent.putExtra(profileActivity.USER_INTENT,recipe.getUserId());
+                v.getContext().startActivity(intent);
             }
         });
         vh.post_user_follow_btn.setOnClickListener(new View.OnClickListener() {
