@@ -93,6 +93,7 @@ public class RegistrationActivity extends AppCompatActivity {
             user.setPhone(phone);
             user.setGender(gender);
             user.setNationality(nationality);
+            user.setImageUrl("https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1");
             String userJson = gson.toJson(user);
             editor.putString("user", userJson);
             editor.apply();

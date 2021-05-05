@@ -1,8 +1,9 @@
 package com.mahmoudjoe3.wasfa.ui.main.post;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,21 +28,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
+import com.mahmoudjoe3.wasfa.pojo.User;
 import com.opensooq.supernova.gligar.GligarPicker;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class PostFragment1 extends Fragment {
 
+    @BindView(R.id.userProfile_imageView)
+    CircleImageView userProfileImageView;
+    @BindView(R.id.userName_textView)
+    TextView userNameTextView;
     private PostSharedViewModel postSharedViewModel;
     private static final int PICKER_REQUEST_CODE = 1;
     private TextView nextTextView, privacyTextView;
@@ -56,6 +66,10 @@ public class PostFragment1 extends Fragment {
     private CountryCodePicker countryCodePicker;
     private View view;
 
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
+    private User user;
+
     public PostFragment1() {
     }
 
@@ -67,8 +81,9 @@ public class PostFragment1 extends Fragment {
         }
         return postFragment1;
     }
-    public static void removeFragment(){
-        postFragment1=null;
+
+    public static void removeFragment() {
+        postFragment1 = null;
     }
 
     @Nullable
@@ -150,7 +165,7 @@ public class PostFragment1 extends Fragment {
         postSharedViewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Recipe>() {
             @Override
             public void onChanged(Recipe r) {
-                if(r!=null) {
+                if (r != null) {
                     recipe = r;
                     recipeDescriptionEditText.setText(recipe.getDescription());
                     imageAdapter.setImageList(recipe.getImgUrls());
@@ -168,6 +183,8 @@ public class PostFragment1 extends Fragment {
             recipe.setDescription(recipeDescriptionEditText.getText().toString());
             recipe.setImgUrls(imageUrls);
             recipe.setNationality(countryCodePicker.getSelectedCountryName());
+            recipe.setUserName(user.getName());
+            recipe.setUserProfileThumbnail(user.getImageUrl());
             postSharedViewModel.setRecipe(recipe);
             return true;
         }
@@ -206,6 +223,11 @@ public class PostFragment1 extends Fragment {
         countryCodePicker = view.findViewById(R.id.countryCodePicker);
         imageUrls = new ArrayList<>();
         recipe = new Recipe();
+        sharedPreferences = getActivity().getSharedPreferences("new_user", Context.MODE_PRIVATE);
+        gson = new Gson();
+        user = gson.fromJson(sharedPreferences.getString("user", null), User.class);
+        userNameTextView.setText(user.getName());
+        Picasso.get().load(user.getImageUrl()).fit().centerCrop().into(userProfileImageView);
     }
 
     private void initRecyclerView() {

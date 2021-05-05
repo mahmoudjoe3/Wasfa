@@ -1,5 +1,7 @@
 package com.mahmoudjoe3.wasfa.ui.main.post;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.akexorcist.snaptimepicker.SnapTimePickerDialog;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.gson.Gson;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 
@@ -39,6 +42,10 @@ public class PostFragment3 extends Fragment {
     private EditText stepEditText;
     private TextView postTextView;
     private Recipe recipe;
+
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private Gson gson;
 
     public PostFragment3() {
     }
@@ -87,6 +94,12 @@ public class PostFragment3 extends Fragment {
                                         R.id.fragment_container, PostFragment1.getInstance()
                                 ).commit();
                                 //Todo send to api
+                                recipe.setComments(new ArrayList<>());
+                                recipe.setNumberOfShare(0);
+                                recipe.setNumberOfLike(0);
+                                String recipeJson = gson.toJson(recipe);
+                                editor.putString("my_recipes", recipeJson);
+                                editor.apply();
                                 Toast.makeText(getActivity(), "Post Uplouded successfully", Toast.LENGTH_SHORT).show();
                                 removeData();
                                 getActivity().onBackPressed();
@@ -179,6 +192,9 @@ public class PostFragment3 extends Fragment {
         stepEditText = view.findViewById(R.id.step_EditText);
         postTextView = view.findViewById(R.id.post_textView);
         recipe = new Recipe();
+        sharedPreferences = getActivity().getSharedPreferences("new_user", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        gson = new Gson();
     }
 
     private void initRecyclerView() {

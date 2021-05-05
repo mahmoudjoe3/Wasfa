@@ -33,6 +33,10 @@ import static com.mahmoudjoe3.wasfa.logic.MyLogic.getTimeFrom;
 public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH> {
     List<Recipe> recipes;
 
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
     public void setRecipes(List<Recipe> recipes) {
         if(recipes==null){
             this.recipes=new ArrayList<>();

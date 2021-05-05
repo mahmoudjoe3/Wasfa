@@ -1,7 +1,9 @@
 package com.mahmoudjoe3.wasfa.ui.main.home;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
@@ -50,6 +54,10 @@ public class HomeFragment extends Fragment {
 
     profilePostItemAdapter profilePostItemAdapter;
 
+    private List<Recipe> recipeList;
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -57,16 +65,22 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
 
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        sharedPreferences = getActivity().getSharedPreferences("new_user", Context.MODE_PRIVATE);
+        gson = new Gson();
+        Recipe recipe = gson.fromJson(sharedPreferences.getString("my_recipes", null),Recipe.class);
+        
         adapter = new RecipePostAdapter();
         recyclerView.setAdapter(adapter);
         viewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
+                if(recipe != null)
+                    recipes.add(0, recipe);
                 adapter.setRecipes(recipes);
             }
         });
@@ -216,6 +230,4 @@ public class HomeFragment extends Fragment {
         intent.putExtra(ViewImageActivity.IMG_POS, pos);
         startActivity(intent);
     }
-
-
 }

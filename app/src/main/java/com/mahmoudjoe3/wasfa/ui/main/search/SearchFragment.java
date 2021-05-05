@@ -70,7 +70,6 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);

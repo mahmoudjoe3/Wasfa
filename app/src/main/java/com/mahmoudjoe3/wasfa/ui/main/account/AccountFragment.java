@@ -1,6 +1,8 @@
 package com.mahmoudjoe3.wasfa.ui.main.account;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
@@ -65,6 +68,9 @@ public class AccountFragment extends Fragment {
 
     profilePostItemAdapter adapter;
     User mUser;
+
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -74,22 +80,30 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(AccountViewModel.class);
-
+        sharedPreferences = getActivity().getSharedPreferences("new_user", Context.MODE_PRIVATE);
+        gson = new Gson();
+        mUser = gson.fromJson(sharedPreferences.getString("user", ""), User.class);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         ButterKnife.bind(this, view);
 
-        viewModel.getUserLiveData().observe(this, new Observer<User>() {
+        Glide.with(user_image.getContext()).load(mUser.getImageUrl())
+                .into(user_image);
+        user_name.setText("@"+mUser.getName());
+        userNameToolbar.setText(mUser.getName());
+
+
+        /*viewModel.getUserLiveData().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                mUser=user;
+                mUser = user;
                 Glide.with(user_image.getContext()).load(user.getImageUrl())
                         .into(user_image);
                 user_name.setText("@"+user.getName());
                 userNameToolbar.setText(user.getName());
                 //userFacebook.setTag(user.getLinks().get());
             }
-        });
+        });*/
 
         MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
             @Override
@@ -125,7 +139,7 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        adapter=new profilePostItemAdapter(prevalent.PROFILE_ITEM);
+        adapter = new profilePostItemAdapter(prevalent.PROFILE_ITEM);
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
         viewModel.getRecipeMutableLiveData().observe(this, new Observer<List<Recipe>>() {
