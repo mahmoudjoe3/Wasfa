@@ -33,14 +33,21 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
+import com.mahmoudjoe3.wasfa.pojo.Following;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
 import com.mahmoudjoe3.wasfa.ui.main.home.comment.CommentAdapter;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyLogic {
 
@@ -100,6 +107,49 @@ public class MyLogic {
         }
         return time;
     }
+
+    public static User parseUserRespone(String userJsonString) {
+        try {
+            JSONObject jsonObject = new JSONObject(userJsonString);
+            JSONObject userObject = jsonObject.getJSONArray("Users").getJSONObject(0);
+
+            int id = userObject.getInt("Id");
+            String name = userObject.getString("Name");
+            String email = userObject.getString("Email");
+            String password = userObject.getString("Password");
+            String gender = userObject.getString("Gender");
+            String imageUrl = userObject.getString("ImageUrl");
+            String phone = userObject.getString("Phone");
+            String bio = userObject.getString("Bio");
+            String nationality = userObject.getString("Nationality");
+            long createdDate = userObject.getLong("CreatedDate");
+            int followersCount = userObject.getInt("FollowersCount");
+            List<String> links = new ArrayList<>();
+            List<Following> followingList = new ArrayList<>();
+
+            JSONArray linksArray = userObject.getJSONArray("Links");
+            JSONArray followings = userObject.getJSONArray("Followings");
+
+            for (int i = 0; i < followings.length(); i++) {
+                JSONObject obj = followings.getJSONObject(i);
+                int followingId = obj.getInt("FollowingId");
+                String followingName = obj.getString("FollowingName");
+                String followingImg = obj.getString("FollowingImage");
+                followingList.add(new Following(followingId, followingName, followingImg));
+            }
+
+            for (int i = 0; i < linksArray.length(); i++) {
+                JSONObject obj = linksArray.getJSONObject(i);
+                links.add(obj.getString("Link"));
+            }
+            return new User(id, createdDate, name, email, password, phone, imageUrl, bio, nationality, gender, links, followingList, followersCount);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
     public static void init_post_details_sheet_dialog(Activity context, Recipe recipe,User user) {

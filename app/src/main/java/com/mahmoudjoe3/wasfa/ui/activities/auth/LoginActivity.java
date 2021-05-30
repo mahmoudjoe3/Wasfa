@@ -9,10 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.ui.main.MainActivity;
@@ -22,6 +24,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.hilt.android.AndroidEntryPoint;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.mahmoudjoe3.wasfa.logic.MyLogic.parseUserRespone;
 
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
@@ -43,8 +50,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private Gson gson;
-    private User user;
 
     private AuthViewModel authViewModel;
     private String userName = "", passwrod = "";
@@ -62,11 +67,6 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
         sharedPreferences = getSharedPreferences("new_user", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        gson = new Gson();
-        String userJson = sharedPreferences.getString("user", null);
-        if(userJson != null) {
-            user = gson.fromJson(userJson, User.class);
-        }
         Boolean remember = sharedPreferences.getBoolean("remember_me", false);
         if(remember) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -82,22 +82,34 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginButtonClicked() {
         boolean complete = initData();
         if(complete) {
-            if(user != null) {
-                if(user.getName().equals(userName) && user.getPassword().equals(passwrod)) {
-                    if(rememberCheckBox.isChecked()) {
-                        editor.putBoolean("remember_me", true);
-                    } else {
-                        editor.putBoolean("remember_me", false);
-                    }
-                    editor.commit();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
-                } else {
-                    Toast.makeText(this, "user name or password is incorrect", Toast.LENGTH_SHORT).show();
+            authViewModel.login(userName.toLowerCase()).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    User user = parseUserRespone(response.body().toString());
+                    if(user!=null&&response.code()>=200&&response.code()<=299) {
+                        if (user.getPassword().equals(passwrod)) {
+                            if (rememberCheckBox.isChecked()) {
+                                editor.putBoolean("remember_me", true);
+                            } else {
+                                editor.putBoolean("remember_me", false);
+                            }
+                            editor.commit();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        } else {
+                            Toast.makeText(LoginActivity.this, "password is incorrect", Toast.LENGTH_SHORT).show();
+                        }
+                    }else Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+
                 }
-            } else {
-                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
-            }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
         }
     }
 

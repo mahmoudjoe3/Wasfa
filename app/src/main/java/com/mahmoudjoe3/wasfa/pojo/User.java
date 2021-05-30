@@ -32,6 +32,23 @@ public class User implements Serializable {
         follower=0;
     }
 
+
+    public User(int id, long createdDate, String name, String email, String password, String phone, String imageUrl, String bio, String nationality, String gender, List<String> links, List<Following> followings, int follower) {
+        this.id = id;
+        this.createdDate = createdDate;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.imageUrl = imageUrl;
+        this.bio = bio;
+        this.nationality = nationality;
+        this.gender = gender;
+        this.links = links;
+        this.followings = followings;
+        this.follower = follower;
+    }
+
     public int getId() {
         return id;
     }

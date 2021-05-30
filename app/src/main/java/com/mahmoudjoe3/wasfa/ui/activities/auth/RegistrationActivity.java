@@ -3,6 +3,7 @@ package com.mahmoudjoe3.wasfa.ui.activities.auth;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -13,10 +14,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.hbb20.CountryCodePicker;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.viewModel.AuthViewModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -24,6 +30,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.hilt.android.AndroidEntryPoint;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @AndroidEntryPoint
 public class RegistrationActivity extends AppCompatActivity {
@@ -48,8 +57,6 @@ public class RegistrationActivity extends AppCompatActivity {
     Button registerButton;
 
     private Gson gson;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     AuthViewModel authViewModel;
     private String name = "", email = "", password = "", phone = "", gender = "", nationality = "";
@@ -65,8 +72,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void init() {
         gson = new Gson();
-        sharedPreferences = getSharedPreferences("new_user", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
     }
 
     private void initData() {
@@ -92,22 +97,36 @@ public class RegistrationActivity extends AppCompatActivity {
         initData();
         boolean allValid = allIsValid();
         if(allValid) {
-            User user = new User();
-            user.setName(name);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setPhone(phone);
-            user.setGender(gender);
-            user.setNationality(nationality);
-            user.setFollowings(new ArrayList<>());
-            user.setRecipes(new ArrayList<>());
-            user.setFollower(0);
-            user.setImageUrl("https://metabiomedamericas.com/wp-content/uploads/2018/05/facebook-avatar.jpg");
-            String userJson = gson.toJson(user);
-            editor.putString("user", userJson);
-            editor.apply();
-            startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
-            finish();
+            UserPost user = new UserPost(0, name, email.toLowerCase(), password, gender, phone, nationality);
+            //post in api
+            authViewModel.Register(user).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.i("Registeration Activity" ,"##0" + response.code());
+                    try {
+                        String found= new JSONObject(response.body().toString()).getString("found");
+                        if(found.toLowerCase().contains("email"))
+                            Toast.makeText(RegistrationActivity.this, "Invalied email", Toast.LENGTH_SHORT).show();
+                        else if(found.toLowerCase().contains("phone"))
+                            Toast.makeText(RegistrationActivity.this, "Invalied phone", Toast.LENGTH_SHORT).show();
+                        if(found.toLowerCase().contains("successful")&&response.code() >= 200 && response.code() <= 299) {
+                            Toast.makeText(RegistrationActivity.this, "Registeration SucessFully", Toast.LENGTH_SHORT).show();
+                            RegistrationActivity.this.onBackPressed();
+                        } else if(response.code() >= 400 && response.code() <= 499) {
+                            Toast.makeText(RegistrationActivity.this, "Registeration Failed", Toast.LENGTH_SHORT).show();
+                        }  else if(response.code() >= 500 && response.code() <= 599) {
+                            Toast.makeText(RegistrationActivity.this, "Registeration Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                }
+            });
         } else {
             Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
         }

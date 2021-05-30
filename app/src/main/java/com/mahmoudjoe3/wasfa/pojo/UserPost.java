@@ -28,6 +28,23 @@ public class UserPost {
     private String CreatedDate;
     private int FollowersCount;
 
+
+
+
+    public UserPost(final int id, final String name, final String email, final String password, final String gender, final String phone, final String nationality) {
+        this.Id = id;
+        this.Name = name;
+        this.Email = email;
+        this.Password = password;
+        this.Gender = gender;
+        this.ImageUrl = null;
+        this.Phone = phone;
+        this.Bio = "";
+        this.Nationality = nationality;
+        this.CreatedDate = ""+System.currentTimeMillis();
+        this.FollowersCount = 0;
+    }
+
     public int getId() {
         return Id;
     }
