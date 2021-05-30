@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.main.interaction.database;
+package com.mahmoudjoe3.wasfa.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

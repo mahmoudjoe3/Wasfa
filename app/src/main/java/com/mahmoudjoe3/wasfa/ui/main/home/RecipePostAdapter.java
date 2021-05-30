@@ -17,6 +17,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfa.R;
@@ -101,7 +102,12 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
 
     private void initPostCaption(VH vh, Recipe recipe) {
-        vh.post_description.setText(recipe.getDescription());
+        String desc=recipe.getDescription();
+        if(desc.length() > 250) {
+            desc = desc.substring(0,247);
+            desc += "...";
+        }
+        vh.post_description.setText(desc);
         vh.prepare_time.setText(recipe.getPrepareTime());
         initCategoryList(vh,recipe.getCategories());
         initIngredientList(vh,recipe.getIngredients());
@@ -197,18 +203,22 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         if(size>=1){
             vh.post_images_frame.setVisibility(View.VISIBLE);
             vh.post_image_1.setVisibility(View.VISIBLE);
-            Picasso.get().load(imgUrls.get(0)).fit().centerCrop().into(vh.post_image_1);
+            Glide.with(vh.post_image_1.getContext()).load(recipe.getImgUrls().get(0))
+                    .into(vh.post_image_1);
         }if(size>=2){
             vh.post_image_2.setVisibility(View.VISIBLE);
-            Picasso.get().load(imgUrls.get(1)).fit().centerCrop().into(vh.post_image_2);
+            Glide.with(vh.post_image_2.getContext()).load(recipe.getImgUrls().get(1))
+                    .into(vh.post_image_2);
         }if(size>=3){
             vh.post_img_3_4_layout.setVisibility(View.VISIBLE);
             vh.post_image_3.setVisibility(View.VISIBLE);
-            Picasso.get().load(imgUrls.get(2)).fit().centerCrop().into(vh.post_image_3);
+            Glide.with(vh.post_image_3.getContext()).load(recipe.getImgUrls().get(2))
+                    .into(vh.post_image_3);
         }if(size>=4){
             vh.post_img_4_layout.setVisibility(View.VISIBLE);
             vh.post_image_4.setVisibility(View.VISIBLE);
-            Picasso.get().load(imgUrls.get(3)).fit().centerCrop().into(vh.post_image_4);
+            Glide.with(vh.post_image_4.getContext()).load(recipe.getImgUrls().get(3))
+                    .into(vh.post_image_4);
         }if(size>4){
             vh.post_more_images_btn.setVisibility(View.VISIBLE);
             vh.post_more_images_btn.setText("+"+(size-4));

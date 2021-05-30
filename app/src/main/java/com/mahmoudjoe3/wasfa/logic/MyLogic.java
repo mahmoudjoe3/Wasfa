@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -26,10 +25,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfa.R;
@@ -37,17 +36,11 @@ import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
-import com.mahmoudjoe3.wasfa.ui.main.home.RecipePostAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.home.comment.CommentAdapter;
-import com.mahmoudjoe3.wasfa.ui.main.interaction.InteractionsRecyclerAdapter;
-import com.mahmoudjoe3.wasfa.ui.main.interaction.interactionsViewModel;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MyLogic {
 
@@ -126,7 +119,9 @@ public class MyLogic {
             layoutParams.setMargins(0, 18, 0, 0);
             imageView.setLayoutParams(layoutParams);
             imageView.setAdjustViewBounds(true);
-            Picasso.get().load(img).into(imageView);
+            Glide.with(imageView.getContext()).load(img)
+                    .into(imageView);
+
             layout.addView(imageView);
         }
 
@@ -441,11 +436,12 @@ public class MyLogic {
                     public void onClick(View v) {
                         //todo send comment to database
                         boolean isCreator = (user.getId() == recipe.getUserId());
-                        Comment comment=new Comment(recipe.getId(),user.getId(), user.getName(), user.getImageUrl(), commentTxt.getText().toString());
+                        Comment comment=new Comment(recipe.getId(),recipe.getId(), user.getName(), user.getImageUrl(), commentTxt.getText().toString());
                         comment.setCreator(isCreator);
                         if(mOnProfileClickListener1!=null){
                             mOnProfileClickListener1.onAddComment(comment);
                         }
+                        commentAdapter.addComment(comment);
                         sendComment.setMinAndMaxProgress(0.33f, 1f);
                         sendComment.playAnimation();
                         //sendComment.setProgress(0.6f);

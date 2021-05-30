@@ -1,7 +1,5 @@
 package com.mahmoudjoe3.wasfa.ui.main.post;
 
-import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,18 +10,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.mahmoudjoe3.wasfa.R;
-import com.mahmoudjoe3.wasfa.prevalent.prevalent;
+import com.mahmoudjoe3.wasfa.viewModel.PostViewModel;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class PostFragment extends Fragment   {

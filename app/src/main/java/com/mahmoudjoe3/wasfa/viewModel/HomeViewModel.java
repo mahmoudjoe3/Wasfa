@@ -1,25 +1,21 @@
-package com.mahmoudjoe3.wasfa.ui.main.home;
+package com.mahmoudjoe3.wasfa.viewModel;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-
-import androidx.lifecycle.AndroidViewModel;
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mahmoudjoe3.wasfa.pojo.Comment;
-import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
-import com.mahmoudjoe3.wasfa.repo.InteractionRepo;
+import com.mahmoudjoe3.wasfa.repo.NLB_DB_Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeViewModel extends AndroidViewModel {
+public class HomeViewModel extends ViewModel {
 
+    private NLB_DB_Repository repository;
     private MutableLiveData<List<Recipe>> recipeMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<List<Recipe>> getRecipeMutableLiveData() {
         List<Recipe> recipes=new ArrayList<>();
@@ -360,21 +356,9 @@ public class HomeViewModel extends AndroidViewModel {
         return userLiveData;
     }
 
-    public HomeViewModel(Application application) {
-        super(application);
-        interactionRepo = new InteractionRepo(application);
-        interactionsLiveData = interactionRepo.getInteractionsLiveData();
-    }
-
-    private InteractionRepo interactionRepo;
-    private LiveData<List<Interaction>> interactionsLiveData;
-
-    public void insertInteraction(Interaction interaction) {
-        interactionRepo.insertInteraction(interaction);
-    }
-
-    public void deleteInteraction(Interaction interaction) {
-        interactionRepo.deleteInteraction(interaction);
+    @ViewModelInject
+    public HomeViewModel(NLB_DB_Repository repository) {
+        this.repository=repository;
     }
 
 }

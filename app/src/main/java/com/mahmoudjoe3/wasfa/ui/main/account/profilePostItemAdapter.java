@@ -60,7 +60,7 @@ public class profilePostItemAdapter extends RecyclerView.Adapter<profilePostItem
         Glide.with(h.post_top_image.getContext()).load(recipe.getImgUrls().get(0))
                 .into(h.post_top_image);
 
-        //h.post_rate.setText(recipe.getUserName());
+       // h.post_rate.setText();
         h.post_caption.setText(recipe.getTitle());
         h.post_love_number.setText(""+recipe.getNumberOfLike());
         h.post_comment_number.setText(""+recipe.getComments().size());

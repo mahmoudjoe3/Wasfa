@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
+//hilt
+apply plugin: 'dagger.hilt.android.plugin'
 
-//firebase
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -27,6 +27,16 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
     }
 }
 
@@ -105,5 +115,22 @@ dependencies {
 
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
-        //
+
+    // Dependencies for Google API Client Libraries
+    implementation 'com.google.auth:google-auth-library-oauth2-http:0.26.0'
+    api("com.google.apis:google-api-services-language:v1-rev477-1.25.0") {
+        exclude module: 'HttpUrlConnection'
+        exclude module: 'jsr305'
+    }
+    // dagger Hilt
+    implementation "com.google.dagger:hilt-android:2.28-alpha"
+    annotationProcessor 'com.google.dagger:hilt-android-compiler:2.28-alpha'
+    implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha01'
+    annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0-alpha01'
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    //converter(Gson)
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
 }

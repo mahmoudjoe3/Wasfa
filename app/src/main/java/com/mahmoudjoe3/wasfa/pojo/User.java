@@ -24,6 +24,9 @@ public class User implements Serializable {
         this.nationality = nationality;
         createdDate=System.currentTimeMillis();
         links=new ArrayList<>();
+        links.add("");
+        links.add("");
+        links.add("");
         followings=new ArrayList<>();
         recipes=new ArrayList<>();
         follower=0;
@@ -109,13 +112,6 @@ public class User implements Serializable {
         this.links = links;
     }
 
-    public List<Following> getFollowing() {
-        return followings;
-    }
-
-    public void setFollowing(List<Integer> following) {
-        this.followings = followings;
-    }
 
     public int getFollower() {
         return follower;

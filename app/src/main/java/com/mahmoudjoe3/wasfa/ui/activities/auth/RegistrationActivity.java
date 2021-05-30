@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.activities.registration;
+package com.mahmoudjoe3.wasfa.ui.activities.auth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,18 +9,23 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.User;
-import com.mahmoudjoe3.wasfa.ui.activities.login.LoginActivity;
+import com.mahmoudjoe3.wasfa.viewModel.AuthViewModel;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class RegistrationActivity extends AppCompatActivity {
 
     @BindView(R.id.back_imageButton)
@@ -46,6 +51,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
+    AuthViewModel authViewModel;
     private String name = "", email = "", password = "", phone = "", gender = "", nationality = "";
 
     @Override
@@ -53,7 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
-
+        authViewModel=new ViewModelProvider(this).get(AuthViewModel.class);
         init();
     }
 
@@ -93,7 +99,10 @@ public class RegistrationActivity extends AppCompatActivity {
             user.setPhone(phone);
             user.setGender(gender);
             user.setNationality(nationality);
-            user.setImageUrl("https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1");
+            user.setFollowings(new ArrayList<>());
+            user.setRecipes(new ArrayList<>());
+            user.setFollower(0);
+            user.setImageUrl("https://metabiomedamericas.com/wp-content/uploads/2018/05/facebook-avatar.jpg");
             String userJson = gson.toJson(user);
             editor.putString("user", userJson);
             editor.apply();

@@ -28,7 +28,9 @@ import com.mahmoudjoe3.wasfa.ui.activities.profile.EditProfileActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity  {
 
 

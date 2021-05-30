@@ -18,12 +18,15 @@ import android.widget.TextView;
 
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
+import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
 
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class interactionsFragment extends Fragment {
-    interactionsViewModel viewModel;
+    InteractionsViewModel viewModel;
 
     private EditText searchEditText;
     private TextView interactionTextView;
@@ -54,6 +57,7 @@ public class interactionsFragment extends Fragment {
 
         init();
         initInteractionsRecycler();
+        viewModel.fitchInteractions();
         viewModel.getInteractionsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Interaction>>() {
             @Override
             public void onChanged(List<Interaction> interactions) {
@@ -124,6 +128,6 @@ public class interactionsFragment extends Fragment {
         interactionTextView = view.findViewById(R.id.interaction_label);
         searchEditText = view.findViewById(R.id.search_editText);
         backImageButton = view.findViewById(R.id.back_imageButton);
-        viewModel = new ViewModelProvider(this).get(interactionsViewModel.class);
+        viewModel = new ViewModelProvider(this).get(InteractionsViewModel.class);
     }
 }

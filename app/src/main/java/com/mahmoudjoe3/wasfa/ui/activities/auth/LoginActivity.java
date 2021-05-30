@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.activities.login;
+package com.mahmoudjoe3.wasfa.ui.activities.auth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,18 +9,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.ui.main.MainActivity;
-import com.mahmoudjoe3.wasfa.ui.activities.registration.RegistrationActivity;
+import com.mahmoudjoe3.wasfa.viewModel.AuthViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.user_name_textInput)
@@ -43,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private Gson gson;
     private User user;
 
+    private AuthViewModel authViewModel;
     private String userName = "", passwrod = "";
 
     @Override
@@ -50,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        authViewModel=new ViewModelProvider(this).get(AuthViewModel.class);
 
         init();
     }

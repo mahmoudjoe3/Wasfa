@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.VH> {
-    List<Comment> commentList;
+    ArrayList<Comment> commentList;
     public CommentAdapter() {
         this.commentList = new ArrayList<>();
     }
     public void setCommentList(List<Comment> commentList) {
         if(commentList!=null)
-            this.commentList = commentList;
+            this.commentList = new ArrayList<>(commentList);
         notifyDataSetChanged();
     }
 
@@ -69,6 +69,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.VH> {
     @Override
     public int getItemCount() {
         return commentList.size();
+    }
+
+    public void addComment(Comment comment) {
+        commentList.add(0,comment);
+        notifyItemInserted(0);
     }
 
     static class VH extends RecyclerView.ViewHolder{

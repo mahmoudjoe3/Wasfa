@@ -1,34 +1,20 @@
-package com.mahmoudjoe3.wasfa.ui.main.search;
+package com.mahmoudjoe3.wasfa.viewModel;
 
-import android.app.Application;
-
-import androidx.lifecycle.AndroidViewModel;
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mahmoudjoe3.wasfa.pojo.Comment;
-import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
-import com.mahmoudjoe3.wasfa.repo.InteractionRepo;
+import com.mahmoudjoe3.wasfa.repo.NLB_DB_Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchViewModel extends AndroidViewModel {
-    private InteractionRepo interactionRepo;
-    private LiveData<List<Interaction>> interactionsLiveData;
+public class ProfileViewModel extends ViewModel {
 
-    public SearchViewModel(Application application) {
-        super(application);
-        interactionRepo = new InteractionRepo(application);
-        interactionsLiveData = interactionRepo.getInteractionsLiveData();
-    }
-
-    public void insertInteraction(Interaction interaction) {
-        interactionRepo.insertInteraction(interaction);
-    }
     private MutableLiveData<List<Recipe>> recipeMutableLiveData=new MutableLiveData<>();
     public MutableLiveData<List<Recipe>> getRecipeMutableLiveData() {
         List<Recipe> recipes=new ArrayList<>();
@@ -307,6 +293,16 @@ public class SearchViewModel extends AndroidViewModel {
         recipeMutableLiveData.setValue(recipes);
         return recipeMutableLiveData;
     }
+    private NLB_DB_Repository repository;
+
+    private MutableLiveData<User> userLiveData=new MutableLiveData<>();
+    public LiveData<User> getUserLiveData() {
+        User user=new User(1,"MahmoudJoe3","123"
+                ,"https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
+                , "your are the best of yourself", "eg");
+        userLiveData.setValue(user);
+        return userLiveData;
+    }
 
     private MutableLiveData<List<User>> userListLiveData=new MutableLiveData<>();
     public LiveData<List<User>> getUserListLiveData() {
@@ -358,6 +354,12 @@ public class SearchViewModel extends AndroidViewModel {
 
         return userListLiveData;
     }
+
+    @ViewModelInject
+    public ProfileViewModel(NLB_DB_Repository repository) {
+        this.repository = repository;
+    }
+
 
 
 }

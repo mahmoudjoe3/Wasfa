@@ -24,17 +24,20 @@ import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
+import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.SearchViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.hilt.android.AndroidEntryPoint;
 
-
+@AndroidEntryPoint
 public class SearchFragment extends Fragment {
-    SearchViewModel viewModel;
+    SearchViewModel searchViewModel;
+    InteractionsViewModel interactionsViewModel;
     @BindView(R.id.default_search_layout)
     LinearLayout defaultSearchLayout;
     @BindView(R.id.no_result_search_layout)
@@ -69,8 +72,8 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-
+        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        interactionsViewModel=new ViewModelProvider(this).get(InteractionsViewModel.class);
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
@@ -81,25 +84,25 @@ public class SearchFragment extends Fragment {
         MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
             @Override
             public void onshare(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
 
             }
 
             @Override
             public void onlove(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
 
             }
 
             @Override
             public void onDislove(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
 
             }
 
             @Override
             public void onfollow(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
 
             }
         });
@@ -107,7 +110,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onAddComment(Comment comment) {
-                viewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
+                interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
             }
         });
 
@@ -130,7 +133,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFollow(User user) {
-                viewModel.insertInteraction(new Interaction(user.getName(),user.getImageUrl(),"Followed"));
+                interactionsViewModel.insertInteraction(new Interaction(user.getName(),user.getImageUrl(),"Followed"));
             }
         });
 
@@ -233,7 +236,7 @@ public class SearchFragment extends Fragment {
 
     private void initPeopleRecycler() {
         peopleRecyclerView = view.findViewById(R.id.people_recyclerView);
-        viewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+        searchViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
                 userList=users;
@@ -246,7 +249,7 @@ public class SearchFragment extends Fragment {
     private void initRecipeRecycler() {
         recipesRecyclerView = view.findViewById(R.id.recipes_recyclerView);
         recipeSearchRecyclerAdapter = new RecipeSearchRecyclerAdapter();
-        viewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+        searchViewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
                 recipeList=recipes;

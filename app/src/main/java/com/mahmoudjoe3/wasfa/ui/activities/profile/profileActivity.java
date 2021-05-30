@@ -1,6 +1,7 @@
 package com.mahmoudjoe3.wasfa.ui.activities.profile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -21,6 +22,8 @@ import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.main.account.profilePostItemAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
+import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.ProfileViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +31,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.hilt.android.AndroidEntryPoint;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+@AndroidEntryPoint
 public class profileActivity extends AppCompatActivity {
 
     public static final String USER_INTENT = "profileActivity.USER_INTENT";
@@ -63,17 +68,20 @@ public class profileActivity extends AppCompatActivity {
 
     profilePostItemAdapter adapter;
     User mUser;
-    ProfileViewModel viewModel;
+    ProfileViewModel profileViewModel;
+    InteractionsViewModel interactionsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
-        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        interactionsViewModel = new ViewModelProvider(this).get(InteractionsViewModel.class);
+        adapter = new profilePostItemAdapter(prevalent.PROFILE_ITEM);
 
         int id =  getIntent().getIntExtra(USER_INTENT,1);
-        viewModel.getUserListLiveData().observe(this, new Observer<List<User>>() {
+        profileViewModel.getUserListLiveData().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
                 for(User u:users){
@@ -84,37 +92,70 @@ public class profileActivity extends AppCompatActivity {
                         user_name.setText("@" + mUser.getName());
                         user_name_toolbar.setText(mUser.getName());
                         adapter.setRecipeList(mUser.getRecipes());
+                        bio.setText(mUser.getBio());
+                        if(mUser.getLinks()!=null) {
+                            if(mUser.getLinks().get(0)==null||mUser.getLinks().get(0).isEmpty())
+                                userFacebook.setVisibility(View.GONE);
+                            else
+                            {
+                                userFacebook.setTag(mUser.getLinks().get(0));
+                                userFacebook.setVisibility(View.VISIBLE);
+                            }
+                            if(mUser.getLinks().get(1)==null||mUser.getLinks().get(1).isEmpty())
+                                userInstgram.setVisibility(View.GONE);
+                            else
+                            {
+                                userInstgram.setTag(mUser.getLinks().get(1));
+                                userInstgram.setVisibility(View.VISIBLE);
+                            }
+                            if(mUser.getLinks().get(2)==null||mUser.getLinks().get(2).isEmpty())
+                                userYoutube.setVisibility(View.GONE);
+                            else
+                            {
+                                userYoutube.setTag(mUser.getLinks().get(2));
+                                userYoutube.setVisibility(View.VISIBLE);
+                            }
 
+                        }else {
+                            userFacebook.setVisibility(View.GONE);
+                            userInstgram.setVisibility(View.GONE);
+                            userYoutube.setVisibility(View.GONE);
+                        }
+
+                        followers.setText(mUser.getFollower()+"");
+                        followings.setText(mUser.getFollowings().size()+"");
+                        posts.setText(mUser.getRecipes().size()+"");
+
+                        adapter.setRecipeList(mUser.getRecipes());
                         break;
                     }
                 }
             }
         });
 
-        //userFacebook.setTag(user.getLinks().get());
 
         MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
             @Override
             public void onshare(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
 
             }
 
             @Override
             public void onlove(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
 
             }
 
             @Override
             public void onDislove(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
 
             }
 
             @Override
             public void onfollow(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
 
             }
         });
@@ -122,14 +163,16 @@ public class profileActivity extends AppCompatActivity {
 
             @Override
             public void onAddComment(Comment comment) {
-                viewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
+                interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
             }
         });
 
 
-        adapter = new profilePostItemAdapter(prevalent.PROFILE_ITEM);
+
+
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
+
 
         adapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
             @Override
@@ -145,7 +188,7 @@ public class profileActivity extends AppCompatActivity {
             case R.id.user_follow:
                 userFollow.setVisibility(View.GONE);
                 userChecked.setVisibility(View.VISIBLE);
-                viewModel.insertInteraction(new Interaction(mUser.getName(), mUser.getImageUrl(), "Follow"));
+                interactionsViewModel.insertInteraction(new Interaction(mUser.getName(), mUser.getImageUrl(), "Follow"));
 
                 break;
             case R.id.user_checked:
@@ -157,15 +200,24 @@ public class profileActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.user_instgram:
+                openLink(userInstgram.getTag().toString());
                 break;
             case R.id.user_youtube:
+                openLink(userYoutube.getTag().toString());
                 break;
             case R.id.user_facebook:
+                openLink(userFacebook.getTag().toString());
                 break;
             case R.id.user_image:
                 showImage(List.of(mUser.getImageUrl()), 0);
                 break;
         }
+    }
+
+    private void openLink(String tag) {
+        Intent intent=new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(tag));
+        startActivity(intent);
     }
 
     private void showImage(List<String> imgUrls, int pos) {

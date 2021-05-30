@@ -1,22 +1,26 @@
-package com.mahmoudjoe3.wasfa.ui.activities.profile;
+package com.mahmoudjoe3.wasfa.viewModel;
 
-import android.app.Application;
-
-import androidx.lifecycle.AndroidViewModel;
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mahmoudjoe3.wasfa.pojo.Comment;
-import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
-import com.mahmoudjoe3.wasfa.repo.InteractionRepo;
+import com.mahmoudjoe3.wasfa.repo.NLB_DB_Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileViewModel extends AndroidViewModel {
+public class SearchViewModel extends ViewModel {
+
+    private NLB_DB_Repository repository;
+
+    @ViewModelInject
+    public SearchViewModel(NLB_DB_Repository repository) {
+        this.repository=repository;
+    }
 
     private MutableLiveData<List<Recipe>> recipeMutableLiveData=new MutableLiveData<>();
     public MutableLiveData<List<Recipe>> getRecipeMutableLiveData() {
@@ -297,16 +301,6 @@ public class ProfileViewModel extends AndroidViewModel {
         return recipeMutableLiveData;
     }
 
-
-    private MutableLiveData<User> userLiveData=new MutableLiveData<>();
-    public LiveData<User> getUserLiveData() {
-        User user=new User(1,"MahmoudJoe3","123"
-                ,"https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                , "your are the best of yourself", "eg");
-        userLiveData.setValue(user);
-        return userLiveData;
-    }
-
     private MutableLiveData<List<User>> userListLiveData=new MutableLiveData<>();
     public LiveData<List<User>> getUserListLiveData() {
         List<User> users=new ArrayList<>();
@@ -358,22 +352,5 @@ public class ProfileViewModel extends AndroidViewModel {
         return userListLiveData;
     }
 
-
-    public ProfileViewModel(Application application) {
-        super(application);
-        interactionRepo = InteractionRepo.getInstance(application);
-        interactionsLiveData = interactionRepo.getInteractionsLiveData();
-    }
-
-    private InteractionRepo interactionRepo;
-    private LiveData<List<Interaction>> interactionsLiveData;
-
-    public void insertInteraction(Interaction interaction) {
-        interactionRepo.insertInteraction(interaction);
-    }
-
-    public void deleteInteraction(Interaction interaction) {
-        interactionRepo.deleteInteraction(interaction);
-    }
 
 }

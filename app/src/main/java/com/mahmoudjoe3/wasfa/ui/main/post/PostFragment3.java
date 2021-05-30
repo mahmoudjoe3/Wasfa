@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,10 +20,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akexorcist.snaptimepicker.SnapTimePickerDialog;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
+import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.viewModel.PostSharedViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,9 +94,16 @@ public class PostFragment3 extends Fragment {
                                         R.id.fragment_container, PostFragment1.getInstance()
                                 ).commit();
                                 //Todo send to api
+
                                 recipe.setComments(new ArrayList<>());
                                 recipe.setNumberOfShare(0);
                                 recipe.setNumberOfLike(0);
+                                User user=new Gson().fromJson(sharedPreferences.getString("user",null),User.class);
+                                List<Recipe> recipes=new ArrayList<>(user.getRecipes());
+                                recipes.add(0,recipe);
+                                user.setRecipes(recipes);
+                                editor.putString("user",new Gson().toJson(user));
+
                                 String recipeJson = gson.toJson(recipe);
                                 editor.putString("my_recipes", recipeJson);
                                 editor.apply();

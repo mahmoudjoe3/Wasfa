@@ -16,9 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
@@ -27,7 +25,9 @@ import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
-import com.mahmoudjoe3.wasfa.ui.main.SharedViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.HomeViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 import com.mahmoudjoe3.wasfa.ui.main.account.profilePostItemAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
 
@@ -36,11 +36,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.hilt.android.AndroidEntryPoint;
 
-
+@AndroidEntryPoint
 public class HomeFragment extends Fragment {
     private static final String TAG = "homey";
-    HomeViewModel viewModel;
+    HomeViewModel homeViewModel;
+    InteractionsViewModel interactionsViewModel;
     User mUser;
     SharedViewModel sharedViewModel;
     @BindView(R.id.shimmer_recycler_view)
@@ -65,7 +67,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        interactionsViewModel = new ViewModelProvider(this).get(InteractionsViewModel.class);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
@@ -76,7 +79,7 @@ public class HomeFragment extends Fragment {
         
         adapter = new RecipePostAdapter();
         recyclerView.setAdapter(adapter);
-        viewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+        homeViewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
                 if(recipe != null)
@@ -88,7 +91,7 @@ public class HomeFragment extends Fragment {
         profilePostItemAdapter=new profilePostItemAdapter(prevalent.COMMON_ITEM);
         mostCommonRecycle.setAdapter(profilePostItemAdapter);
         mostCommonRecycle.setHasFixedSize(true);
-        viewModel.getRecipeMutableLiveData().observe(this, new Observer<List<Recipe>>() {
+        homeViewModel.getRecipeMutableLiveData().observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
                 profilePostItemAdapter.setRecipeList(recipes);
@@ -112,7 +115,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        viewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+        homeViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user1) {
                 mUser = user1;
@@ -142,22 +145,22 @@ public class HomeFragment extends Fragment {
         adapter.setOninteractionClickListener(new RecipePostAdapter.OninteractionClickListener() {
             @Override
             public void onshare(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
             }
 
             @Override
             public void onlove(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
             }
 
             @Override
             public void onDislove(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
             }
 
             @Override
             public void onfollow(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
 
             }
         });
@@ -165,25 +168,25 @@ public class HomeFragment extends Fragment {
         MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
             @Override
             public void onshare(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
 
             }
 
             @Override
             public void onlove(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Loved"));
 
             }
 
             @Override
             public void onDislove(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "DisLoved"));
 
             }
 
             @Override
             public void onfollow(Recipe recipe) {
-                viewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
 
             }
         });
@@ -191,14 +194,15 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onAddComment(Comment comment) {
-                viewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
+                interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
+
             }
         });
 
         adapter.setOnProfileClickListener(new RecipePostAdapter.OnProfileClickListener() {
             @Override
             public void onClick(int userid) {
-                viewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+                homeViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
                     @Override
                     public void onChanged(List<User> users) {
                         for (User user : users){

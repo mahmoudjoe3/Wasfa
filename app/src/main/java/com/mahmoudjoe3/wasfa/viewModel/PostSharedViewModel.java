@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.main.post;
+package com.mahmoudjoe3.wasfa.viewModel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

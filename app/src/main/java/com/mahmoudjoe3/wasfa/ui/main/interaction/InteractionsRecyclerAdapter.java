@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
@@ -38,6 +39,9 @@ public class InteractionsRecyclerAdapter extends RecyclerView.Adapter<Interactio
         holder.postAccountTextView.setText(postAccount);
         holder.interactWithTextView.setText(interactionList.get(position).getInteractWith());
         holder.dateTimeTextView.setText(MyLogic.getTimeFrom(interactionList.get(position).getDateTime()));
+
+        Glide.with(holder.profileImageView).load(interactionList.get(position).getImageUrl()).into(holder.profileImageView);
+
         holder.deleteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

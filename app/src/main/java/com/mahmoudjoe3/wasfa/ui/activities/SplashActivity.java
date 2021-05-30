@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.mahmoudjoe3.wasfa.R;
-import com.mahmoudjoe3.wasfa.ui.activities.login.LoginActivity;
+import com.mahmoudjoe3.wasfa.ui.activities.auth.LoginActivity;
 
+import dagger.hilt.android.AndroidEntryPoint;
+@AndroidEntryPoint
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -22,6 +24,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();
             }
-        }, 2000);
+        }, 100);
     }
 }

@@ -23,6 +23,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
+import com.mahmoudjoe3.wasfa.viewModel.PostSharedViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;

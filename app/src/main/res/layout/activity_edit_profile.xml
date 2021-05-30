@@ -103,7 +103,7 @@
                 app:met_floatingLabelTextColor="@color/colorPrimaryDark"
                 app:met_iconLeft="@drawable/ic_user"
                 app:met_iconPadding="0dp"
-                app:met_maxCharacters="14"
+                app:met_maxCharacters="15"
                 app:met_minCharacters="4" />
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -169,7 +169,7 @@
                     >
 
                     <RadioButton
-                        android:id="@+id/radioButton2"
+                        android:id="@+id/male"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Male"
@@ -177,7 +177,7 @@
                         />
 
                     <RadioButton
-                        android:id="@+id/radioButton"
+                        android:id="@+id/female"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Female"
@@ -201,7 +201,7 @@
                 android:id="@+id/instagram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Instagram link"
+                android:hint="Instagram"
                 android:text=""
                 app:met_baseColor="#D81B60"
                 app:met_clearButton="true"
@@ -215,7 +215,7 @@
                 android:id="@+id/facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Facebook link"
+                android:hint="Facebook"
                 android:text=""
                 app:met_baseColor="#1E88E5"
                 app:met_clearButton="true"
@@ -229,7 +229,7 @@
                 android:id="@+id/youtube"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Youtube link"
+                android:hint="Youtube"
                 android:text=""
                 app:met_baseColor="#B50C00"
                 app:met_clearButton="true"
