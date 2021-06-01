@@ -1,30 +1,25 @@
 package com.mahmoudjoe3.wasfa.ui.main;
 
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.mahmoudjoe3.wasfa.R;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
-import com.mahmoudjoe3.wasfa.ui.activities.profile.EditProfileActivity;
+import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +40,9 @@ public class MainActivity extends AppCompatActivity  {
     String TAG="taggggg";
 
 
+
+    SharedViewModel sharedViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +50,8 @@ public class MainActivity extends AppCompatActivity  {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         SetUpNavViewWithViewPager(savedInstanceState);
+
+
 
     }
 

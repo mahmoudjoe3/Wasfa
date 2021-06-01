@@ -1,5 +1,13 @@
 package com.mahmoudjoe3.wasfa.pojo;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class UserPost {
 
     /**
@@ -27,6 +35,8 @@ public class UserPost {
     private String Nationality;
     private String CreatedDate;
     private int FollowersCount;
+    private List<Following> followings;
+    private List<String> links;
 
 
 
@@ -43,7 +53,59 @@ public class UserPost {
         this.Nationality = nationality;
         this.CreatedDate = ""+System.currentTimeMillis();
         this.FollowersCount = 0;
+        links=new ArrayList<>(Arrays.asList("","",""));
+
     }
+
+    public static UserPost parseUserRespone(String userJsonString) {
+        try {
+            JSONObject jsonObject = new JSONObject(userJsonString);
+            JSONObject userObject = jsonObject.getJSONArray("Users").getJSONObject(0);
+
+            int id = userObject.getInt("Id");
+            String name = userObject.getString("Name");
+            String email = userObject.getString("Email");
+            String password = userObject.getString("Password");
+            String gender = userObject.getString("Gender");
+            String imageUrl = userObject.getString("ImageUrl");
+            String phone = userObject.getString("Phone");
+            String bio = userObject.getString("Bio");
+            String nationality = userObject.getString("Nationality");
+            long createdDate = userObject.getLong("CreatedDate");
+            int followersCount = userObject.getInt("FollowersCount");
+            List<String> links = new ArrayList<>();
+            List<Following> followingList = new ArrayList<>();
+
+            JSONArray linksArray = userObject.getJSONArray("Links");
+            JSONArray followings = userObject.getJSONArray("Followings");
+
+            for (int i = 0; i < followings.length(); i++) {
+                JSONObject obj = followings.getJSONObject(i);
+                int followingId = obj.getInt("FollowingId");
+                String followingName = obj.getString("FollowingName");
+                String followingImg = obj.getString("FollowingImage");
+                followingList.add(new Following(followingId, followingName, followingImg));
+            }
+
+            for (int i = 0; i < linksArray.length(); i++) {
+                JSONObject obj = linksArray.getJSONObject(i);
+                links.add(obj.getString("Link"));
+            }
+            //    public UserPost(final int id, final String name, final String email, final String password, final String gender, final String phone, final String nationality) {
+            UserPost u=new UserPost(id, name, email, password, gender,phone,nationality);
+            u.setBio(bio);
+            u.setCreatedDate(String.valueOf(createdDate));
+            u.setFollowersCount(followersCount);
+            u.setFollowings(followingList);
+            u.setImageUrl(imageUrl);
+            u.setLinks(links);
+            return u;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public int getId() {
         return Id;
@@ -131,5 +193,21 @@ public class UserPost {
 
     public void setFollowersCount(int FollowersCount) {
         this.FollowersCount = FollowersCount;
+    }
+
+    public List<Following> getFollowings() {
+        return followings;
+    }
+
+    public void setFollowings(List<Following> followings) {
+        this.followings = followings;
+    }
+
+    public List<String> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<String> links) {
+        this.links = links;
     }
 }

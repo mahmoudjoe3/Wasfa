@@ -21,9 +21,9 @@ public class viewpagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 1:
-                return new SearchFragment();
+                return SearchFragment.getInstance();
             case 2:
-                return new PostFragment();
+                return PostFragment.getInstance();
             case 3:
                 return new interactionsFragment();
             case 4:

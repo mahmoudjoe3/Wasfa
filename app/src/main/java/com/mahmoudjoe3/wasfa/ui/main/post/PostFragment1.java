@@ -33,7 +33,9 @@ import com.hbb20.CountryCodePicker;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.viewModel.PostSharedViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 import com.opensooq.supernova.gligar.GligarPicker;
 import com.squareup.picasso.Picasso;
 
@@ -44,9 +46,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.hilt.android.AndroidEntryPoint;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
+@AndroidEntryPoint
 public class PostFragment1 extends Fragment {
 
     @BindView(R.id.userProfile_imageView)
@@ -68,9 +71,9 @@ public class PostFragment1 extends Fragment {
     private View view;
 
     private SharedPreferences sharedPreferences;
-    private Gson gson;
-    private User user;
+    private UserPost user;
 
+    SharedViewModel sharedViewModel;
     public PostFragment1() {
     }
 
@@ -92,6 +95,7 @@ public class PostFragment1 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.post_fragement1, container, false);
         ButterKnife.bind(this, view);
+        sharedViewModel=new ViewModelProvider(this).get(SharedViewModel.class);
         init();
         initRecyclerView();
         pickImageButton.setOnClickListener(new View.OnClickListener() {
@@ -224,11 +228,17 @@ public class PostFragment1 extends Fragment {
         countryCodePicker = view.findViewById(R.id.countryCodePicker);
         imageUrls = new ArrayList<>();
         recipe = new Recipe();
-        sharedPreferences = getActivity().getSharedPreferences("new_user", Context.MODE_PRIVATE);
-        gson = new Gson();
-        user = gson.fromJson(sharedPreferences.getString("user", null), User.class);
-        userNameTextView.setText(user.getName());
-        Picasso.get().load(user.getImageUrl()).fit().centerCrop().into(userProfileImageView);
+        sharedPreferences = getActivity().getSharedPreferences("userId", Context.MODE_PRIVATE);
+        int id=sharedPreferences.getInt("id", 0);
+        sharedViewModel.getUser(id).observe(getViewLifecycleOwner(), new Observer<UserPost>() {
+            @Override
+            public void onChanged(UserPost userPost) {
+                user=userPost;
+                userNameTextView.setText(user.getName());
+                Picasso.get().load(user.getImageUrl()).fit().centerCrop().into(userProfileImageView);
+            }
+        });
+
     }
 
     private void initRecyclerView() {

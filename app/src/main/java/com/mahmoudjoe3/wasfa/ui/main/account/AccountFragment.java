@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,15 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
-import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.activities.auth.LoginActivity;
-import com.mahmoudjoe3.wasfa.ui.activities.profile.EditProfileActivity;
 import com.mahmoudjoe3.wasfa.viewModel.AccountViewModel;
 import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
 import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
@@ -42,6 +43,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.hilt.android.AndroidEntryPoint;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 @AndroidEntryPoint
 public class AccountFragment extends Fragment {
@@ -72,7 +78,7 @@ public class AccountFragment extends Fragment {
     RecyclerView postRecycle;
 
     profilePostItemAdapter adapter;
-    User mUser;
+    UserPost mUser;
 
     private SharedPreferences sharedPreferences;
     private Gson gson;
@@ -85,50 +91,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        
-        sharedPreferences = getActivity().getSharedPreferences("new_user", Context.MODE_PRIVATE);
-        gson = new Gson();
-        mUser = gson.fromJson(sharedPreferences.getString("user", ""), User.class);
         // Inflate the layout for this fragment
-        Glide.with(user_image.getContext()).load(mUser.getImageUrl())
-                .into(user_image);
-        user_name.setText("@" + mUser.getName());
-        userNameToolbar.setText(mUser.getName());
-        bio.setText(mUser.getBio());
-        if(mUser.getLinks()!=null) {
-            if(mUser.getLinks().get(0)==null||mUser.getLinks().get(0).isEmpty())
-                userFacebook.setVisibility(View.GONE);
-            else
-            {
-                userFacebook.setTag(mUser.getLinks().get(0));
-                userFacebook.setVisibility(View.VISIBLE);
-            }
-            if(mUser.getLinks().get(1)==null||mUser.getLinks().get(1).isEmpty())
-                userInstgram.setVisibility(View.GONE);
-            else
-            {
-                userInstgram.setTag(mUser.getLinks().get(1));
-                userInstgram.setVisibility(View.VISIBLE);
-            }
-            if(mUser.getLinks().get(2)==null||mUser.getLinks().get(2).isEmpty())
-                userYoutube.setVisibility(View.GONE);
-            else
-            {
-                userYoutube.setTag(mUser.getLinks().get(2));
-                userYoutube.setVisibility(View.VISIBLE);
-            }
-
-        }else {
-            userFacebook.setVisibility(View.GONE);
-            userInstgram.setVisibility(View.GONE);
-            userYoutube.setVisibility(View.GONE);
-        }
-        adapter.setRecipeList(mUser.getRecipes());
-
-        followers.setText(mUser.getFollower()+"");
-        followings.setText(mUser.getFollowings().size()+"");
-        posts.setText(mUser.getRecipes().size()+"");
-
     }
 
     @Override
@@ -190,11 +153,64 @@ public class AccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sharedPreferences = getActivity().getSharedPreferences("userId", MODE_PRIVATE);
+        accountViewModel=new ViewModelProvider(this).get(AccountViewModel.class);
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-        sharedViewModel.getData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        sharedViewModel.getUser(sharedPreferences.getInt("id",0)).observe(getActivity(), new Observer<UserPost>() {
             @Override
-            public void onChanged(String s) {
+            public void onChanged(UserPost userPost) {
                 //recived data
+                mUser=userPost;
+                Glide.with(user_image.getContext()).load(mUser.getImageUrl())
+                        .into(user_image);
+                user_name.setText("@" + mUser.getName());
+                userNameToolbar.setText(mUser.getName());
+                bio.setText(mUser.getBio());
+                if(mUser.getLinks()!=null) {
+                    if(mUser.getLinks().size()<1||mUser.getLinks().get(0)==null||mUser.getLinks().get(0).isEmpty())
+                        userFacebook.setVisibility(View.GONE);
+                    else
+                    {
+                        userFacebook.setTag(mUser.getLinks().get(0));
+                        userFacebook.setVisibility(View.VISIBLE);
+                    }
+                    if(mUser.getLinks().size()<2||mUser.getLinks().get(1)==null||mUser.getLinks().get(1).isEmpty())
+                        userInstgram.setVisibility(View.GONE);
+                    else
+                    {
+                        userInstgram.setTag(mUser.getLinks().get(1));
+                        userInstgram.setVisibility(View.VISIBLE);
+                    }
+                    if(mUser.getLinks().size()<3||mUser.getLinks().get(2)==null||mUser.getLinks().get(2).isEmpty())
+                        userYoutube.setVisibility(View.GONE);
+                    else
+                    {
+                        userYoutube.setTag(mUser.getLinks().get(2));
+                        userYoutube.setVisibility(View.VISIBLE);
+                    }
+
+                }else {
+                    userFacebook.setVisibility(View.GONE);
+                    userInstgram.setVisibility(View.GONE);
+                    userYoutube.setVisibility(View.GONE);
+                }
+                accountViewModel.getUserRecipes(mUser.getId()).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        List<Recipe> recipes=Recipe.parseJson(response.body().toString());
+                        adapter.setRecipeList(recipes);
+                        posts.setText(recipes.size()+"");
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                followers.setText(mUser.getFollowersCount()+"");
+                followings.setText(mUser.getFollowings().size()+"");
             }
         });
 
@@ -212,7 +228,7 @@ public class AccountFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_editProfile:
-                startActivity(new Intent(getActivity(), EditProfileActivity.class));
+                startActivity(new Intent(getActivity(), EditAccountActivity.class));
                 break;
             case R.id.user_instgram:
                 openLink(userInstgram.getTag().toString());
@@ -241,7 +257,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void logout() {
-        SharedPreferences sharedPreferences=getActivity().getSharedPreferences("new_user",Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences=getActivity().getSharedPreferences("new_user", MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putBoolean("remember_me",false);
         editor.apply();

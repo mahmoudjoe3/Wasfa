@@ -34,4 +34,14 @@ public class Following {
     public void setImageUrl(final String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public static class followingPost{
+        int Id; int UserId;int FollowerId;
+
+        public followingPost(int id, int userId, int followerId) {
+            Id = id;
+            UserId = userId;
+            FollowerId = followerId;
+        }
+    }
 }

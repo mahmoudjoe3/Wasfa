@@ -3,6 +3,7 @@ package com.mahmoudjoe3.wasfa.ui.activities.auth;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -17,8 +18,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.ui.main.MainActivity;
 import com.mahmoudjoe3.wasfa.viewModel.AuthViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +31,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.mahmoudjoe3.wasfa.logic.MyLogic.parseUserRespone;
 
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
@@ -60,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         authViewModel=new ViewModelProvider(this).get(AuthViewModel.class);
-
         init();
     }
 
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             authViewModel.login(userName.toLowerCase()).enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    User user = parseUserRespone(response.body().toString());
+                    UserPost user = UserPost.parseUserRespone(response.body().toString());
                     if(user!=null&&response.code()>=200&&response.code()<=299) {
                         if (user.getPassword().equals(passwrod)) {
                             if (rememberCheckBox.isChecked()) {
@@ -94,7 +95,14 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putBoolean("remember_me", false);
                             }
                             editor.commit();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                            SharedPreferences shared = getSharedPreferences("userId", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = shared.edit();
+                            editor.putInt("id", user.getId());
+                            editor.commit();
+
+                            Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(LoginActivity.this, "password is incorrect", Toast.LENGTH_SHORT).show();
                         }

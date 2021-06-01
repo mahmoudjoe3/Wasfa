@@ -1,4 +1,4 @@
-package com.mahmoudjoe3.wasfa.ui.activities.profile;
+package com.mahmoudjoe3.wasfa.ui.main.account;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,14 +16,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
+import com.mahmoudjoe3.wasfa.ui.main.MainActivity;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
+import com.mahmoudjoe3.wasfa.viewModel.AccountViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
@@ -33,17 +40,21 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.hilt.android.AndroidEntryPoint;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
-
-public class EditProfileActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+@AndroidEntryPoint
+public class EditAccountActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.acc_image)
     CircleImageView accImage;
 
-    User user;
+    UserPost user;
     Uri imageUri;
     @BindView(R.id.user_name_toolbar)
     TextView userNameToolbar;
@@ -65,18 +76,25 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
     MaterialEditText facebook;
     @BindView(R.id.youtube)
     MaterialEditText youtube;
-    SharedPreferences.Editor editor;
+    SharedViewModel sharedViewModel;
+    AccountViewModel accountViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         ButterKnife.bind(this);
+        SharedPreferences sharedPreferences = getSharedPreferences("userId", MODE_PRIVATE);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("new_user", Context.MODE_PRIVATE);
-         editor = sharedPreferences.edit();
-        String userStr = sharedPreferences.getString("user", null);
-        user = new Gson().fromJson(userStr, User.class);
-        init();
+        sharedViewModel=new ViewModelProvider(this).get(SharedViewModel.class);
+        accountViewModel=new ViewModelProvider(this).get(AccountViewModel.class);
+        sharedViewModel.getUser(sharedPreferences.getInt("id",0)).observe(this, new Observer<UserPost>() {
+            @Override
+            public void onChanged(UserPost userPost) {
+                user = userPost;
+                init();
+            }
+        });
+
     }
 
     private void init() {
@@ -89,13 +107,12 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
         if(user.getGender().equalsIgnoreCase("male")){
             male.setChecked(true);
         }else female.setChecked(true);
-
         if(user.getLinks()!=null) {
-            if (user.getLinks().get(0) != null)
+            if (user.getLinks().size()>=1&&user.getLinks().get(0) != null)
                 facebook.setText(user.getLinks().get(0));
-            if (user.getLinks().get(1) != null)
+            if (user.getLinks().size()>=2&&user.getLinks().get(1) != null)
                 instagram.setText(user.getLinks().get(1));
-            if (user.getLinks().get(2) != null)
+            if (user.getLinks().size()>=3&&user.getLinks().get(2) != null)
                 youtube.setText(user.getLinks().get(2));
         }
 
@@ -113,7 +130,6 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
             case R.id.edit_picture:
                 pic_Edit();
                 break;
-
         }
     }
 
@@ -124,20 +140,32 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
         user.setBio(editBio.getText().toString());
         user.setPhone(editAccPhone.getText().toString());
         user.setEmail(editAccEmail.getText().toString());
-        if(user.getGender().equalsIgnoreCase("male")){
+        if(male.isChecked()){
             user.setGender("male");
         }else user.setGender("female");
 
         List<String>lnks=new ArrayList<>();
-        lnks.add(facebook.getText().toString());
-        lnks.add(instagram.getText().toString());
-        lnks.add(youtube.getText().toString());
+        lnks.add(facebook.getText().toString()+" ");
+        lnks.add(instagram.getText().toString()+" " );
+        lnks.add(youtube.getText().toString()+" " );
         user.setLinks(lnks);
 
-        editor.putString("user",new Gson().toJson(user));
-        editor.apply();
-        Toast.makeText(this, "Profile edited succeccfully", Toast.LENGTH_SHORT).show();
-        finish();
+        accountViewModel.UpdateUser(user).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                Toast.makeText(EditAccountActivity.this, "Profile edited succeccfully", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(EditAccountActivity.this, MainActivity.class);
+                intent.putExtra("sharedEdit",new Gson().toJson(user));
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(EditAccountActivity.this, ""+t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
@@ -228,7 +256,7 @@ public class EditProfileActivity extends AppCompatActivity implements EasyPermis
     private void RequestCameraAndStoragePermission(int i) {
         String[] perms = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(EditProfileActivity.this, perms)) {
+        if (EasyPermissions.hasPermissions(EditAccountActivity.this, perms)) {
             if (i == 1) {
                 openGallery();
             } else {

@@ -2,6 +2,7 @@ package com.mahmoudjoe3.wasfa.repo;
 
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.networking.FoodApi;
+import com.mahmoudjoe3.wasfa.pojo.Following;
 import com.mahmoudjoe3.wasfa.pojo.UserPost;
 
 import org.json.JSONArray;
@@ -24,5 +25,19 @@ public class FoodRepository {
     }
     public Call<JsonObject> register( UserPost userPost){
         return foodApi.Register(userPost);
+    }
+
+    public Call<JsonObject> getUserRecipes( int userId){
+        return foodApi.getUserRecipes(userId);
+    }
+    public Call<JsonObject> getUserBy(int id) {
+        return foodApi.getUserBy(id);
+    }
+    public Call<JsonObject> follow(Following.followingPost followingPost) {
+        return foodApi.follow(followingPost);
+    }
+
+    public Call<JsonObject> update(UserPost user,int id) {
+        return foodApi.updateUser(user,id);
     }
 }

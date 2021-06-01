@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.repo.NLB_DB_Repository;
 
 import java.util.ArrayList;
@@ -295,64 +296,14 @@ public class HomeViewModel extends ViewModel {
         return recipeMutableLiveData;
     }
 
-    private MutableLiveData<List<User>> userListLiveData=new MutableLiveData<>();
-    public LiveData<List<User>> getUserListLiveData() {
-        List<User> users=new ArrayList<>();
-        User user=new User(1,"Mahmoud Joe3","123"
-                ,"https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                , "your are the best of yourself", "eg");
-        users.add(user);
-        user=new User(2,"Mahmoud Mamdouh","123"
-                ,"https://api.time.com/wp-content/uploads/2014/07/301386_full1.jpg?quality=85&w=766&h=512&crop=1"
-                , "expelliarmus", "eg");
-        users.add(user);
-        user=new User(3,"Mahmoud Emad","123"
-                ,"https://upload.wikimedia.org/wikipedia/en/d/d7/Harry_Potter_character_poster.jpg"
-                , "god help us", "eg");
-        users.add(user);
-        user=new User(4,"Nada Ahmed","123"
-                ,"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4muXlltI4S4Rh9bvUOyrJIdKMw33AjDuvPg&usqp=CAU"
-                , "allways love yourself", "eg");
-        users.add(user);
-        user=new User(5,"Mariam Jemy","123"
-                ,"https://harrypotterfanfiction.com/var/covers/340413.jpg?1595391755"
-                , "hapiness could be found in the darkest times", "eg");
-        users.add(user);
-        user=new User(6,"hermoine Granger","123"
-                ,"https://www.denofgeek.com/wp-content/uploads/2020/08/Harry-Potter-Streaming-Peacock.jpg?fit=2048%2C1152"
-                , "it's leviosa", "eg");
-        users.add(user);
-        user=new User(7,"Nemo Mostafa","123"
-                ,"https://static.wikia.nocookie.net/hpmor/images/5/58/Harry_James_Potter-Evans-Verres.jpg/revision/latest/top-crop/width/360/height/450?cb=20120504152651"
-                , "don't give up", "eg");
-        users.add(user);
-
-        user=new User(8,"Eman Mahmoud","123"
-                ,"https://media2.s-nbcnews.com/j/newscms/2021_12/1694108/gg-refresh-harry-potter-bd-2x1-210326_ddae56ff064dd8e19652dd11f2658b1b.fit-760w.jpg"
-                , "your are the best of yourself", "eg");
-        users.add(user);
-
-        user=new User(9,"Mai Emad","123"
-                ,"https://cdn.vox-cdn.com/thumbor/Hhuc156xe_2o03_0yBr3KZR7-DY=/0x0:260x170/1200x800/filters:focal(110x65:150x105)/cdn.vox-cdn.com/uploads/chorus_image/image/69116416/595152458.0.jpg"
-                ,"your are the best of yourself", "eg");
-        users.add(user);
-        user=new User(10,"Sawaf","123"
-                ,"https://pyxis.nymag.com/v1/imgs/171/429/c95b07becc2bef532d9669b4824ea4386f-08-harry-potter.rsquare.w700.jpg"
-                , "allways love yourself", "eg");
-        users.add(user);
-
-        userListLiveData.setValue(users);
-
+    private MutableLiveData<List<UserPost>> userListLiveData=new MutableLiveData<>();
+    public LiveData<List<UserPost>> getUserListLiveData() {
         return userListLiveData;
     }
 
 
-    private MutableLiveData<User> userLiveData=new MutableLiveData<>();
-    public LiveData<User> getUserLiveData() {
-        User user=new User(1,"MahmoudJoe3","123"
-                ,"https://avatars.githubusercontent.com/u/49236858?s=400&u=4062ee63badec0dd55b775b5be2370c3ad582a44&v=4"
-                , "your are the best of yourself", "eg");
-        userLiveData.setValue(user);
+    private MutableLiveData<UserPost> userLiveData=new MutableLiveData<>();
+    public LiveData<UserPost> getUserLiveData() {
         return userLiveData;
     }
 

@@ -1,6 +1,7 @@
 package com.mahmoudjoe3.wasfa.ui.main.search;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,9 +26,12 @@ import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
+import com.mahmoudjoe3.wasfa.ui.main.post.PostFragment1;
 import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
 import com.mahmoudjoe3.wasfa.viewModel.SearchViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static android.content.Context.MODE_PRIVATE;
 
 @AndroidEntryPoint
 public class SearchFragment extends Fragment {
@@ -53,13 +61,24 @@ public class SearchFragment extends Fragment {
     private LottieAnimationView lotti_search;
     private PeopleSearchRecyclerAdapter peopleSearchRecyclerAdapter;
     private List<User> userList;
-    User user=new User();
+    UserPost user;
     private RecipeSearchRecyclerAdapter recipeSearchRecyclerAdapter;
     private List<Recipe> recipeList;
     private View view;
 
+    SharedViewModel sharedViewModel;
+
     public SearchFragment() {
         // Required empty public constructor
+    }
+
+    private static SearchFragment searchFragment;
+
+    public static SearchFragment getInstance() {
+        if (searchFragment == null) {
+            searchFragment = new SearchFragment();
+        }
+        return searchFragment;
     }
 
 
@@ -70,16 +89,32 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userId", MODE_PRIVATE);
+
+        sharedViewModel.getUser(sharedPreferences.getInt("id",0)).observe(getViewLifecycleOwner(), new Observer<UserPost>() {
+            @Override
+            public void onChanged(UserPost userPost) {
+                user=userPost;
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         interactionsViewModel=new ViewModelProvider(this).get(InteractionsViewModel.class);
+        sharedViewModel=new ViewModelProvider(this).get(SharedViewModel.class);
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
         init();
         initPeopleRecycler();
         initRecipeRecycler();
+
+
 
         MyLogic.setOninteractionClickListener(new MyLogic.OninteractionClickListener() {
             @Override

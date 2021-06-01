@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModel;
 import com.mahmoudjoe3.wasfa.repo.NLB_DB_Repository;
 
 
-public class ApiViewModel extends ViewModel {
+public class NLPApiViewModel extends ViewModel {
     private MutableLiveData<String > responseMutableLiveData=new MutableLiveData<>();
     private NLB_DB_Repository repository;
 
     @ViewModelInject
-    public ApiViewModel(NLB_DB_Repository repository) {
+    public NLPApiViewModel(NLB_DB_Repository repository) {
         this.repository = repository;
     }
     public LiveData<String > getSentimentAnalysis(){

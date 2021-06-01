@@ -2,7 +2,12 @@ package com.mahmoudjoe3.wasfa.pojo;
 
 import android.graphics.Bitmap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Recipe {
@@ -47,6 +52,71 @@ public class Recipe {
         this.numberOfShare = numberOfShare;
         this.imgUrls = imgUrls;
         this.comments=new ArrayList<>();
+    }
+
+    public static List<Recipe> parseJson(String jsonResponse) {
+        List<Recipe> recipeList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONArray recipeArray = jsonObject.getJSONArray("Recipes");
+
+            for(int i = 0; i < recipeArray.length(); i++) {
+                JSONObject recipe = recipeArray.getJSONObject(i);
+                int id = recipe.getInt("Id");
+                String title = recipe.getString("Title");
+                String description = recipe.getString("Description");
+                String ingredients = recipe.getString("Ingredients");
+                List<String> ingredientList = splitString(ingredients);
+                String steps = recipe.getString("Steps");
+                List<String> stepList = splitString(steps);
+                String nationality = recipe.getString("Nationality");
+                long createdDate = recipe.getLong("CreatedDate");
+                String prepareTime = recipe.getString("PrepareTime");
+                String userName = recipe.getString("UserName");
+                String userImageUrl = recipe.getString("UserImageUrl");
+                int loveCount = recipe.getInt("LoveCount");
+                int shareCount = recipe.getInt("ShareCount");
+                int userId = recipe.getInt("UserId");
+                List<String> links = new ArrayList<>();
+                List<Comment> commentList = new ArrayList<>();
+                JSONArray commentArray = recipe.getJSONArray("Reviews");
+
+                for (int j = 0; j < commentArray.length(); j++) {
+                    JSONObject obj = commentArray.getJSONObject(j);
+                    int reviewId = obj.getInt("Id");
+                    int reviewUserId = obj.getInt("UserId");
+                    String reviewUserName = obj.getString("UserName");
+                    String reviewUserImg = obj.getString("UserImage");
+                    String reviewText = obj.getString("ReviewText");
+                    float reviewResult = Float.parseFloat(obj.getString("ReviewResult"));
+                    boolean isCreator = obj.getBoolean("IsCreator");
+                    long reviewCreatedDate = obj.getLong("CreatedData");
+                    commentList.add(new Comment(reviewId, reviewUserId, reviewUserName, reviewUserImg, isCreator, reviewCreatedDate, reviewText, reviewResult));
+                }
+
+                JSONArray categoryArray = recipe.getJSONArray("Categories");
+                List<String> categoryList = new ArrayList<>();
+                for (int j = 0; j < categoryArray.length(); j++) {
+                    categoryList.add(categoryArray.getJSONObject(j).getString("Title"));
+                }
+
+                JSONArray imgArray = recipe.getJSONArray("ImagesUrls");
+                List<String> imgList = new ArrayList<>();
+                for (int j = 0; j < imgArray.length(); j++) {
+                    imgList.add(imgArray.getString(j));
+                }
+
+                Recipe r = new Recipe(id, userId, userName,userImageUrl, title, description,nationality,createdDate,prepareTime, categoryList,ingredientList,stepList,loveCount,shareCount,imgList);
+                recipeList.add(r);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return recipeList;
+    }
+
+    private static List<String> splitString(String string) {
+        return new ArrayList<String>(Arrays.asList(string.split(",")));
     }
 
 

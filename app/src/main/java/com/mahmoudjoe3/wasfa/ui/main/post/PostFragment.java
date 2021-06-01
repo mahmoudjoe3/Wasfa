@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,21 @@ import com.mahmoudjoe3.wasfa.viewModel.PostViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class PostFragment extends Fragment   {
     PostViewModel viewModel;
     public PostFragment() {
         // Required empty public constructor
+    }
+    private static PostFragment postFragment;
+
+    public static PostFragment getInstance() {
+        if (postFragment == null) {
+            postFragment = new PostFragment();
+        }
+        return postFragment;
     }
 
     @Override

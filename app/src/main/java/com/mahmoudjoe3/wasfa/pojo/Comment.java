@@ -10,6 +10,7 @@ public class Comment {
     private long createdTime;
     private String commentText;
     private int loveCount;
+    private float reviewResult;
 
     public Comment(int recipeId,int userId,String username, String userImageUrl, String commentText) {
         this.recipeId=recipeId;
@@ -20,6 +21,17 @@ public class Comment {
         this.commentText = commentText;
         createdTime=System.currentTimeMillis();
         loveCount=0;
+    }
+
+    public Comment(int id, int userId, String username, String userImageUrl, boolean creator, long createdTime, String commentText, float reviewResult) {
+        this.id = id;
+        this.userId = userId;
+        this.username = username;
+        this.userImageUrl = userImageUrl;
+        this.creator = creator;
+        this.createdTime = createdTime;
+        this.commentText = commentText;
+        this.reviewResult = reviewResult;
     }
 
     public Comment() {

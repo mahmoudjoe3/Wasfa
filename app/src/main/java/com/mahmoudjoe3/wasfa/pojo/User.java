@@ -1,5 +1,9 @@
 package com.mahmoudjoe3.wasfa.pojo;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +19,7 @@ public class User implements Serializable {
 
     public User() {
     }
+
 
     public User(int id, String name, String password, String imageUrl, String bio, String nationality) {
         this.id = id;
@@ -48,6 +53,8 @@ public class User implements Serializable {
         this.followings = followings;
         this.follower = follower;
     }
+
+
 
     public int getId() {
         return id;

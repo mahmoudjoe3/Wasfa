@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.repo.FoodRepository;
 import com.mahmoudjoe3.wasfa.repo.NLB_DB_Repository;
 
 import java.util.ArrayList;
@@ -15,10 +16,10 @@ import java.util.List;
 
 public class SearchViewModel extends ViewModel {
 
-    private NLB_DB_Repository repository;
+    private FoodRepository repository;
 
     @ViewModelInject
-    public SearchViewModel(NLB_DB_Repository repository) {
+    public SearchViewModel(FoodRepository repository) {
         this.repository=repository;
     }
 

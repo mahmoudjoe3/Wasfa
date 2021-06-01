@@ -23,6 +23,7 @@ import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
 import com.mahmoudjoe3.wasfa.viewModel.HomeViewModel;
@@ -38,12 +39,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.hilt.android.AndroidEntryPoint;
 
+import static android.content.Context.MODE_PRIVATE;
+
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
     private static final String TAG = "homey";
     HomeViewModel homeViewModel;
     InteractionsViewModel interactionsViewModel;
-    User mUser;
+    UserPost mUser;
     SharedViewModel sharedViewModel;
     @BindView(R.id.shimmer_recycler_view)
     RecyclerView recyclerView;
@@ -73,7 +76,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
 
-        sharedPreferences = getActivity().getSharedPreferences("new_user", Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences("new_user", MODE_PRIVATE);
         gson = new Gson();
         Recipe recipe = gson.fromJson(sharedPreferences.getString("my_recipes", null),Recipe.class);
         
@@ -115,9 +118,9 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        homeViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+        homeViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserPost>() {
             @Override
-            public void onChanged(User user1) {
+            public void onChanged(UserPost user1) {
                 mUser = user1;
             }
         });
@@ -202,26 +205,18 @@ public class HomeFragment extends Fragment {
         adapter.setOnProfileClickListener(new RecipePostAdapter.OnProfileClickListener() {
             @Override
             public void onClick(int userid) {
-                homeViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
-                    @Override
-                    public void onChanged(List<User> users) {
-                        for (User user : users){
-                            if(userid==user.getId()){
-                                Intent intent=new Intent(getActivity(), profileActivity.class );
-                                intent.putExtra(profileActivity.USER_INTENT,user);
-                                startActivity(intent);
-                                break;
-                            }
-                        }
-                    }
-                });
+                Intent intent=new Intent(getActivity(),profileActivity.class);
+                intent.putExtra(profileActivity.USER_INTENT,userid);
+                startActivity(intent);
             }
         });
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userId", MODE_PRIVATE);
+
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-        sharedViewModel.getData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        sharedViewModel.getUser(sharedPreferences.getInt("id",0)).observe(getViewLifecycleOwner(), new Observer<UserPost>() {
             @Override
-            public void onChanged(String s) {
+            public void onChanged(UserPost s) {
                 //recived data
             }
         });

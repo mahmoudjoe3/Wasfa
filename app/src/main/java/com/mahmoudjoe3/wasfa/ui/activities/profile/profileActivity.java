@@ -1,11 +1,13 @@
 package com.mahmoudjoe3.wasfa.ui.activities.profile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -13,17 +15,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
+import com.mahmoudjoe3.wasfa.pojo.Following;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.main.account.profilePostItemAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
 import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
 import com.mahmoudjoe3.wasfa.viewModel.ProfileViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.hilt.android.AndroidEntryPoint;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @AndroidEntryPoint
 public class profileActivity extends AppCompatActivity {
@@ -67,9 +76,13 @@ public class profileActivity extends AppCompatActivity {
     RecyclerView postRecycle;
 
     profilePostItemAdapter adapter;
-    User mUser;
+    UserPost me,mUser;
+    int sec_user_id;
     ProfileViewModel profileViewModel;
     InteractionsViewModel interactionsViewModel;
+    SharedViewModel sharedViewModel;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,58 +91,70 @@ public class profileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         interactionsViewModel = new ViewModelProvider(this).get(InteractionsViewModel.class);
+        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         adapter = new profilePostItemAdapter(prevalent.PROFILE_ITEM);
+        sharedPreferences = getSharedPreferences("userId", MODE_PRIVATE);
 
-        int id =  getIntent().getIntExtra(USER_INTENT,1);
-        profileViewModel.getUserListLiveData().observe(this, new Observer<List<User>>() {
+        sec_user_id=getIntent().getIntExtra(USER_INTENT,1);
+        sharedViewModel.getUser(sharedPreferences.getInt("id", 0)).observe(this, new Observer<UserPost>() {
             @Override
-            public void onChanged(List<User> users) {
-                for(User u:users){
-                    if(u.getId()==id){
-                        mUser=u;
-                        Glide.with(user_Image.getContext()).load(mUser.getImageUrl())
-                                .into(user_Image);
-                        user_name.setText("@" + mUser.getName());
-                        user_name_toolbar.setText(mUser.getName());
-                        adapter.setRecipeList(mUser.getRecipes());
-                        bio.setText(mUser.getBio());
-                        if(mUser.getLinks()!=null) {
-                            if(mUser.getLinks().get(0)==null||mUser.getLinks().get(0).isEmpty())
-                                userFacebook.setVisibility(View.GONE);
-                            else
-                            {
-                                userFacebook.setTag(mUser.getLinks().get(0));
-                                userFacebook.setVisibility(View.VISIBLE);
-                            }
-                            if(mUser.getLinks().get(1)==null||mUser.getLinks().get(1).isEmpty())
-                                userInstgram.setVisibility(View.GONE);
-                            else
-                            {
-                                userInstgram.setTag(mUser.getLinks().get(1));
-                                userInstgram.setVisibility(View.VISIBLE);
-                            }
-                            if(mUser.getLinks().get(2)==null||mUser.getLinks().get(2).isEmpty())
-                                userYoutube.setVisibility(View.GONE);
-                            else
-                            {
-                                userYoutube.setTag(mUser.getLinks().get(2));
-                                userYoutube.setVisibility(View.VISIBLE);
-                            }
+            public void onChanged(UserPost user) {
+                me = user; }
+        });
 
-                        }else {
-                            userFacebook.setVisibility(View.GONE);
-                            userInstgram.setVisibility(View.GONE);
-                            userYoutube.setVisibility(View.GONE);
-                        }
-
-                        followers.setText(mUser.getFollower()+"");
-                        followings.setText(mUser.getFollowings().size()+"");
-                        posts.setText(mUser.getRecipes().size()+"");
-
-                        adapter.setRecipeList(mUser.getRecipes());
-                        break;
+        profileViewModel.getUserBy(sec_user_id).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                mUser=UserPost.parseUserRespone(response.body().toString());
+                Glide.with(user_Image.getContext()).load(mUser.getImageUrl()).into(user_Image);
+                user_name.setText("@" + mUser.getName());
+                user_name_toolbar.setText(mUser.getName());
+                bio.setText(mUser.getBio());
+                if (mUser.getLinks() != null) {
+                    if (mUser.getLinks().size()<1||mUser.getLinks().get(0) == null || mUser.getLinks().get(0).isEmpty())
+                        userFacebook.setVisibility(View.GONE);
+                    else {
+                        userFacebook.setTag(mUser.getLinks().get(0));
+                        userFacebook.setVisibility(View.VISIBLE);
                     }
+                    if (mUser.getLinks().size()<2||mUser.getLinks().get(1) == null || mUser.getLinks().get(1).isEmpty())
+                        userInstgram.setVisibility(View.GONE);
+                    else {
+                        userInstgram.setTag(mUser.getLinks().get(1));
+                        userInstgram.setVisibility(View.VISIBLE);
+                    }
+                    if (mUser.getLinks().size()<3||mUser.getLinks().get(2) == null || mUser.getLinks().get(2).isEmpty())
+                        userYoutube.setVisibility(View.GONE);
+                    else {
+                        userYoutube.setTag(mUser.getLinks().get(2));
+                        userYoutube.setVisibility(View.VISIBLE);
+                    }
+
+                } else {
+                    userFacebook.setVisibility(View.GONE);
+                    userInstgram.setVisibility(View.GONE);
+                    userYoutube.setVisibility(View.GONE);
                 }
+                followers.setText(mUser.getFollowersCount() + "");
+                followings.setText(mUser.getFollowings().size() + "");
+                profileViewModel.getUserRecipes(mUser.getId()).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        List<Recipe> recipes = Recipe.parseJson(response.body().toString());
+                        posts.setText(recipes.size() + "");
+                        adapter.setRecipeList(recipes);
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(profileActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
             }
         });
 
@@ -167,12 +192,8 @@ public class profileActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
-
 
         adapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
             @Override
@@ -186,10 +207,7 @@ public class profileActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.user_follow:
-                userFollow.setVisibility(View.GONE);
-                userChecked.setVisibility(View.VISIBLE);
-                interactionsViewModel.insertInteraction(new Interaction(mUser.getName(), mUser.getImageUrl(), "Follow"));
-
+                follow();
                 break;
             case R.id.user_checked:
                 userFollow.setVisibility(View.VISIBLE);
@@ -212,6 +230,24 @@ public class profileActivity extends AppCompatActivity {
                 showImage(List.of(mUser.getImageUrl()), 0);
                 break;
         }
+    }
+
+    private void follow() {
+        profileViewModel.follow(new Following.followingPost(0,me.getId(),mUser.getId())).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.code()>=200&&response.code()<300) {
+                    userFollow.setVisibility(View.GONE);
+                    userChecked.setVisibility(View.VISIBLE);
+                    interactionsViewModel.insertInteraction(new Interaction(mUser.getName(), mUser.getImageUrl(), "Follow"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(profileActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void openLink(String tag) {

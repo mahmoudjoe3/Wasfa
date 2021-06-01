@@ -21,14 +21,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.akexorcist.snaptimepicker.SnapTimePickerDialog;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.viewModel.PostSharedViewModel;
+import com.mahmoudjoe3.wasfa.viewModel.PostViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostFragment3 extends Fragment {
 
@@ -46,6 +52,7 @@ public class PostFragment3 extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private Gson gson;
+    PostViewModel postViewModel;
 
     public PostFragment3() {
     }
@@ -65,6 +72,7 @@ public class PostFragment3 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.post_fragement3, container, false);
 
+        postViewModel=new ViewModelProvider(this).get(PostViewModel.class);
         init();
         initRecyclerView();
 
@@ -99,17 +107,17 @@ public class PostFragment3 extends Fragment {
                                 recipe.setNumberOfShare(0);
                                 recipe.setNumberOfLike(0);
                                 User user=new Gson().fromJson(sharedPreferences.getString("user",null),User.class);
-                                List<Recipe> recipes=new ArrayList<>(user.getRecipes());
-                                recipes.add(0,recipe);
-                                user.setRecipes(recipes);
-                                editor.putString("user",new Gson().toJson(user));
 
-                                String recipeJson = gson.toJson(recipe);
-                                editor.putString("my_recipes", recipeJson);
-                                editor.apply();
-                                Toast.makeText(getActivity(), "Post Uplouded successfully", Toast.LENGTH_SHORT).show();
-                                removeData();
-                                getActivity().onBackPressed();
+                                        editor.putString("user",new Gson().toJson(user));
+
+                                        String recipeJson = gson.toJson(recipe);
+                                        editor.putString("my_recipes", recipeJson);
+                                        editor.apply();
+                                        Toast.makeText(getActivity(), "Post Uplouded successfully", Toast.LENGTH_SHORT).show();
+                                        removeData();
+                                        getActivity().onBackPressed();
+
+
                             } else {
                                 Toast.makeText(getActivity(), "Complete All the recipe data", Toast.LENGTH_SHORT).show();
                             }
