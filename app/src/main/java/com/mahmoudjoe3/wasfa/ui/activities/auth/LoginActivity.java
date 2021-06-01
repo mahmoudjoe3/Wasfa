@@ -79,6 +79,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onForgetPassTextViewClicked() {
     }
 
+
+
     @OnClick(R.id.login_button)
     public void onLoginButtonClicked() {
         boolean complete = initData();
