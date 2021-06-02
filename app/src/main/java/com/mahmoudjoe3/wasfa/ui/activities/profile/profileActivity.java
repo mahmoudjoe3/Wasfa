@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
@@ -22,14 +23,12 @@ import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Following;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
-import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.main.account.profilePostItemAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
 import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
 import com.mahmoudjoe3.wasfa.viewModel.ProfileViewModel;
-import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,7 @@ import retrofit2.Response;
 public class profileActivity extends AppCompatActivity {
 
     public static final String USER_INTENT = "profileActivity.USER_INTENT";
-
+    private static final String SHARED_PREFERENCE_NAME = "userShared";
     @BindView(R.id.user_name)
     TextView user_name;
     @BindView(R.id.user_name_toolbar)
@@ -80,7 +79,6 @@ public class profileActivity extends AppCompatActivity {
     int sec_user_id;
     ProfileViewModel profileViewModel;
     InteractionsViewModel interactionsViewModel;
-    SharedViewModel sharedViewModel;
 
     SharedPreferences sharedPreferences;
 
@@ -91,16 +89,11 @@ public class profileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         interactionsViewModel = new ViewModelProvider(this).get(InteractionsViewModel.class);
-        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         adapter = new profilePostItemAdapter(prevalent.PROFILE_ITEM);
-        sharedPreferences = getSharedPreferences("userId", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
-        sec_user_id=getIntent().getIntExtra(USER_INTENT,1);
-        sharedViewModel.getUser(sharedPreferences.getInt("id", 0)).observe(this, new Observer<UserPost>() {
-            @Override
-            public void onChanged(UserPost user) {
-                me = user; }
-        });
+        sec_user_id = getIntent().getIntExtra(USER_INTENT,1);
+        me = new Gson().fromJson(sharedPreferences.getString("user", null), UserPost.class);
 
         profileViewModel.getUserBy(sec_user_id).enqueue(new Callback<JsonObject>() {
             @Override

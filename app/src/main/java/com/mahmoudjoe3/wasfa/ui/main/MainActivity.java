@@ -1,7 +1,6 @@
 package com.mahmoudjoe3.wasfa.ui.main;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -11,15 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.mahmoudjoe3.wasfa.R;
-import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
-import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,9 +34,6 @@ public class MainActivity extends AppCompatActivity  {
     Toolbar toolbar;
     String TAG="taggggg";
 
-
-
-    SharedViewModel sharedViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

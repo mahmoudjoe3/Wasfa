@@ -2,7 +2,6 @@ package com.mahmoudjoe3.wasfa.ui.main.account;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -24,13 +23,11 @@ import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
-import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.main.MainActivity;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
 import com.mahmoudjoe3.wasfa.viewModel.AccountViewModel;
-import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
@@ -53,7 +50,8 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
 
     @BindView(R.id.acc_image)
     CircleImageView accImage;
-
+    private static final String SHARED_PREFERENCE_NAME = "userShared";
+    private Gson gson;
     UserPost user;
     Uri imageUri;
     @BindView(R.id.user_name_toolbar)
@@ -76,24 +74,20 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
     MaterialEditText facebook;
     @BindView(R.id.youtube)
     MaterialEditText youtube;
-    SharedViewModel sharedViewModel;
     AccountViewModel accountViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         ButterKnife.bind(this);
-        SharedPreferences sharedPreferences = getSharedPreferences("userId", MODE_PRIVATE);
 
-        sharedViewModel=new ViewModelProvider(this).get(SharedViewModel.class);
-        accountViewModel=new ViewModelProvider(this).get(AccountViewModel.class);
-        sharedViewModel.getUser(sharedPreferences.getInt("id",0)).observe(this, new Observer<UserPost>() {
-            @Override
-            public void onChanged(UserPost userPost) {
-                user = userPost;
-                init();
-            }
-        });
+        /*
+         ** SharedPreference Code to get the logged in user
+         */
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        gson = new Gson();
+        user = gson.fromJson((sharedPreferences.getString("user", null)), UserPost.class);
+        init();
 
     }
 

@@ -1,7 +1,6 @@
 package com.mahmoudjoe3.wasfa.ui.main.home;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,13 +21,11 @@ import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
-import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
 import com.mahmoudjoe3.wasfa.viewModel.HomeViewModel;
 import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
-import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 import com.mahmoudjoe3.wasfa.ui.main.account.profilePostItemAdapter;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
 
@@ -44,10 +41,10 @@ import static android.content.Context.MODE_PRIVATE;
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
     private static final String TAG = "homey";
+    private static final String SHARED_PREFERENCE_NAME = "userShared";
     HomeViewModel homeViewModel;
     InteractionsViewModel interactionsViewModel;
     UserPost mUser;
-    SharedViewModel sharedViewModel;
     @BindView(R.id.shimmer_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.mostCommonRecycle)
@@ -76,17 +73,19 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
 
-        sharedPreferences = getActivity().getSharedPreferences("new_user", MODE_PRIVATE);
+
+        /*
+        ** SharedPreference Code to get the logged in user
+        */
+        sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         gson = new Gson();
-        Recipe recipe = gson.fromJson(sharedPreferences.getString("my_recipes", null),Recipe.class);
+        mUser = gson.fromJson(sharedPreferences.getString("user", null), UserPost.class);
         
         adapter = new RecipePostAdapter();
         recyclerView.setAdapter(adapter);
         homeViewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
-                if(recipe != null)
-                    recipes.add(0, recipe);
                 adapter.setRecipes(recipes);
             }
         });
@@ -116,7 +115,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         homeViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserPost>() {
             @Override
@@ -208,16 +206,6 @@ public class HomeFragment extends Fragment {
                 Intent intent=new Intent(getActivity(),profileActivity.class);
                 intent.putExtra(profileActivity.USER_INTENT,userid);
                 startActivity(intent);
-            }
-        });
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userId", MODE_PRIVATE);
-
-        sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-        sharedViewModel.getUser(sharedPreferences.getInt("id",0)).observe(getViewLifecycleOwner(), new Observer<UserPost>() {
-            @Override
-            public void onChanged(UserPost s) {
-                //recived data
             }
         });
 

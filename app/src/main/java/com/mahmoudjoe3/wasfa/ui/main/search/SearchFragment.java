@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.gson.Gson;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
@@ -28,10 +29,8 @@ import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.ui.activities.profile.profileActivity;
-import com.mahmoudjoe3.wasfa.ui.main.post.PostFragment1;
 import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
 import com.mahmoudjoe3.wasfa.viewModel.SearchViewModel;
-import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,8 @@ public class SearchFragment extends Fragment {
     private List<Recipe> recipeList;
     private View view;
 
-    SharedViewModel sharedViewModel;
+    private static final String SHARED_PREFERENCE_NAME = "userShared";
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -91,14 +91,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("userId", MODE_PRIVATE);
-
-        sharedViewModel.getUser(sharedPreferences.getInt("id",0)).observe(getViewLifecycleOwner(), new Observer<UserPost>() {
-            @Override
-            public void onChanged(UserPost userPost) {
-                user=userPost;
-            }
-        });
     }
 
     @Override
@@ -106,10 +98,18 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         interactionsViewModel=new ViewModelProvider(this).get(InteractionsViewModel.class);
-        sharedViewModel=new ViewModelProvider(this).get(SharedViewModel.class);
+
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
+
+        /*
+         ** SharedPreference Code to get the logged in user
+         */
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        Gson gson = new Gson();
+        user = gson.fromJson(sharedPreferences.getString("user", null), UserPost.class);
+
         init();
         initPeopleRecycler();
         initRecipeRecycler();

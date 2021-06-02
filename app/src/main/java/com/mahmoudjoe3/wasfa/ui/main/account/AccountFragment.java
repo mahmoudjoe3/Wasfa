@@ -1,6 +1,5 @@
 package com.mahmoudjoe3.wasfa.ui.main.account;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -27,12 +26,12 @@ import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
 import com.mahmoudjoe3.wasfa.pojo.Interaction;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
+import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.prevalent.prevalent;
 import com.mahmoudjoe3.wasfa.ui.activities.auth.LoginActivity;
 import com.mahmoudjoe3.wasfa.viewModel.AccountViewModel;
 import com.mahmoudjoe3.wasfa.viewModel.InteractionsViewModel;
-import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 import com.mahmoudjoe3.wasfa.ui.main.viewImage.ViewImageActivity;
 
 import java.util.ArrayList;
@@ -53,7 +52,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class AccountFragment extends Fragment {
     AccountViewModel accountViewModel;
     InteractionsViewModel interactionsViewModel;
-    SharedViewModel sharedViewModel;
     @BindView(R.id.user_image)
     CircleImageView user_image;
     @BindView(R.id.user_name)
@@ -81,6 +79,7 @@ public class AccountFragment extends Fragment {
     UserPost mUser;
 
     private SharedPreferences sharedPreferences;
+    private static final String SHARED_PREFERENCE_NAME = "userShared";
     private Gson gson;
 
     public AccountFragment() {
@@ -152,68 +151,65 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        sharedPreferences = getActivity().getSharedPreferences("userId", MODE_PRIVATE);
         accountViewModel=new ViewModelProvider(this).get(AccountViewModel.class);
-        sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-        sharedViewModel.getUser(sharedPreferences.getInt("id",0)).observe(getActivity(), new Observer<UserPost>() {
+
+        /*
+         ** SharedPreference Code to get the logged in user
+         */
+        sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        gson = new Gson();
+        mUser = gson.fromJson((sharedPreferences.getString("user", null)), UserPost.class);
+
+        Glide.with(user_image.getContext()).load(mUser.getImageUrl())
+                .into(user_image);
+        user_name.setText("@" + mUser.getName());
+        userNameToolbar.setText(mUser.getName());
+        bio.setText(mUser.getBio());
+        if(mUser.getLinks()!=null) {
+            if(mUser.getLinks().size()<1||mUser.getLinks().get(0)==null||mUser.getLinks().get(0).isEmpty())
+                userFacebook.setVisibility(View.GONE);
+            else
+            {
+                userFacebook.setTag(mUser.getLinks().get(0));
+                userFacebook.setVisibility(View.VISIBLE);
+            }
+            if(mUser.getLinks().size()<2||mUser.getLinks().get(1)==null||mUser.getLinks().get(1).isEmpty())
+                userInstgram.setVisibility(View.GONE);
+            else
+            {
+                userInstgram.setTag(mUser.getLinks().get(1));
+                userInstgram.setVisibility(View.VISIBLE);
+            }
+            if(mUser.getLinks().size()<3||mUser.getLinks().get(2)==null||mUser.getLinks().get(2).isEmpty())
+                userYoutube.setVisibility(View.GONE);
+            else
+            {
+                userYoutube.setTag(mUser.getLinks().get(2));
+                userYoutube.setVisibility(View.VISIBLE);
+            }
+
+        }else {
+            userFacebook.setVisibility(View.GONE);
+            userInstgram.setVisibility(View.GONE);
+            userYoutube.setVisibility(View.GONE);
+        }
+        accountViewModel.getUserRecipes(mUser.getId()).enqueue(new Callback<JsonObject>() {
             @Override
-            public void onChanged(UserPost userPost) {
-                //recived data
-                mUser=userPost;
-                Glide.with(user_image.getContext()).load(mUser.getImageUrl())
-                        .into(user_image);
-                user_name.setText("@" + mUser.getName());
-                userNameToolbar.setText(mUser.getName());
-                bio.setText(mUser.getBio());
-                if(mUser.getLinks()!=null) {
-                    if(mUser.getLinks().size()<1||mUser.getLinks().get(0)==null||mUser.getLinks().get(0).isEmpty())
-                        userFacebook.setVisibility(View.GONE);
-                    else
-                    {
-                        userFacebook.setTag(mUser.getLinks().get(0));
-                        userFacebook.setVisibility(View.VISIBLE);
-                    }
-                    if(mUser.getLinks().size()<2||mUser.getLinks().get(1)==null||mUser.getLinks().get(1).isEmpty())
-                        userInstgram.setVisibility(View.GONE);
-                    else
-                    {
-                        userInstgram.setTag(mUser.getLinks().get(1));
-                        userInstgram.setVisibility(View.VISIBLE);
-                    }
-                    if(mUser.getLinks().size()<3||mUser.getLinks().get(2)==null||mUser.getLinks().get(2).isEmpty())
-                        userYoutube.setVisibility(View.GONE);
-                    else
-                    {
-                        userYoutube.setTag(mUser.getLinks().get(2));
-                        userYoutube.setVisibility(View.VISIBLE);
-                    }
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                List<Recipe> recipes=Recipe.parseJson(response.body().toString());
+                adapter.setRecipeList(recipes);
+                posts.setText(recipes.size()+"");
+            }
 
-                }else {
-                    userFacebook.setVisibility(View.GONE);
-                    userInstgram.setVisibility(View.GONE);
-                    userYoutube.setVisibility(View.GONE);
-                }
-                accountViewModel.getUserRecipes(mUser.getId()).enqueue(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        List<Recipe> recipes=Recipe.parseJson(response.body().toString());
-                        adapter.setRecipeList(recipes);
-                        posts.setText(recipes.size()+"");
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-                followers.setText(mUser.getFollowersCount()+"");
-                followings.setText(mUser.getFollowings().size()+"");
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
+
+        followers.setText(mUser.getFollowersCount()+"");
+        followings.setText(mUser.getFollowings().size()+"");
     }
 
     private void showImage(List<String> imgUrls, int pos) {

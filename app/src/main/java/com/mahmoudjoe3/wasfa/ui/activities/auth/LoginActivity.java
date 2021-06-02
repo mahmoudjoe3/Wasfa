@@ -3,25 +3,21 @@ package com.mahmoudjoe3.wasfa.ui.activities.auth;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
-import com.mahmoudjoe3.wasfa.pojo.User;
 import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.mahmoudjoe3.wasfa.ui.main.MainActivity;
 import com.mahmoudjoe3.wasfa.viewModel.AuthViewModel;
-import com.mahmoudjoe3.wasfa.viewModel.SharedViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +31,7 @@ import retrofit2.Response;
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String SHARED_PREFERENCE_NAME = "userShared";
     @BindView(R.id.user_name_textInput)
     TextInputLayout userNameTextInput;
     @BindView(R.id.password_textInput)
@@ -66,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void init() {
-        sharedPreferences = getSharedPreferences("new_user", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
         Boolean remember = sharedPreferences.getBoolean("remember_me", false);
         if(remember) {
@@ -96,13 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 editor.putBoolean("remember_me", false);
                             }
+                            editor.putString("user", new Gson().toJson(user));
                             editor.commit();
-
-                            SharedPreferences shared = getSharedPreferences("userId", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = shared.edit();
-                            editor.putInt("id", user.getId());
-                            editor.commit();
-
                             Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {
