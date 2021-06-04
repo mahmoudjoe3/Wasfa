@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 //hilt
 apply plugin: 'dagger.hilt.android.plugin'
-
+//firebase
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.mahmoudjoe3.wasfa"
+        applicationId "com.mahmoudjoe3.wasfaty"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -95,8 +96,6 @@ dependencies {
     //time picker
     implementation 'com.akexorcist:snap-time-picker:1.0.3'
 
-    //images-picker
-    implementation 'com.opensooq.supernova:gligar:1.1.0'
 
     //Room
     def room_version = "2.3.0"
@@ -132,5 +131,23 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     //converter(Gson)
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    // Declare the dependency for the Cloud Storage library
+    implementation 'com.google.firebase:firebase-storage'
+
+    //Image Preview
+    implementation 'com.greentoad.turtlebody.imagepreview:image-preview:1.0.2'
+
+    //media picker
+    implementation 'com.greentoad.turtlebody:media-picker:1.0.8'
+
+    /* rxjava */
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    implementation "org.jetbrains.anko:anko:0.10.8"
 
 }

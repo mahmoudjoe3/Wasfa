@@ -25,7 +25,7 @@
     <string name="no_ingredients">No ingredients yet</string>
     <string name="who_can_msg">Who can see this post?</string>
     <string name="privacy_msg">Your post will be visible on feed, on your profile and in search results</string>
-    <string name="followers_only">Followers only</string>
+    <string name="only_me">Only Me</string>
     <string name="ingredient_hint">Enter the ingredient</string>
     <string name="recipe_steps_hint">Enter the recipe steps</string>
     <string name="recipe_from">Recipe from</string>
