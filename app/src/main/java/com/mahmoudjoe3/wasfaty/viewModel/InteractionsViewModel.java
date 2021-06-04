@@ -5,17 +5,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
+import com.mahmoudjoe3.wasfaty.repo.FoodRepository;
 import com.mahmoudjoe3.wasfaty.repo.NLB_DB_Repository;
 
 import java.util.List;
 
 public class InteractionsViewModel extends ViewModel {
 
-    private NLB_DB_Repository repository;
+    private FoodRepository repository;
     private LiveData<List<Interaction>> interactionsLiveData;
 
     @ViewModelInject
-    public InteractionsViewModel(NLB_DB_Repository repository) {
+    public InteractionsViewModel(FoodRepository repository) {
         this.repository = repository;
     }
 

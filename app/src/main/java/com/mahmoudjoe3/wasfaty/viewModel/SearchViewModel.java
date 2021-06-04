@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.pojo.User;

@@ -29,12 +29,10 @@ public class NLB_DB_Repository {
     private final java.util.concurrent.BlockingQueue<CloudNaturalLanguageRequest<? extends GenericJson>> mRequests
             = new ArrayBlockingQueue<>(3);
 
-    //DB
-    private InteractionsDao dao;
+
     @Inject
-    public NLB_DB_Repository(CloudNaturalLanguage cloudNaturalLanguage, InteractionsDao dao) {
+    public NLB_DB_Repository(CloudNaturalLanguage cloudNaturalLanguage) {
         this.nLP_Api = cloudNaturalLanguage;
-        this.dao=dao;
     }
 
     //API
@@ -83,51 +81,6 @@ public class NLB_DB_Repository {
     OnNLPAPIResponse onNLPAPIResponse;
     public void setOnNLPAPIResponse(OnNLPAPIResponse onNLPAPIResponse) { this.onNLPAPIResponse = onNLPAPIResponse; }
     public interface OnNLPAPIResponse { void onResponse(String response);}
-
-    //DB
-    public void insertInteraction(Interaction interaction) {
-        dao.insertInteraction(interaction)
-                .subscribeOn(Schedulers.computation())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
-    }
-    public void deleteInteraction(Interaction interaction) {
-        dao.deleteInteraction(interaction)
-                .subscribeOn(Schedulers.computation())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
-    }
-    public LiveData<List<Interaction>> getInteractionsLiveData() {
-        return dao.getInteractions();
-    }
 
 
 }
