@@ -40,4 +40,12 @@ public class FoodRepository {
     public Call<JsonObject> update(UserPost user,int id) {
         return foodApi.updateUser(user,id);
     }
+
+    public Call<JsonObject> searchUsers(String identity) {
+        return foodApi.searchUsers(identity);
+    }
+
+    public Call<JsonObject> searchRecipes(String identity) {
+        return foodApi.searchRecipes(identity);
+    }
 }

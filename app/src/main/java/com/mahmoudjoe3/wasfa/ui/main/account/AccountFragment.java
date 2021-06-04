@@ -253,7 +253,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void logout() {
-        SharedPreferences sharedPreferences=getActivity().getSharedPreferences("new_user", MODE_PRIVATE);
+        SharedPreferences sharedPreferences=getActivity().getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putBoolean("remember_me",false);
         editor.apply();

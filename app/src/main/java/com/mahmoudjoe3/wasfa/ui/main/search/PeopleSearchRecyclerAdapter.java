@@ -13,6 +13,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.pojo.Recipe;
 import com.mahmoudjoe3.wasfa.pojo.User;
+import com.mahmoudjoe3.wasfa.pojo.UserPost;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSearchRecyclerAdapter.PeopleSearchViewHolder> {
-    private List<User> userList = new ArrayList<>();
+    private List<UserPost> userList = new ArrayList<>();
 
     @NonNull
     @Override
@@ -66,7 +67,7 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
         return userList.size();
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<UserPost> userList) {
         this.userList = userList;
         notifyDataSetChanged();
     }
@@ -93,7 +94,7 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
     }
 
     interface OnItemClickListener{
-        void onClick(User user);
-        void onFollow(User user);
+        void onClick(UserPost user);
+        void onFollow(UserPost user);
     }
 }

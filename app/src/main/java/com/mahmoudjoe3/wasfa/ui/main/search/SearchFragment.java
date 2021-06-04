@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfa.R;
 import com.mahmoudjoe3.wasfa.logic.MyLogic;
 import com.mahmoudjoe3.wasfa.pojo.Comment;
@@ -38,6 +40,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.hilt.android.AndroidEntryPoint;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -59,10 +64,8 @@ public class SearchFragment extends Fragment {
     private ImageButton searchImageButton, backImageButton;
     private LottieAnimationView lotti_search;
     private PeopleSearchRecyclerAdapter peopleSearchRecyclerAdapter;
-    private List<User> userList;
     UserPost user;
     private RecipeSearchRecyclerAdapter recipeSearchRecyclerAdapter;
-    private List<Recipe> recipeList;
     private View view;
 
     private static final String SHARED_PREFERENCE_NAME = "userShared";
@@ -97,7 +100,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        interactionsViewModel=new ViewModelProvider(this).get(InteractionsViewModel.class);
+        interactionsViewModel = new ViewModelProvider(this).get(InteractionsViewModel.class);
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -159,7 +162,7 @@ public class SearchFragment extends Fragment {
 
         peopleSearchRecyclerAdapter.setOnItemClickListener(new PeopleSearchRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onClick(User user) {
+            public void onClick(UserPost user) {
                 //todo open profile
                 Intent intent=new Intent(getActivity(), profileActivity.class );
                 intent.putExtra(profileActivity.USER_INTENT,user.getId());
@@ -167,7 +170,7 @@ public class SearchFragment extends Fragment {
             }
 
             @Override
-            public void onFollow(User user) {
+            public void onFollow(UserPost user) {
                 interactionsViewModel.insertInteraction(new Interaction(user.getName(),user.getImageUrl(),"Followed"));
             }
         });
@@ -199,6 +202,9 @@ public class SearchFragment extends Fragment {
         backImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                peopleSearchRecyclerAdapter.setUserList(new ArrayList<>());
+                recipeSearchRecyclerAdapter.setRecipeList(new ArrayList<>());
+                searchEditText.setText("");
                 getActivity().onBackPressed();
             }
         });
@@ -214,43 +220,46 @@ public class SearchFragment extends Fragment {
                 if (searchImageButton.getTag().toString().equals("people")) {
                     peopleRecyclerView.setVisibility(View.VISIBLE);
                     recipesRecyclerView.setVisibility(View.GONE);
-                    new Handler().postDelayed(new Runnable() {
+                    String searchKey = searchEditText.getText().toString().toLowerCase();
+                    searchViewModel.searchUsers(searchKey).enqueue(new Callback<JsonObject>() {
                         @Override
-                        public void run() {
-                            lotti_search.setVisibility(View.GONE);
-                            lotti_search.pauseAnimation();
-                            List<User> temp=new ArrayList<>();
-                            for(User u:userList){
-                                if(u.getName().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())){
-                                    temp.add(u);
-                                }
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            if(response.code() >= 200 && response.code() < 300) {
+                                lotti_search.setVisibility(View.GONE);
+                                lotti_search.pauseAnimation();
+                                List<UserPost> userPostList = UserPost.parseUserResponseList(response.body().toString());
+                                peopleSearchRecyclerAdapter.setUserList(userPostList);
                             }
-                            peopleSearchRecyclerAdapter.setUserList(temp);
+
                         }
-                    },1000);
+
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                        }
+                    });
 
                 } else {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            lotti_search.setVisibility(View.GONE);
-                            lotti_search.pauseAnimation();
-                            List<Recipe> temp=new ArrayList<>();
-                            for(Recipe r:recipeList){
-                                if(r.getCategories().toString().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
-                                    ||r.getIngredients().toString().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
-                                        ||r.getDescription().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
-                                        ||r.getNationality().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
-                                        ||r.getUserName().toLowerCase().contains(searchEditText.getText().toString().toLowerCase())
-                                ){
-                                    temp.add(r);
-                                }
-                            }
-                            recipeSearchRecyclerAdapter.setRecipeList(temp);
-                        }
-                    },1000);
                     peopleRecyclerView.setVisibility(View.GONE);
                     recipesRecyclerView.setVisibility(View.VISIBLE);
+                    String searchKey = searchEditText.getText().toString().toLowerCase();
+                    searchViewModel.searchRecipes(searchKey).enqueue(new Callback<JsonObject>() {
+                        @Override
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            if(response.code() >= 200 && response.code() < 300) {
+                                String jsonString = response.body().toString();
+                                List<Recipe> recipes = Recipe.parseRecipeJson(jsonString);
+                                recipeSearchRecyclerAdapter.setRecipeList(recipes);
+                                lotti_search.setVisibility(View.GONE);
+                                lotti_search.pauseAnimation();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                        }
+                    });
                 }
             }
         });
@@ -271,12 +280,6 @@ public class SearchFragment extends Fragment {
 
     private void initPeopleRecycler() {
         peopleRecyclerView = view.findViewById(R.id.people_recyclerView);
-        searchViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                userList=users;
-            }
-        });
         peopleSearchRecyclerAdapter = new PeopleSearchRecyclerAdapter();
         peopleRecyclerView.setAdapter(peopleSearchRecyclerAdapter);
     }
@@ -284,12 +287,6 @@ public class SearchFragment extends Fragment {
     private void initRecipeRecycler() {
         recipesRecyclerView = view.findViewById(R.id.recipes_recyclerView);
         recipeSearchRecyclerAdapter = new RecipeSearchRecyclerAdapter();
-        searchViewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
-            @Override
-            public void onChanged(List<Recipe> recipes) {
-                recipeList=recipes;
-            }
-        });
         recipesRecyclerView.setAdapter(recipeSearchRecyclerAdapter);
     }
 }

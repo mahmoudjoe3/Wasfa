@@ -36,4 +36,10 @@ public interface FoodApi {
     Call<JsonObject> follow(@Body Following.followingPost followingPost);
     @PUT("/api/Users/{id}")
     Call<JsonObject> updateUser(@Body UserPost user,@Path("id") int id);
+
+    @GET("/api/UsersSearch/{Identity}")
+    Call<JsonObject> searchUsers(@Path("Identity") String identity);
+
+    @GET("/api/RecipesSearch/{Identity}")
+    Call<JsonObject> searchRecipes(@Path("Identity") String identity);
 }

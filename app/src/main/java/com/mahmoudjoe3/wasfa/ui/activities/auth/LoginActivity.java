@@ -3,8 +3,11 @@ package com.mahmoudjoe3.wasfa.ui.activities.auth;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +49,10 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox rememberCheckBox;
     @BindView(R.id.google_sign)
     Button googleSign;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.login_layout)
+    LinearLayout loginLayout;
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -58,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        authViewModel=new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         init();
     }
 
@@ -66,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
         Boolean remember = sharedPreferences.getBoolean("remember_me", false);
-        if(remember) {
+        if (remember) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
@@ -77,16 +84,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
     @OnClick(R.id.login_button)
     public void onLoginButtonClicked() {
         boolean complete = initData();
-        if(complete) {
+        if (complete) {
+            progressBar.setVisibility(View.VISIBLE);
             authViewModel.login(userName.toLowerCase()).enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     UserPost user = UserPost.parseUserRespone(response.body().toString());
-                    if(user!=null&&response.code()>=200&&response.code()<=299) {
+                    if (user != null && response.code() >= 200 && response.code() <= 299) {
                         if (user.getPassword().equals(passwrod)) {
                             if (rememberCheckBox.isChecked()) {
                                 editor.putBoolean("remember_me", true);
@@ -95,12 +102,14 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             editor.putString("user", new Gson().toJson(user));
                             editor.commit();
-                            Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(LoginActivity.this, "password is incorrect", Toast.LENGTH_SHORT).show();
                         }
-                    }else Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
+                    } else
+                        Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -119,11 +128,11 @@ public class LoginActivity extends AppCompatActivity {
         boolean complete = true;
         userName = userNameTextInput.getEditText().getText().toString().trim();
         passwrod = passwordTextInput.getEditText().getText().toString().trim();
-        if(userName.isEmpty()) {
+        if (userName.isEmpty()) {
             userNameTextInput.getEditText().setError("Please, Enter your user name");
             complete = false;
         }
-        if(passwrod.isEmpty()) {
+        if (passwrod.isEmpty()) {
             passwordTextInput.setError("Please, Enter your password");
             complete = false;
         }
