@@ -24,6 +24,9 @@ public class AccountViewModel extends ViewModel {
     public Call<JsonObject> UpdateUser(UserPost user){
         return repository.update(user,user.getId());
     }
+    public Call<JsonObject> getUserBy(int id){
+        return repository.getUserBy(id);
+    }
 
 
 }

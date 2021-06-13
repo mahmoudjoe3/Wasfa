@@ -19,6 +19,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfaty.R;
+import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.ui.activities.profile.profileActivity;
 import com.squareup.picasso.Picasso;
@@ -29,8 +30,8 @@ import java.util.List;
 import static com.mahmoudjoe3.wasfaty.logic.MyLogic.getTimeFrom;
 
 public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH> {
-    List<Recipe> recipes;
-
+    List<Recipe> recipes =new ArrayList<>();
+    List<Following> followings=new ArrayList<>();
     public List<Recipe> getRecipes() {
         return recipes;
     }
@@ -41,6 +42,9 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         }else
             this.recipes = recipes;
         notifyDataSetChanged();
+    }
+    public void setFollowing(List<Following> followings) {
+        this.followings=followings;
     }
 
     public RecipePostAdapter() {
@@ -85,6 +89,12 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                 v.getContext().startActivity(intent);
             }
         });
+        for(Following f:followings){
+            if(recipe.getUserId()==f.getId()){
+                vh.post_user_follow_btn.setVisibility(View.GONE);
+                break;
+            }
+        }
         vh.post_user_follow_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,6 +270,8 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
     public void setmOnImageClickListener(OnImageClickListener mOnImageClickListener) {
         this.mOnImageClickListener = mOnImageClickListener;
     }
+
+
 
     public interface OnImageClickListener{
         void onNumberClick(Recipe recipe);

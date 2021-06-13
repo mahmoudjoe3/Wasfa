@@ -67,6 +67,12 @@ public class FoodRepository {
         return foodApi.PostRecipe(recipe);
     }
 
+    public Call<JsonObject> getAllRecipes() {
+        return foodApi.getAllRecipes();
+    }
+    public Call<JsonObject> getMostCommonRecipes() {
+        return foodApi.getMostCommonRecipes();
+    }
 
     //DB
     public void insertInteraction(Interaction interaction) {

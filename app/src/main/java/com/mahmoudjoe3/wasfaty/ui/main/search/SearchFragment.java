@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.logic.MyLogic;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;

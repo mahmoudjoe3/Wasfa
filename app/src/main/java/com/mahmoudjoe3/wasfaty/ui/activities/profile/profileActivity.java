@@ -132,7 +132,7 @@ public class profileActivity extends AppCompatActivity {
                 profileViewModel.getUserRecipes(mUser.getId()).enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        List<Recipe> recipes = Recipe.parseJson(response.body().toString());
+                        List<Recipe> recipes = Recipe.parseRecipeJson(response.body().toString());
                         posts.setText(recipes.size() + "");
                         adapter.setRecipeList(recipes);
                     }

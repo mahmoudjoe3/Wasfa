@@ -20,8 +20,11 @@ public interface FoodApi {
     Call<JsonObject> Register(@Body UserPost userPost);
     @POST("/api/Recipes")
     Call<JsonObject> PostRecipe(@Body RecipePost recipe);
-    @POST("/api/UsersPostFollowing")
-    Call<JsonObject> follow(@Body Following.followingPost followingPost);
+    @GET("/api/Recipes")
+    Call<JsonObject> getAllRecipes();
+    @GET("/api/MostCommonRecipes")
+    Call<JsonObject> getMostCommonRecipes();
+
 
     @GET("api/UsersByIdentity/{userIdentity}")
     Call<JsonObject> login(@Path("userIdentity") String identity);

@@ -18,9 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-@AndroidEntryPoint
 public class PostFragment extends Fragment   {
-    PostViewModel viewModel;
     public PostFragment() {
         // Required empty public constructor
     }
@@ -45,7 +43,6 @@ public class PostFragment extends Fragment   {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewModel=new ViewModelProvider(this).get(PostViewModel.class);
 
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_post, container, false);

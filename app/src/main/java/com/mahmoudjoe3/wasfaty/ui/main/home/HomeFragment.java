@@ -7,18 +7,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.logic.MyLogic;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;
+import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
@@ -35,6 +37,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.hilt.android.AndroidEntryPoint;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -54,7 +59,7 @@ public class HomeFragment extends Fragment {
     RecipePostAdapter adapter;
 
 
-    profilePostItemAdapter profilePostItemAdapter;
+    profilePostItemAdapter mostCommonAdapter;
 
     private List<Recipe> recipeList;
     private SharedPreferences sharedPreferences;
@@ -69,46 +74,80 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         interactionsViewModel = new ViewModelProvider(this).get(InteractionsViewModel.class);
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
 
-
-        /*
-        ** SharedPreference Code to get the logged in user
-        */
         sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         gson = new Gson();
         mUser = gson.fromJson(sharedPreferences.getString("user", null), UserPost.class);
-        
-        adapter = new RecipePostAdapter();
-        recyclerView.setAdapter(adapter);
-        homeViewModel.getRecipeMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
-            @Override
-            public void onChanged(List<Recipe> recipes) {
-                adapter.setRecipes(recipes);
-            }
-        });
 
-        profilePostItemAdapter=new profilePostItemAdapter(prevalent.COMMON_ITEM);
-        mostCommonRecycle.setAdapter(profilePostItemAdapter);
+
+        setupRecipeAdapter();
+
+        setupMostCommonAdapter();
+
+        return view;
+
+    }
+
+    private void setupMostCommonAdapter() {
+        mostCommonAdapter =new profilePostItemAdapter(prevalent.COMMON_ITEM);
+        mostCommonRecycle.setAdapter(mostCommonAdapter);
         mostCommonRecycle.setHasFixedSize(true);
-        homeViewModel.getRecipeMutableLiveData().observe(this, new Observer<List<Recipe>>() {
+        homeViewModel.getMostCommonRecipes().enqueue(new Callback<JsonObject>() {
             @Override
-            public void onChanged(List<Recipe> recipes) {
-                profilePostItemAdapter.setRecipeList(recipes);
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.code()>=200&&response.code()<300) {
+                    mostCommonAdapter.setRecipeList(Recipe.parseRecipeJson(response.body().toString()));
+                }else {
+                    mostCommonAdapter.setRecipeList(new ArrayList<>());
+                    Toast.makeText(getActivity(), "Most common Error Response code "+response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                mostCommonAdapter.setRecipeList(new ArrayList<>());
+                Toast.makeText(getActivity(), "Most common Error "+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        profilePostItemAdapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
+        mostCommonAdapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
             @Override
             public void onClick(Recipe recipe) {
                 MyLogic.init_post_details_sheet_dialog(getActivity(),recipe,mUser);
             }
         });
+    }
 
-        return view;
+    private void setupRecipeAdapter() {
+        adapter = new RecipePostAdapter();
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
+        homeViewModel.getAllRecipes().enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.code()>=200&&response.code()<300) {
+                    List<Recipe> temp=Recipe.parseRecipeJson(response.body().toString());
+                    List<Recipe> temp1=new ArrayList<>();
+                    for(Recipe r:temp){
+                        if(r.getUserId()==mUser.getId())
+                            continue;
+                        temp1.add(r);
+                    }
+                    adapter.setRecipes(temp1);
+                    adapter.setFollowing(mUser.getFollowings());
+                }else {
+                    adapter.setRecipes(new ArrayList<>());
+                    Toast.makeText(getActivity(), "Error Response code "+response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                adapter.setRecipes(new ArrayList<>());
+                Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -116,12 +155,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        homeViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserPost>() {
-            @Override
-            public void onChanged(UserPost user1) {
-                mUser = user1;
-            }
-        });
+
 
         adapter.setmOnImageClickListener(new RecipePostAdapter.OnImageClickListener() {
             @Override
@@ -146,6 +180,7 @@ public class HomeFragment extends Fragment {
         adapter.setOninteractionClickListener(new RecipePostAdapter.OninteractionClickListener() {
             @Override
             public void onshare(Recipe recipe) {
+
                 interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Shared"));
             }
 
@@ -161,8 +196,20 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onfollow(Recipe recipe) {
-                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                homeViewModel.follow(new Following.followingPost(0,mUser.getId(),recipe.getUserId())).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if(response.code()>=200&&response.code()<300) {
+                            interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                        }else
+                            Toast.makeText(getActivity(), "response code "+response.code(), Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -187,8 +234,19 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onfollow(Recipe recipe) {
-                interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                homeViewModel.follow(new Following.followingPost(0,mUser.getId(),recipe.getUserId())).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if(response.code()>=200&&response.code()<300) {
+                            interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {

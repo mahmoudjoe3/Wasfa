@@ -53,7 +53,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.disposables.Disposable;
 
-@AndroidEntryPoint
 public class PostFragment1 extends Fragment {
 
     private static final String SHARED_PREFERENCE_NAME = "userShared";

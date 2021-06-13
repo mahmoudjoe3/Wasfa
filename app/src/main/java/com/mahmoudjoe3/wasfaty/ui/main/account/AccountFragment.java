@@ -158,6 +158,25 @@ public class AccountFragment extends Fragment {
         gson = new Gson();
         mUser = gson.fromJson((sharedPreferences.getString("user", null)), UserPost.class);
 
+        accountViewModel.getUserBy(mUser.getId()).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if(response.code()>=200&&response.code()<300){
+                    mUser=UserPost.parseUserRespone(response.body().toString());
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putString("user",new Gson().toJson(mUser));
+                    editor.commit();
+                    followers.setText(mUser.getFollowersCount()+"");
+                    followings.setText(mUser.getFollowings().size()+"");
+                }else Toast.makeText(getActivity(), "response code " +response.code(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(getActivity(), "response code " +t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         Glide.with(user_image.getContext()).load(mUser.getImageUrl())
                 .into(user_image);
         user_name.setText("@" + mUser.getName());
@@ -194,7 +213,7 @@ public class AccountFragment extends Fragment {
         accountViewModel.getUserRecipes(mUser.getId()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                List<Recipe> recipes=Recipe.parseJson(response.body().toString());
+                List<Recipe> recipes=Recipe.parseRecipeJson(response.body().toString());
                 adapter.setRecipeList(recipes);
                 posts.setText(recipes.size()+"");
             }

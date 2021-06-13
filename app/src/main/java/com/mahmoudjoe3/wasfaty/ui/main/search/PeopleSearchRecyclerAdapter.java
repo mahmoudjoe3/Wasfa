@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.pojo.User;
+import com.mahmoudjoe3.wasfaty.pojo.UserPost;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
