@@ -27,21 +27,24 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.logic.ImageCompressor;
-import com.mahmoudjoe3.wasfaty.pojo.RecipePost;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
 import com.mahmoudjoe3.wasfaty.prevalent.prevalent;
 import com.mahmoudjoe3.wasfaty.ui.main.MainActivity;
-import com.mahmoudjoe3.wasfaty.ui.main.post.PostFragment1;
 import com.mahmoudjoe3.wasfaty.ui.main.viewImage.ViewImageActivity;
 import com.mahmoudjoe3.wasfaty.viewModel.AccountViewModel;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,6 +63,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 @AndroidEntryPoint
 public class EditAccountActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
@@ -89,6 +93,8 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
     MaterialEditText facebook;
     @BindView(R.id.youtube)
     MaterialEditText youtube;
+    @BindView(R.id.edit_progress)
+    LinearProgressIndicator edit_progress;
     AccountViewModel accountViewModel;
     SharedPreferences sharedPreference;
     StorageReference RecipeImageReference;
@@ -98,11 +104,11 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         ButterKnife.bind(this);
-        accountViewModel=new ViewModelProvider(this).get(AccountViewModel.class);
+        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
         /*
          ** SharedPreference Code to get the logged in user
          */
-        sharedPreference= getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        sharedPreference = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         gson = new Gson();
         user = gson.fromJson((sharedPreference.getString("user", null)), UserPost.class);
         init();
@@ -117,15 +123,15 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
         editAccPhone.setText(user.getPhone());
         editAccEmail.setText(user.getEmail());
         editBio.setText(user.getBio());
-        if(user.getGender().equalsIgnoreCase("male")){
+        if (user.getGender().equalsIgnoreCase("male")) {
             male.setChecked(true);
-        }else female.setChecked(true);
-        if(user.getLinks()!=null) {
-            if (user.getLinks().size()>=1&&user.getLinks().get(0) != null)
+        } else female.setChecked(true);
+        if (user.getLinks() != null) {
+            if (user.getLinks().size() >= 1 && user.getLinks().get(0) != null)
                 facebook.setText(user.getLinks().get(0));
-            if (user.getLinks().size()>=2&&user.getLinks().get(1) != null)
+            if (user.getLinks().size() >= 2 && user.getLinks().get(1) != null)
                 instagram.setText(user.getLinks().get(1));
-            if (user.getLinks().size()>=3&&user.getLinks().get(2) != null)
+            if (user.getLinks().size() >= 3 && user.getLinks().get(2) != null)
                 youtube.setText(user.getLinks().get(2));
         }
 
@@ -147,46 +153,46 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
     }
 
     private void editUser() {
+        //show progress
+        edit_progress.setVisibility(View.VISIBLE);
         user.setName(editAccName.getText().toString());
-        if(imageUri!=null)
+        if (imageUri != null)
             user.setImageUrl(imageUri.toString());
         user.setBio(editBio.getText().toString());
         user.setPhone(editAccPhone.getText().toString());
         user.setEmail(editAccEmail.getText().toString());
-        if(male.isChecked()){
+        if (male.isChecked()) {
             user.setGender("male");
-        }else user.setGender("female");
+        } else user.setGender("female");
 
-        List<String>lnks=new ArrayList<>();
-        String tag=facebook.getText().toString();
+        List<String> lnks = new ArrayList<>();
+        String tag = facebook.getText().toString();
 
-        if(!URLUtil.isValidUrl(tag)&&!tag.isEmpty()) {
+        if (!URLUtil.isValidUrl(tag) && !tag.isEmpty()) {
             facebook.setError("facebook link not vaild");
             return;
-        }
-        else lnks.add(facebook.getText().toString()+"");
+        } else lnks.add(facebook.getText().toString() + "");
 
-        tag=instagram.getText().toString();
-        if(!URLUtil.isValidUrl(tag)&&!tag.isEmpty()) {
+        tag = instagram.getText().toString();
+        if (!URLUtil.isValidUrl(tag) && !tag.isEmpty()) {
             instagram.setError("instagram link not vaild");
             return;
-        }
-        else lnks.add(instagram.getText().toString()+"" );
+        } else lnks.add(instagram.getText().toString() + "");
 
-        tag=youtube.getText().toString();
-        if(!URLUtil.isValidUrl(tag)&&!tag.isEmpty()) {
+        tag = youtube.getText().toString();
+        if (!URLUtil.isValidUrl(tag) && !tag.isEmpty()) {
             youtube.setError("youtube link not vaild");
             return;
-        }
-        else lnks.add(youtube.getText().toString()+"" );
+        } else lnks.add(youtube.getText().toString() + "");
 
         user.setLinks(lnks);
 
-        upload(imageUri,user);
+        upload(imageUri, user);
 
 
     }
-    private void upload(Uri mImageUri,UserPost user) {
+
+    private void upload(Uri mImageUri, UserPost user) {
         // compress image
         //[1] convert uri to bitmap
         Bitmap bitmap = uriToBitmap(mImageUri);
@@ -204,7 +210,7 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
                             Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
                             result.addOnSuccessListener(uri -> {
                                 String downloadUri = uri.toString();
-                                Log.d("TAG####", "upload: "+downloadUri);
+                                Log.d("TAG####", "upload: " + downloadUri);
                                 user.setImageUrl(downloadUri);
                                 accountViewModel.UpdateUser(user).enqueue(new Callback<JsonObject>() {
                                     @Override
@@ -216,6 +222,7 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
                                         Intent intent = new Intent(EditAccountActivity.this, MainActivity.class);
                                         intent.putExtra("sharedEdit", new Gson().toJson(user));
                                         startActivity(intent);
+                                        edit_progress.setVisibility(View.GONE);
                                         finish();
                                     }
 
@@ -223,16 +230,25 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
                                     public void onFailure(Call<JsonObject> call, Throwable t) {
                                         Toast.makeText(EditAccountActivity.this, "", Toast.LENGTH_SHORT).show();
                                     }
+
                                 });
                             });
                         }
                     }
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(EditAccountActivity.this, "Uploading image error :: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("TAG####", "upload: "+e.getMessage());
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
+                        double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
 
-                });
+                        edit_progress.setProgressCompat((int)progress,true);
+                    }
+                })
+                .addOnFailureListener(e -> {
+            Toast.makeText(EditAccountActivity.this, "Uploading image error :: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("TAG####", "upload: " + e.getMessage());
+
+        });
 
 
     }
@@ -341,7 +357,7 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-       // EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        // EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
@@ -361,7 +377,7 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        Uri bmpUri=null;
+        Uri bmpUri = null;
         try {
             File file = new File(getExternalCacheDir(), System.currentTimeMillis() + ".jpg");
             FileOutputStream out = new FileOutputStream(file);
@@ -385,8 +401,10 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
             }
         } else {
             try {
+
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
+                Toast.makeText(this, "Change image please.", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }

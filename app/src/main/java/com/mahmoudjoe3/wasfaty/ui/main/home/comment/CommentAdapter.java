@@ -71,6 +71,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.VH> {
 
     public void addComment(Comment comment) {
         commentList.add(0,comment);
+        mOnAddCommentListenner.onAdded(comment);
         notifyItemInserted(0);
     }
 

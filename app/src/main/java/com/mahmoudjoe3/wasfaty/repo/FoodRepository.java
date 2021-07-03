@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.database.InteractionsDao;
 import com.mahmoudjoe3.wasfaty.networking.FoodApi;
+import com.mahmoudjoe3.wasfaty.pojo.Comment;
 import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.pojo.RecipePost;
@@ -70,10 +71,29 @@ public class FoodRepository {
     public Call<JsonObject> getAllRecipes() {
         return foodApi.getAllRecipes();
     }
-    public Call<JsonObject> getMostCommonRecipes() {
-        return foodApi.getMostCommonRecipes();
+    public Call<JsonObject> getMostCommonRecipes(int limit) {
+        return foodApi.getCommonRecipes(limit);
     }
 
+    public Call<JsonObject> love(int recipeId){
+        return foodApi.love(recipeId);
+    }
+
+    public Call<JsonObject> dislove(int recipeID) {
+        return foodApi.disLove(recipeID);
+    }
+
+    public Call<JsonObject> share(int recipeID) {
+        return foodApi.share(recipeID);
+    }
+
+    public Call<JsonObject> unFollow(int userID){
+        return foodApi.unFollow(userID);
+    }
+
+    public Call<String> postComment(Comment comment) {
+        return foodApi.postComment(comment);
+    }
     //DB
     public void insertInteraction(Interaction interaction) {
         dao.insertInteraction(interaction)
@@ -122,4 +142,7 @@ public class FoodRepository {
     }
 
 
+    public Call<JsonObject> getRangedRecipes(int page, int limit) {
+        return foodApi.getRangedRecipes(page);
+    }
 }

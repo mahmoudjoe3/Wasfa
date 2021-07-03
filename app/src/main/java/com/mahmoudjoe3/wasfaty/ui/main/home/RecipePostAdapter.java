@@ -1,6 +1,7 @@
 package com.mahmoudjoe3.wasfaty.ui.main.home;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.Shimmer;
+import com.facebook.shimmer.ShimmerDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfaty.R;
+import com.mahmoudjoe3.wasfaty.logic.MyLogic;
 import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
+import com.mahmoudjoe3.wasfaty.pojo.UserPost;
 import com.mahmoudjoe3.wasfaty.ui.activities.profile.profileActivity;
 import com.squareup.picasso.Picasso;
 
@@ -32,6 +37,7 @@ import static com.mahmoudjoe3.wasfaty.logic.MyLogic.getTimeFrom;
 public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH> {
     List<Recipe> recipes =new ArrayList<>();
     List<Following> followings=new ArrayList<>();
+    UserPost user;
     public List<Recipe> getRecipes() {
         return recipes;
     }
@@ -41,6 +47,13 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             this.recipes=new ArrayList<>();
         }else
             this.recipes = recipes;
+        notifyDataSetChanged();
+    }
+    public void addAll(List<Recipe> recipes) {
+        if(recipes==null){
+            this.recipes=new ArrayList<>();
+        }else
+            this.recipes.addAll(recipes);
         notifyDataSetChanged();
     }
     public void setFollowing(List<Following> followings) {
@@ -60,6 +73,17 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
     @Override
     public void onBindViewHolder(@NonNull VH vh, int position) {
         Recipe recipe=recipes.get(position);
+        Shimmer shimmer=new Shimmer.ColorHighlightBuilder()
+                .setBaseColor(Color.parseColor("#F3F3F3"))
+                .setBaseAlpha(1)
+                .setHighlightColor(Color.parseColor("#e7e7e7"))
+                .setHighlightAlpha(1)
+                .setDropoff(50)
+                .build();
+
+        ShimmerDrawable drawable=new ShimmerDrawable();
+        drawable.setShimmer(shimmer);
+
         initUserCaption(vh,recipe);
         initPostCaption(vh,recipe);
     }
@@ -74,19 +98,14 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         vh.post_username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //open prifile
-                Intent intent=new Intent(v.getContext(), profileActivity.class );
-                intent.putExtra(profileActivity.USER_INTENT,recipe.getUserId());
-                v.getContext().startActivity(intent);
+                openProfile(v, recipe);
             }
         });
         vh.post_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //open prifile
-                Intent intent=new Intent(v.getContext(), profileActivity.class );
-                intent.putExtra(profileActivity.USER_INTENT,recipe.getUserId());
-                v.getContext().startActivity(intent);
+                openProfile(v, recipe);
             }
         });
         for(Following f:followings){
@@ -95,6 +114,11 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                 break;
             }
         }
+        if(user.getId()==recipe.getUserId()|| MyLogic.Followed(recipe.getUserId(),followings))
+        {
+            vh.post_user_follow_btn.setVisibility(View.GONE);
+        }
+
         vh.post_user_follow_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +129,17 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     mOninteractionClickListener.onfollow(recipe);
             }
         });
+    }
+
+    private void openProfile(View v, Recipe recipe) {
+        //open prifile
+        if(user.getId()==recipe.getUserId()){
+            openProfileListener.intentToAccount();
+        }else {
+        Intent intent = new Intent(v.getContext(), profileActivity.class);
+        intent.putExtra(profileActivity.USER_INTENT, recipe.getUserId());
+        v.getContext().startActivity(intent);
+        }
     }
 
 
@@ -189,8 +224,11 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             public void onClick(View v) {
                 //make share
                 vh.post_share_btn_lotti.playAnimation();
+                if(vh.post_shares_number.getText().toString().trim().equals(""))
+                    vh.post_shares_number.setText("0 Share");
+                vh.post_shares_number.setText((Integer.parseInt(vh.post_shares_number.getText().toString().split(" ")[0])+1)+" Share");
                 if(mOninteractionClickListener!=null)
-                    mOninteractionClickListener.onshare(recipe);
+                    mOninteractionClickListener.onshare(recipe,vh.post_image_1);
             }
         });
         vh.post_comment_share_love_RelativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -271,6 +309,9 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         this.mOnImageClickListener = mOnImageClickListener;
     }
 
+    public void setuser(UserPost mUser) {
+        user=mUser;
+    }
 
 
     public interface OnImageClickListener{
@@ -439,7 +480,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
     }
 
     public interface OninteractionClickListener{
-        void onshare(Recipe recipe);
+        void onshare(Recipe recipe,ImageView img);
         void onlove(Recipe recipe);
         void onDislove(Recipe recipe);
         void onfollow(Recipe recipe);
@@ -455,5 +496,17 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
     public interface OnProfileClickListener{
         void onClick(int userid);
     }
+
+    OpenProfileListener openProfileListener;
+
+    public void setOnOpenProfileListener(OpenProfileListener mOnProfileClickListener) {
+        this.openProfileListener = mOnProfileClickListener;
+    }
+
+    public interface OpenProfileListener{
+        void intentToAccount();
+    }
+
+
 
 }

@@ -3,20 +3,19 @@ package com.mahmoudjoe3.wasfaty.ui.main.search;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,9 +25,9 @@ import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.logic.MyLogic;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;
+import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
-import com.mahmoudjoe3.wasfaty.pojo.User;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
 import com.mahmoudjoe3.wasfaty.ui.activities.profile.profileActivity;
 import com.mahmoudjoe3.wasfaty.viewModel.InteractionsViewModel;
@@ -141,16 +140,31 @@ public class SearchFragment extends Fragment {
             @Override
             public void onfollow(Recipe recipe) {
                 interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
+                searchViewModel.follow(new Following.followingPost(0,user.getId(),recipe.getUserId())).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if(!(response.code()>=200&&response.code()<300)) {
+                            Toast.makeText(getActivity(), "response code " + response.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
-        MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {
+        /*
+        MyLogic.setOnReviewListener(new MyLogic.OnReviewListener() {
 
             @Override
-            public void onAddComment(Comment comment) {
+            public void onReview(Comment comment) {
                 interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
             }
         });
+
+         */
 
 
         recipeSearchRecyclerAdapter.setOnItemClickListener(new RecipeSearchRecyclerAdapter.OnItemClickListener() {
@@ -163,14 +177,26 @@ public class SearchFragment extends Fragment {
         peopleSearchRecyclerAdapter.setOnItemClickListener(new PeopleSearchRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onClick(UserPost user) {
-                //todo open profile
                 Intent intent=new Intent(getActivity(), profileActivity.class );
                 intent.putExtra(profileActivity.USER_INTENT,user.getId());
                 startActivity(intent);
             }
 
             @Override
-            public void onFollow(UserPost user) {
+            public void onFollow(UserPost u) {
+                searchViewModel.follow(new Following.followingPost(0,user.getId(),u.getId())).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if(!(response.code()>=200&&response.code()<300)) {
+                            Toast.makeText(getActivity(), "response code " + response.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 interactionsViewModel.insertInteraction(new Interaction(user.getName(),user.getImageUrl(),"Followed"));
             }
         });
@@ -214,8 +240,6 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 lotti_search.setVisibility(View.VISIBLE);
                 lotti_search.playAnimation();
-                //todo after recive data puase lotti searh and hide
-                //todo if data is empty noResultSearchLayout.setVisibility(View.VISIBLE);
                 defaultSearchLayout.setVisibility(View.GONE);
                 if (searchImageButton.getTag().toString().equals("people")) {
                     peopleRecyclerView.setVisibility(View.VISIBLE);
@@ -228,7 +252,9 @@ public class SearchFragment extends Fragment {
                                 lotti_search.setVisibility(View.GONE);
                                 lotti_search.pauseAnimation();
                                 List<UserPost> userPostList = UserPost.parseUserResponseList(response.body().toString());
+                                userPostList.add(user);
                                 peopleSearchRecyclerAdapter.setUserList(userPostList);
+
                             }
 
                         }

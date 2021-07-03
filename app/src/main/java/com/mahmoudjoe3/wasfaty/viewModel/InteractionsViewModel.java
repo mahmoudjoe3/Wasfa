@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.repo.FoodRepository;
-import com.mahmoudjoe3.wasfaty.repo.NLB_DB_Repository;
 
 import java.util.List;
 

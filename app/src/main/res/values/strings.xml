@@ -53,7 +53,7 @@
     <string name="phone_number">Phone Number</string>
     <string name="password">Password</string>
     <string name="email_address">Email address</string>
-    <string name="user_name">User Name</string>
+    <string name="user_name">Email, Phone Number</string>
     <string name="register">Register</string>
     <string name="forget_password">Forget Password?</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>

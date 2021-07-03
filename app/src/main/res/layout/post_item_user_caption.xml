@@ -65,6 +65,7 @@
         app:cardBackgroundColor="@color/black"
         android:layout_alignParentEnd="true"
         app:cardCornerRadius="36dp"
+        android:layout_centerVertical="true"
         >
 
         <RelativeLayout

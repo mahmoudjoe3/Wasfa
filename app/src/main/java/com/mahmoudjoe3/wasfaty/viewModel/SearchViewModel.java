@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;
+import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.pojo.User;
 import com.mahmoudjoe3.wasfaty.repo.FoodRepository;
@@ -31,5 +32,9 @@ public class SearchViewModel extends ViewModel {
 
     public Call<JsonObject> searchRecipes(String identity) {
         return repository.searchRecipes(identity);
+    }
+
+    public Call<JsonObject> follow(Following.followingPost followingPost) {
+        return repository.follow(followingPost);
     }
 }

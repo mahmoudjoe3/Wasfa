@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,8 +92,34 @@ public class profileActivity extends AppCompatActivity {
         adapter = new profilePostItemAdapter(prevalent.PROFILE_ITEM);
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
 
+        userFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileViewModel.follow(new Following.followingPost(0,me.getId(),sec_user_id)).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if(!(response.code()>=200&&response.code()<300)) {
+                            Toast.makeText(profileActivity.this, "response code " + response.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(profileActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
         sec_user_id = getIntent().getIntExtra(USER_INTENT,1);
         me = new Gson().fromJson(sharedPreferences.getString("user", null), UserPost.class);
+
+        if(me.getId()==sec_user_id|| MyLogic.Followed(sec_user_id,me.getFollowings()))
+        {
+            userFollow.setVisibility(View.GONE);
+            userChecked.setVisibility(View.VISIBLE);
+        }
 
         profileViewModel.getUserBy(sec_user_id).enqueue(new Callback<JsonObject>() {
             @Override
@@ -172,17 +199,30 @@ public class profileActivity extends AppCompatActivity {
 
             @Override
             public void onfollow(Recipe recipe) {
+                profileViewModel.follow(new Following.followingPost(0,me.getId(),sec_user_id)).enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if(!(response.code()>=200&&response.code()<300)) {
+                            Toast.makeText(profileActivity.this, "response code " + response.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(profileActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(),recipe.getUserProfileThumbnail(), "Follow"));
 
             }
         });
-        MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {
+       /* MyLogic.setOnReviewListener(new MyLogic.OnReviewListener() {
 
             @Override
-            public void onAddComment(Comment comment) {
+            public void onReview(Comment comment) {
                 interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
             }
-        });
+        });*/
 
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
@@ -194,6 +234,8 @@ public class profileActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     @OnClick({R.id.back, R.id.user_instgram, R.id.user_youtube, R.id.user_facebook, R.id.user_follow, R.id.user_image, R.id.user_checked})
     public void onViewClicked(View view) {

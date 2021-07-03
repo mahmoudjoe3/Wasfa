@@ -62,6 +62,7 @@ public class interactionsFragment extends Fragment {
             @Override
             public void onChanged(List<Interaction> interactions) {
                 interactionList = interactions;
+                for(Interaction interaction: interactions)
                 interactionsRecyclerAdapter.setInteractionList(interactionList);
             }
         });

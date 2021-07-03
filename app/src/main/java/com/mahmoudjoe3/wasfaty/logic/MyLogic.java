@@ -33,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.ChipGroup;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;
+import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
 import com.mahmoudjoe3.wasfaty.ui.activities.profile.profileActivity;
@@ -41,8 +42,11 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 public class MyLogic {
+
+    public static CommentAdapter commentAdapter=new CommentAdapter();;
 
     public static boolean haveNetworkConnection(Context application) {
         ConnectivityManager connectivityManager = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -75,6 +79,17 @@ public class MyLogic {
             e.printStackTrace();
         }
         return bmpUri;
+    }
+
+
+
+    public static boolean Followed(int sec_user_id, List<Following> followings) {
+        for(Following following:followings){
+            if(following.getId()==sec_user_id){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static String getTimeFrom(long PostTimeInMileSec){
@@ -110,7 +125,7 @@ public class MyLogic {
         View sheetView = LayoutInflater.from(context).inflate(R.layout.post_details_layout,
                 (LinearLayout) context.findViewById(R.id.post_details_card));
 
-        initUserCaption(context,sheetView, recipe);
+        initUserCaption(context,sheetView, recipe,user);
         initPostCaption(sheetView, recipe,context,user);
 
         LinearLayout layout = sheetView.findViewById(R.id.post_details_images_frame);
@@ -131,7 +146,7 @@ public class MyLogic {
         sheetDialog.show();
     }
 
-    private static void initUserCaption(Activity context, View sheetView, Recipe recipe) {
+    private static void initUserCaption(Activity context, View sheetView, Recipe recipe, UserPost user) {
         //user captoin
         LottieAnimationView lotti_post_user_follow_btn;
         ImageView post_profile_img, post_user_nationality;
@@ -144,6 +159,11 @@ public class MyLogic {
         post_user_follow_btn = sheetView.findViewById(R.id.post_user_follow_btn);
         post_username = sheetView.findViewById(R.id.post_username);
         post_from_time = sheetView.findViewById(R.id.post_from_time);
+
+        if(recipe.getUserId()==user.getId()|| Followed(recipe.getUserId(),user.getFollowings()))
+        {
+            post_user_follow_btn.setVisibility(View.GONE);
+        }
 
         //user object
         post_from_time.setText(getTimeFrom(recipe.getCreatedDate()));
@@ -346,6 +366,7 @@ public class MyLogic {
                 //todo make share
                 post_share_btn_lotti.playAnimation();
                 if(mOninteractionClickListener1!=null){
+
                     mOninteractionClickListener1.onshare(recipe);
                 }
             }
@@ -385,7 +406,7 @@ public class MyLogic {
 
         commentNum.setText(recipe.getComments().size()+" comments");
 
-        CommentAdapter commentAdapter = new CommentAdapter();
+        //commentAdapter = new CommentAdapter();
         commentRecyclerView.setAdapter(commentAdapter);
 
         commentAdapter.setCommentList(recipe.getComments());
@@ -438,14 +459,13 @@ public class MyLogic {
                     public void onClick(View v) {
                         //todo send comment to database
                         boolean isCreator = (user.getId() == recipe.getUserId());
-                        Comment comment=new Comment(recipe.getId(),recipe.getId(), user.getName(), user.getImageUrl(), commentTxt.getText().toString());
+                        Comment comment=new Comment(recipe.getId(),user.getId(), user.getName(), user.getImageUrl(), commentTxt.getText().toString());
                         comment.setCreator(isCreator);
-                        if(mOnProfileClickListener1!=null){
-                            mOnProfileClickListener1.onAddComment(comment);
-                        }
+
                         commentAdapter.addComment(comment);
                         sendComment.setMinAndMaxProgress(0.33f, 1f);
                         sendComment.playAnimation();
+
                         //sendComment.setProgress(0.6f);
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -474,20 +494,6 @@ public class MyLogic {
         sheetDialog.show();
     }
 
-    static OnProfileClickListener mOnProfileClickListener1;
-
-    public static void setOnProfileClickListener(OnProfileClickListener mOnProfileClickListener) {
-        mOnProfileClickListener1 = mOnProfileClickListener;
-    }
-
-    public static void removeOnProfileClickListener() {
-        mOnProfileClickListener1 = null;
-    }
-
-    public interface OnProfileClickListener{
-        void onAddComment(Comment comment);
-    }
-
     static OninteractionClickListener mOninteractionClickListener1;
 
     public static void setOninteractionClickListener(OninteractionClickListener mOninteractionClickListener) {
@@ -495,10 +501,11 @@ public class MyLogic {
     }
 
     public interface OninteractionClickListener{
-        void onshare(Recipe recipe);
         void onlove(Recipe recipe);
         void onDislove(Recipe recipe);
         void onfollow(Recipe recipe);
+
+        void onshare(Recipe recipe);
     }
 
 }

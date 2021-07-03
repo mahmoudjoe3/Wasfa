@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.mahmoudjoe3.wasfaty.R;
+import com.mahmoudjoe3.wasfaty.logic.MyLogic;
 import com.mahmoudjoe3.wasfaty.pojo.User;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
 import com.squareup.picasso.Picasso;
@@ -22,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSearchRecyclerAdapter.PeopleSearchViewHolder> {
     private List<UserPost> userList = new ArrayList<>();
-
+    private UserPost user;
     @NonNull
     @Override
     public PeopleSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,6 +33,14 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
 
     @Override
     public void onBindViewHolder(@NonNull PeopleSearchViewHolder holder, int position) {
+        if(user.getId()==userList.get(position).getId()){ return; }
+
+        if(MyLogic.Followed(userList.get(position).getId(),user.getFollowings())){
+            holder.followUser.setVisibility(View.GONE);
+            holder.lotti_people_follow_btn.setProgress(1);
+            holder.lotti_people_follow_btn.setVisibility(View.VISIBLE);
+        }
+
         holder.nameTextView.setText(userList.get(position).getName());
         holder.bioTextView.setText(userList.get(position).getBio());
         Picasso.get().load(userList.get(position).getImageUrl()).fit().centerCrop().into(holder.profileCircleImageView);
@@ -67,6 +76,8 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
     }
 
     public void setUserList(List<UserPost> userList) {
+        user = userList.get(userList.size() - 1);
+        userList.remove(userList.size()-1);
         this.userList = userList;
         notifyDataSetChanged();
     }

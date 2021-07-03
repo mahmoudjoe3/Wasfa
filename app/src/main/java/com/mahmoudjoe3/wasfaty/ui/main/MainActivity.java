@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity  {
             super.onBackPressed();
     }
 
-    private void selectFragByiId(int item_id) {
+    public void selectFragByiId(int item_id) {
         switch (item_id) {
             case R.id.menu_search:
                 viewPager.setCurrentItem(1);

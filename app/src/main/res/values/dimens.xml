@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="standered_margin">16dp</dimen>
+    <dimen name="standered_margin">12dp</dimen>
     <dimen name="post_margin">12dp</dimen>
     <dimen name="post_profile_size">@dimen/_34sdp</dimen>
     <dimen name="comment_profile_size">@dimen/_26sdp</dimen>

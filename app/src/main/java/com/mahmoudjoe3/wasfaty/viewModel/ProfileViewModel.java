@@ -28,4 +28,8 @@ public class ProfileViewModel extends ViewModel {
         return repository.follow(followingPost);
     }
 
+    public Call<JsonObject> unFollow(int userId){
+        return repository.unFollow(userId);
+    }
+
 }

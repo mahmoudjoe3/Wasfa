@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -125,12 +126,13 @@ public class AccountFragment extends Fragment {
 
             }
         });
-        MyLogic.setOnProfileClickListener(new MyLogic.OnProfileClickListener() {
+        /*
+        MyLogic.setOnReviewListener(new MyLogic.OnReviewListener() {
             @Override
-            public void onAddComment(Comment comment) {
+            public void onReview(Comment comment) {
                 interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(), comment.getUserImageUrl(), "Commented On"));
             }
-        });
+        });*/
 
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
@@ -213,14 +215,22 @@ public class AccountFragment extends Fragment {
         accountViewModel.getUserRecipes(mUser.getId()).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                List<Recipe> recipes=Recipe.parseRecipeJson(response.body().toString());
-                adapter.setRecipeList(recipes);
-                posts.setText(recipes.size()+"");
+                if(response.code()>=200&&response.code()<300) {
+                    List<Recipe> recipes = Recipe.parseRecipeJson(response.body().toString());
+                    adapter.setRecipeList(recipes);
+                    posts.setText(recipes.size() + "");
+                }else {
+                    adapter.setRecipeList(new ArrayList<>());
+                    Toast.makeText(getActivity(), "Error Response code "+response.code(), Toast.LENGTH_SHORT).show();
+                    posts.setText( "0");
+                }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(getActivity(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                adapter.setRecipeList(new ArrayList<>());
+                posts.setText( "");
             }
         });
 

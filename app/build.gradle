@@ -39,6 +39,10 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
     }
+
+    aaptOptions {
+        noCompress "tflite"
+    }
 }
 
 dependencies {
@@ -78,8 +82,6 @@ dependencies {
     // Displaying images
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
-    //shimmer recycle view
-    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
 
     def lottieVersion = "3.7.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
@@ -149,5 +151,13 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
     implementation "org.jetbrains.anko:anko:0.10.8"
+
+    //shimmer effect
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+
+// Import the Task Text Library dependency TensorFlow
+    implementation 'org.tensorflow:tensorflow-lite-task-text:0.2.0'
+
 
 }

@@ -17,9 +17,9 @@ public class FoodModule {
 
     @Singleton
     @Provides
-    public FoodApi getFoodApi(){
-        return new Retrofit.Builder()
-                .baseUrl("https://foodapiv120210521031846.azurewebsites.net/")
+    public FoodApi getFoodApi(){      //old https://foodapiv120210521031846.azurewebsites.net/
+        return new Retrofit.Builder() //new https://foodapiv120210702153043.azurewebsites.net/
+                .baseUrl("https://foodapiv120210702153043.azurewebsites.net/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(FoodApi.class);

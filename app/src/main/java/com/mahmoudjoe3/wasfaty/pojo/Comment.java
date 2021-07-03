@@ -9,7 +9,6 @@ public class Comment {
     private boolean creator;
     private long createdTime;
     private String commentText;
-    private int loveCount;
     private float reviewResult;
 
     public Comment(int recipeId,int userId,String username, String userImageUrl, String commentText) {
@@ -20,7 +19,6 @@ public class Comment {
         this.creator = false;
         this.commentText = commentText;
         createdTime=System.currentTimeMillis();
-        loveCount=0;
     }
 
     public Comment(int id, int userId, String username, String userImageUrl, boolean creator, long createdTime, String commentText, float reviewResult) {
@@ -101,11 +99,4 @@ public class Comment {
         this.commentText = commentText;
     }
 
-    public int getLoveCount() {
-        return loveCount;
-    }
-
-    public void setLoveCount(int loveCount) {
-        this.loveCount = loveCount;
-    }
 }
