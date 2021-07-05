@@ -117,12 +117,14 @@ dependencies {
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    /*
     // Dependencies for Google API Client Libraries
     implementation 'com.google.auth:google-auth-library-oauth2-http:0.26.0'
     api("com.google.apis:google-api-services-language:v1-rev477-1.25.0") {
         exclude module: 'HttpUrlConnection'
         exclude module: 'jsr305'
-    }
+    }*/
+
     // dagger Hilt
     implementation "com.google.dagger:hilt-android:2.28-alpha"
     annotationProcessor 'com.google.dagger:hilt-android-compiler:2.28-alpha'

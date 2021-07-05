@@ -1,6 +1,8 @@
 package com.mahmoudjoe3.wasfaty.ui.main.home;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -88,6 +90,7 @@ public class HomeFragment extends Fragment {
     private List<Recipe> recipeList;
     private SharedPreferences sharedPreferences;
     private Gson gson;
+    private List<Integer> loveList;
 
     int page = 1, limit = 10;
 
@@ -103,9 +106,11 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
 
+
         sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFERENCE_NAME, MODE_PRIVATE);
         gson = new Gson();
         mUser = gson.fromJson(sharedPreferences.getString("user", null), UserPost.class);
+
 
         return view;
 
@@ -114,6 +119,7 @@ public class HomeFragment extends Fragment {
     private void setupMostCommonAdapter() {
         mostCommonAdapter = new profilePostItemAdapter(prevalent.COMMON_ITEM);
         mostCommonRecycle.setAdapter(mostCommonAdapter);
+
         mostCommonRecycle.setHasFixedSize(true);
         getMostCommonRecipes();
         mostCommonAdapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
@@ -425,7 +431,7 @@ public class HomeFragment extends Fragment {
                 double commentPolarity = 0;
                 commentPolarity = BertClassify(comment.getCommentText());
                 CommentPost commentPost = new CommentPost(comment, commentPolarity);
-                homeViewModel.postComment(comment).enqueue(new Callback<String>() {
+                homeViewModel.postComment(commentPost).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.code() >= 200 && response.code() < 300) {

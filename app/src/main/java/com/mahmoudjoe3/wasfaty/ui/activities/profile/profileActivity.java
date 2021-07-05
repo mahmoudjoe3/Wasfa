@@ -261,7 +261,9 @@ public class profileActivity extends AppCompatActivity {
                 openLink(userFacebook.getTag().toString());
                 break;
             case R.id.user_image:
-                showImage(List.of(mUser.getImageUrl()), 0);
+                List<String> list=new ArrayList<>();
+                list.add(mUser.getImageUrl());
+                showImage(list, 0);
                 break;
         }
     }

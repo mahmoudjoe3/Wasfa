@@ -22,6 +22,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -151,6 +152,7 @@ public class MyLogic {
         LottieAnimationView lotti_post_user_follow_btn;
         ImageView post_profile_img, post_user_nationality;
         TextView post_username, post_from_time, post_user_follow_btn;
+        RatingBar post_rate;
 
 
         lotti_post_user_follow_btn = sheetView.findViewById(R.id.lotti_post_user_follow_btn);
@@ -159,6 +161,8 @@ public class MyLogic {
         post_user_follow_btn = sheetView.findViewById(R.id.post_user_follow_btn);
         post_username = sheetView.findViewById(R.id.post_username);
         post_from_time = sheetView.findViewById(R.id.post_from_time);
+        post_rate = sheetView.findViewById(R.id.post_rate);
+
 
         if(recipe.getUserId()==user.getId()|| Followed(recipe.getUserId(),user.getFollowings()))
         {
@@ -166,6 +170,8 @@ public class MyLogic {
         }
 
         //user object
+        post_rate.setRating((float) (recipe.getReviewsRateTotal()/2));
+
         post_from_time.setText(getTimeFrom(recipe.getCreatedDate()));
         post_username.setText(recipe.getUserName());
         Picasso.get().load(recipe.getUserProfileThumbnail())
@@ -309,7 +315,7 @@ public class MyLogic {
                 sheetView.findViewById(R.id.share_card_dot).setVisibility(View.VISIBLE);        }
 
         post_comment_btn_lotti.setProgress(1f);
-        post_share_btn_lotti.setProgress(2f);
+        post_share_btn_lotti.setProgress(1f);
 
         post_show_details_layout_btn_p_card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -463,6 +469,9 @@ public class MyLogic {
                         comment.setCreator(isCreator);
 
                         commentAdapter.addComment(comment);
+                        int s=Integer.parseInt(commentNum.getText().toString().split(" ")[0]);
+                        commentNum.setText(s+1+" comments");
+
                         sendComment.setMinAndMaxProgress(0.33f, 1f);
                         sendComment.playAnimation();
 

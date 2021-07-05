@@ -5,18 +5,18 @@ public class CommentPost {
     private int UserId;
     private int RecipeId;
     private boolean IsCreator;
-    private long CreatedDate;
+    private long CreatedData;
     private String ReviewText;
-    private double ReviewResult;
+    private String ReviewResult;
 
     public CommentPost(Comment comment, double commentPolarity) {
         this.Id = comment.getId();
         this.UserId = comment.getUserId();
         this.RecipeId = comment.getRecipeId();
         this.IsCreator = comment.isCreator();
-        this.CreatedDate = comment.getCreatedTime();
+        this.CreatedData = comment.getCreatedTime();
         this.ReviewText = comment.getCommentText();
-        this.ReviewResult =  commentPolarity;
+        this.ReviewResult =  String.valueOf(commentPolarity);
     }
 
 
@@ -28,7 +28,7 @@ public class CommentPost {
                 ", userId=" + UserId +
                 ", recipeId=" + RecipeId +
                 ", creator=" + IsCreator +
-                ", createdTime=" + CreatedDate +
+                ", createdTime=" + CreatedData +
                 ", commentText='" + ReviewText + '\'' +
                 ", reviewResult=" + ReviewResult +
                 '}';

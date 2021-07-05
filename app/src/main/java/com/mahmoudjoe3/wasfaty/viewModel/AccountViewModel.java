@@ -28,5 +28,8 @@ public class AccountViewModel extends ViewModel {
         return repository.getUserBy(id);
     }
 
+    public Call<JsonObject> deleteRecipe(int recipeId) {
+        return repository.deleteRecipe(recipeId);
+    }
 
 }

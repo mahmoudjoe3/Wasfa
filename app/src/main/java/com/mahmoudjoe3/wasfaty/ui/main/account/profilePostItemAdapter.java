@@ -52,11 +52,19 @@ public class profilePostItemAdapter extends RecyclerView.Adapter<profilePostItem
         if(profileItem == prevalent.PROFILE_ITEM){
             h.post_user_image.setVisibility(View.GONE);
             h.post_username.setVisibility(View.GONE);
+            h.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemDeletedListener.onLongClick(recipe,position);
+                    return false;
+                }
+            });
         }
         Glide.with(h.post_top_image.getContext()).load(recipe.getImgUrls().get(0))
                 .into(h.post_top_image);
 
        // h.post_rate.setText();
+        h.post_rate.setText((recipe.getReviewsRateTotal()/2)+"");
         h.post_caption.setText(recipe.getTitle());
         h.post_love_number.setText(""+recipe.getLoveCount());
         h.post_comment_number.setText(""+recipe.getComments().size());
@@ -73,6 +81,12 @@ public class profilePostItemAdapter extends RecyclerView.Adapter<profilePostItem
     @Override
     public int getItemCount() {
         return recipeList.size();
+    }
+
+    public void remove(Recipe recipe, int position) {
+        recipeList.remove(recipe);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(0,recipeList.size());
     }
 
     static class VH extends RecyclerView.ViewHolder{
@@ -105,5 +119,15 @@ public class profilePostItemAdapter extends RecyclerView.Adapter<profilePostItem
 
     public interface OnItemClickListener{
         void onClick(Recipe recipe);
+    }
+
+    OnItemDeletedListener mOnItemDeletedListener;
+
+    public void setmOnItemDeletedListener(OnItemDeletedListener mOnItemDeletedListener) {
+        this.mOnItemDeletedListener = mOnItemDeletedListener;
+    }
+
+    public interface OnItemDeletedListener{
+        void onLongClick(Recipe recipe, int position);
     }
 }

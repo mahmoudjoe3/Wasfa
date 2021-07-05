@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;
+import com.mahmoudjoe3.wasfaty.pojo.CommentPost;
 import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.repo.FoodRepository;
 
@@ -43,7 +44,7 @@ public class HomeViewModel extends ViewModel {
         return repository.share(recipeID);
     }
 
-    public Call<String> postComment(Comment comment) {
+    public Call<String> postComment(CommentPost comment) {
         return repository.postComment(comment);
     }
 }

@@ -1,5 +1,7 @@
 package com.mahmoudjoe3.wasfaty.ui.main.account;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -8,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.logic.MyLogic;
-import com.mahmoudjoe3.wasfaty.pojo.Comment;
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
@@ -137,6 +137,47 @@ public class AccountFragment extends Fragment {
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
 
+
+        adapter.setmOnItemDeletedListener(new profilePostItemAdapter.OnItemDeletedListener() {
+            @Override
+            public void onLongClick(Recipe recipe, int position) {
+                new AlertDialog.Builder(getActivity()).setMessage("Do you want to Delete This Recipe?")
+                        .setTitle("Delete Recipe").setCancelable(true)
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                accountViewModel.deleteRecipe(recipe.getId()).enqueue(new Callback<JsonObject>() {
+                                    @Override
+                                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                        if(response.code()>=200&&response.code()<300){
+                                            Toast.makeText(getActivity(), "Recipe deleted successfully", Toast.LENGTH_SHORT).show();
+                                            adapter.remove(recipe,position);
+                                            int p=Integer.parseInt(posts.getText().toString());
+                                            posts.setText((p-1)+"");
+                                            dialog.dismiss();
+                                        }else {
+                                            Toast.makeText(getActivity(), "Faild to delete recipe response code "+response.code(), Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                                        Toast.makeText(getActivity(), "Faild to delete recipe Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).create()
+                        .show();
+            }
+        });
 
         adapter.setmOnItemClickListener(new profilePostItemAdapter.OnItemClickListener() {
             @Override
@@ -266,7 +307,9 @@ public class AccountFragment extends Fragment {
                 getActivity().onBackPressed();
                 break;
             case R.id.user_image:
-                showImage(List.of(mUser.getImageUrl()), 0);
+                List<String> list=new ArrayList<>();
+                list.add(mUser.getImageUrl());
+                showImage(list, 0);
                 break;
             case R.id.user_logout:
                 logout();

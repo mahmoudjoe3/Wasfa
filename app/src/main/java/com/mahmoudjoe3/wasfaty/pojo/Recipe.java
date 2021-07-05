@@ -29,6 +29,7 @@ public class Recipe {
     private List<Comment> comments;
     private String Privacy;
     List<Uri> imageUris;
+    private double ReviewsRateTotal;
 
 
 
@@ -81,9 +82,11 @@ public class Recipe {
                 int loveCount = recipe.getInt("LoveCount");
                 int shareCount = recipe.getInt("ShareCount");
                 int userId = recipe.getInt("UserId");
+                double ReviewsRateTotal=recipe.getDouble("ReviewsRateTotal");
                 List<String> links = new ArrayList<>();
                 List<Comment> commentList = new ArrayList<>();
                 JSONArray commentArray = recipe.getJSONArray("Reviews");
+
 
                 for (int j = 0; j < commentArray.length(); j++) {
                     JSONObject obj = commentArray.getJSONObject(j);
@@ -111,6 +114,9 @@ public class Recipe {
                 }
 
                 Recipe r = new Recipe(id, userId, userName,userImageUrl, title, description,nationality,createdDate,prepareTime, categoryList,ingredientList,stepList,loveCount,shareCount,imgList);
+                r.setComments(commentList);
+                ReviewsRateTotal = (double) Math.round(ReviewsRateTotal * 10) / 10;
+                r.setReviewsRateTotal(ReviewsRateTotal);
                 recipeList.add(r);
             }
         } catch (JSONException e) {
@@ -268,5 +274,13 @@ public class Recipe {
 
     public List<Uri> getImageUris() {
         return imageUris;
+    }
+
+    public void setReviewsRateTotal(double reviewsRateTotal) {
+        ReviewsRateTotal = reviewsRateTotal;
+    }
+
+    public double getReviewsRateTotal() {
+        return ReviewsRateTotal;
     }
 }

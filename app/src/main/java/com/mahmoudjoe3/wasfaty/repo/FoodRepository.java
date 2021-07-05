@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.database.InteractionsDao;
 import com.mahmoudjoe3.wasfaty.networking.FoodApi;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;
+import com.mahmoudjoe3.wasfaty.pojo.CommentPost;
 import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.pojo.RecipePost;
@@ -68,6 +69,10 @@ public class FoodRepository {
         return foodApi.PostRecipe(recipe);
     }
 
+    public Call<JsonObject> deleteRecipe(int recipeId) {
+        return foodApi.deleteRecipe(recipeId);
+    }
+
     public Call<JsonObject> getAllRecipes() {
         return foodApi.getAllRecipes();
     }
@@ -91,7 +96,7 @@ public class FoodRepository {
         return foodApi.unFollow(userID);
     }
 
-    public Call<String> postComment(Comment comment) {
+    public Call<String> postComment(CommentPost comment) {
         return foodApi.postComment(comment);
     }
     //DB

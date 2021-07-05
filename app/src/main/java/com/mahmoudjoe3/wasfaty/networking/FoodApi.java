@@ -2,9 +2,9 @@ package com.mahmoudjoe3.wasfaty.networking;
 
 import androidx.room.Delete;
 
-import com.google.api.client.json.Json;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.pojo.Comment;
+import com.mahmoudjoe3.wasfaty.pojo.CommentPost;
 import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.RecipePost;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
@@ -18,7 +18,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-//https://foodapiv120210702153043.azurewebsites.net/api/Recipes
+//https://foodapiv120210702153043.azurewebsites.net/api/CommenRecipe/10
 public interface FoodApi {
     @POST("api/Users")
     Call<JsonObject> Register(@Body UserPost userPost);
@@ -28,7 +28,6 @@ public interface FoodApi {
     Call<JsonObject> getAllRecipes();
     @GET("/api/SomeRecipe/{number}")
     Call<JsonObject> getRangedRecipes(@Path("number") int number);
-
 
 
     @GET("api/UsersByIdentity/{userIdentity}")
@@ -68,6 +67,9 @@ public interface FoodApi {
     Call<JsonObject> getCommonRecipes(@Path("number") int limit);
 
     @POST("/api/Reviews")
-    Call<String> postComment(@Body Comment comment);
+    Call<String> postComment(@Body CommentPost comment);
+
+    @DELETE("/api/Recipes/{id}")
+    Call<JsonObject> deleteRecipe(@Path("id") int id);
 
 }

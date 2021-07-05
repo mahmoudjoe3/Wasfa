@@ -1,6 +1,8 @@
 package com.mahmoudjoe3.wasfaty.ui.main.home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +24,8 @@ import com.bumptech.glide.Glide;
 import com.facebook.shimmer.Shimmer;
 import com.facebook.shimmer.ShimmerDrawable;
 import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.logic.MyLogic;
 import com.mahmoudjoe3.wasfaty.pojo.Following;
@@ -38,6 +43,8 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
     List<Recipe> recipes =new ArrayList<>();
     List<Following> followings=new ArrayList<>();
     UserPost user;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     public List<Recipe> getRecipes() {
         return recipes;
     }
@@ -144,6 +151,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
 
     private void initPostCaption(VH vh, Recipe recipe) {
+        vh.post_rate.setRating((float) (recipe.getReviewsRateTotal()/2));
         String desc=recipe.getDescription();
         if(desc.length() > 250) {
             desc = desc.substring(0,247);
@@ -169,7 +177,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
 
         vh.post_comment_btn_lotti.setProgress(1f);
-        vh.post_share_btn_lotti.setProgress(2f);
+        vh.post_share_btn_lotti.setProgress(1f);
 
         vh.post_show_details_layout_btn_p_card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,6 +196,24 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             }
         });
 
+        sharedPreferences = vh.post_love_btn.getContext().getSharedPreferences("userShared", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        List<Integer> loveList = new ArrayList<>();
+        String loveString = sharedPreferences.getString("love", null);
+        if(loveString == null)
+            loveList=new ArrayList<>();
+        else{
+
+            loveList = new Gson().fromJson(loveString, new TypeToken<List<Integer>>(){}.getType());
+        }
+
+        if(loveList.contains(recipe.getId())) {
+            vh.post_love_txt.setTextColor(vh.itemView.getContext().getColor(R.color.colorTap));
+            vh.post_love_btn.setTag("on");
+            vh.post_love_btn_lotti.playAnimation();
+        }
+
+        List<Integer> finalLoveList = loveList;
         vh.post_love_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,6 +226,8 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     if(mOninteractionClickListener!=null)
                         mOninteractionClickListener.onlove(recipe);
 
+                    finalLoveList.add(recipe.getId());
+
                 }else {
                     vh.post_love_txt.setTextColor(vh.itemView.getContext().getColor(R.color.transparentDark));
                     vh.post_love_btn.setTag("of");
@@ -208,7 +236,17 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     vh.post_love_number.setText((Integer.parseInt(vh.post_love_number.getText().toString())-1)+"");
                     if(mOninteractionClickListener!=null)
                         mOninteractionClickListener.onDislove(recipe);
+                    for(int i = 0; i < finalLoveList.size(); i ++){
+                        if(finalLoveList.get(i) == recipe.getId()) {
+                            finalLoveList.remove(i);
+                            break;
+                        }
+                    }
+
                 }
+                editor.putString("love", new Gson().toJson(finalLoveList));
+                editor.commit();
+
             }
         });
         vh.post_comment_btn.setOnClickListener(new View.OnClickListener() {
@@ -381,6 +419,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         public ImageView post_profile_img,post_user_nationality;
         public LottieAnimationView post_more_menu;
         public TextView post_username,post_from_time,post_user_follow_btn;
+        public RatingBar post_rate;
 
         //post caption
         public TextView post_title,post_description,prepare_time;
@@ -416,6 +455,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         public VH(@NonNull View itemView) {
             super(itemView);
 
+            post_rate=itemView.findViewById(R.id.post_rate);
             lotti_post_user_follow_btn=itemView.findViewById(R.id.lotti_post_user_follow_btn);
 
             post_profile_img=itemView.findViewById(R.id.post_profile_img);
