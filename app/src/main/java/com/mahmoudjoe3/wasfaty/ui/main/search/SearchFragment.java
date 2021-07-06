@@ -156,13 +156,7 @@ public class SearchFragment extends Fragment {
                 });
             }
         });
-        MyLogic.commentAdapter.setOnAddCommentListenner(new CommentAdapter.OnAddCommentListenner() {
-            @Override
-            public void onAdded(Comment comment) {
-                interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
 
-            }
-        });
 
         recipeSearchRecyclerAdapter.setOnItemClickListener(new RecipeSearchRecyclerAdapter.OnItemClickListener() {
             @Override

@@ -50,7 +50,4 @@ public class HomeViewModel extends ViewModel {
         return repository.postComment(comment);
     }
 
-    public double BertClassify(String commentText, Context context) {
-        return repository.BertClassify(commentText,context);
-    }
 }

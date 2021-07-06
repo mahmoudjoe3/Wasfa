@@ -1,11 +1,13 @@
 package com.mahmoudjoe3.wasfaty.ui.main.home;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,10 @@ import com.mahmoudjoe3.wasfaty.ui.main.viewImage.ViewImageActivity;
 import com.mahmoudjoe3.wasfaty.viewModel.HomeViewModel;
 import com.mahmoudjoe3.wasfaty.viewModel.InteractionsViewModel;
 
+import org.tensorflow.lite.support.label.Category;
+import org.tensorflow.lite.task.text.nlclassifier.BertNLClassifier;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -129,35 +135,6 @@ public class HomeFragment extends Fragment {
         adapter = new RecipePostAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-       /*
-        homeViewModel.getAllRecipes().enqueue(new Callback<JsonObject>() {
-
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if(response.code()>=200&&response.code()<300) {
-                    List<Recipe> temp=Recipe.parseRecipeJson(response.body().toString());
-                    List<Recipe> temp1=new ArrayList<>();
-                    for(Recipe r:temp){
-                        if(r.getUserId()==mUser.getId())
-                            continue;
-                        temp1.add(r);
-                    }
-                    adapter.setRecipes(temp1);
-                    adapter.setFollowing(mUser.getFollowings());
-                }else {
-                    adapter.setRecipes(new ArrayList<>());
-                    Toast.makeText(getActivity(), "Error Response code "+response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                adapter.setRecipes(new ArrayList<>());
-                Toast.makeText(getActivity(), "Error "+t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        */
 
         adapter.setOnOpenProfileListener(new RecipePostAdapter.OpenProfileListener() {
             @Override
@@ -175,8 +152,6 @@ public class HomeFragment extends Fragment {
                 if (response.code() >= 200 && response.code() < 300) {
                     List<Recipe> posts = Recipe.parseRecipeJson(response.body().toString());
                     Collections.reverse(posts);
-
-
                     List<Recipe> temp2 = new ArrayList<>();
                     for (Recipe r : posts) {
                         if (r.getPrivacy() != null && !r.getPrivacy().equalsIgnoreCase("public"))
@@ -299,13 +274,15 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onlove(Recipe recipe) {
+            public void onlove(Recipe recipe, TextView post_love_number, ImageView post_love_number_ic) {
                 interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(), recipe.getUserProfileThumbnail(), "Loved"));
                 homeViewModel.love(recipe.getId()).enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if (response.code() >= 200 && response.code() < 300) {
 
+                            post_love_number.setVisibility(View.VISIBLE);
+                            post_love_number_ic.setVisibility(View.VISIBLE);
                         } else {
                             Toast.makeText(getActivity(), "Something went wrong !!", Toast.LENGTH_SHORT).show();
                         }
@@ -319,13 +296,18 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onDislove(Recipe recipe) {
+            public void onDislove(Recipe recipe, TextView post_love_number, ImageView post_love_number_ic) {
                 interactionsViewModel.insertInteraction(new Interaction(recipe.getUserName(), recipe.getUserProfileThumbnail(), "DisLoved"));
                 homeViewModel.disLove(recipe.getId()).enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if (response.code() >= 200 && response.code() < 300) {
 
+                            int x=Integer.parseInt(post_love_number.getText().toString());
+                            if(x==0) {
+                                post_love_number.setVisibility(View.GONE);
+                                post_love_number_ic.setVisibility(View.GONE);
+                            }
                         } else {
                             Toast.makeText(getActivity(), "Something went wrong !!", Toast.LENGTH_SHORT).show();
                         }
@@ -426,12 +408,27 @@ public class HomeFragment extends Fragment {
             @Override
             public void onAdded(Comment comment) {
                 double commentPolarity = 0;
-                commentPolarity = homeViewModel.BertClassify(comment.getCommentText(),getActivity());
+                commentPolarity = BertClassify(comment.getCommentText());
                 CommentPost commentPost = new CommentPost(comment, commentPolarity);
                 homeViewModel.postComment(commentPost).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.code() >= 200 && response.code() < 300) {
+                            int i=0;
+                            Recipe recipe1 = new Recipe();
+                            List<Recipe> recipeList=adapter.getRecipes();
+                            for(Recipe r:recipeList){
+                                if(r.getId()==comment.getRecipeId()){
+                                    recipe1=r;
+                                    break;
+                                }
+                                i++;
+                            }
+                            List<Comment> comments=recipe1.getComments();
+                            comments.add(comment);
+                            recipe1.setComments(comments);
+                            recipeList.set(i,recipe1);
+                            adapter.notifyItemChanged(i);
                             interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(), comment.getUserImageUrl(), "Commented On"));
                         } else {
                             Toast.makeText(getActivity(), response.code(), Toast.LENGTH_SHORT).show();
@@ -456,6 +453,22 @@ public class HomeFragment extends Fragment {
 
     }
 
+    public double BertClassify(String commentText) {
+        // Initialization
+        BertNLClassifier classifier2 = null;
+        try {
+            classifier2 = BertNLClassifier.createFromFile(getActivity(), prevalent.modelFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BertNLClassifier finalClassifier1 = classifier2;
+        List<Category> results = finalClassifier1.classify(commentText);
+        Log.d("tag###", "onClick: " + commentText + results.get(0).getLabel() + results.get(0).getScore()
+                + results.get(1).getLabel() + results.get(1).getScore());
+        double neg = results.get(0).getScore();
+        double pos = results.get(1).getScore();
+        return (neg > pos) ? -1 * neg : pos;
+    }
 
     private void shareImage(ImageView uri) {
         Intent shareIntent = new Intent();
@@ -479,5 +492,14 @@ public class HomeFragment extends Fragment {
         intent.putStringArrayListExtra(ViewImageActivity.IMG_URLS, new ArrayList<>(imgUrls));
         intent.putExtra(ViewImageActivity.IMG_POS, pos);
         startActivity(intent);
+    }
+
+    public static interface onRecipeChangeListener{
+        public void onChange(Comment comment);
+    }
+    static onRecipeChangeListener recipeChangeListener;
+
+    public static void setRecipeChangeListener(onRecipeChangeListener recipeChangeListener) {
+        recipeChangeListener = recipeChangeListener;
     }
 }

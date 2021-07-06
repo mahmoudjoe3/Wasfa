@@ -12,8 +12,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.mahmoudjoe3.wasfaty.R;
+import com.mahmoudjoe3.wasfaty.logic.MyLogic;
 import com.mahmoudjoe3.wasfaty.prevalent.prevalent;
 
 import butterknife.BindView;
@@ -40,6 +42,12 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Snackbar snackbar = Snackbar.make(this.findViewById(android.R.id.content), getString(R.string.No_internet_connection), Snackbar.LENGTH_INDEFINITE);
+        if (!MyLogic.haveNetworkConnection(this)) {
+            snackbar.setActionTextColor(getResources().getColor(R.color.red))
+                    .setAction(R.string.Exit, v -> MainActivity.this.finish()).show();
+        } else if (snackbar.isShown()) snackbar.dismiss();
+
         setSupportActionBar(toolbar);
         SetUpNavViewWithViewPager(savedInstanceState);
 

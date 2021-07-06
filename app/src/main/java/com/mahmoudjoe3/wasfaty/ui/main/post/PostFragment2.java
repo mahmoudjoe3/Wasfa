@@ -25,6 +25,8 @@ import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.viewModel.PostSharedViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -188,13 +190,10 @@ public class PostFragment2 extends Fragment {
         categoryChipGroup = view.findViewById(R.id.category_chipGroup);
         dropDownImageButton = view.findViewById(R.id.dropdown_imageButton);
         recipe = new Recipe();
-        appCategoryList = new ArrayList<>();
+        getAppCategoryList();
         userCategoryList = new ArrayList<>();
-        appCategoryList.add("Pizza French");
-        appCategoryList.add("peef");
-        appCategoryList.add("fruits");
-        appCategoryList.add("vegie");
-        appCategoryList.add("sweet");
+
+
 
         for(int i = 0; i < appCategoryList.size(); i ++) {
             final Chip chip = (Chip) LayoutInflater.from(getActivity()).inflate(R.layout.category_item, null, false);
@@ -213,6 +212,65 @@ public class PostFragment2 extends Fragment {
                 }
             });
         }
+    }
+
+    @NotNull
+    private void getAppCategoryList() {
+        appCategoryList =new ArrayList<>();
+        appCategoryList.add("Pizza French");
+        appCategoryList.add("peef");
+        appCategoryList.add("fruits");
+        appCategoryList.add("vegie");
+        appCategoryList.add("sweet");
+        appCategoryList.add("American");
+        appCategoryList.add("Appetizer & Snacks");
+        appCategoryList.add("Asian");
+        appCategoryList.add("Barbecue & Grilling");
+        appCategoryList.add("Beef");
+        appCategoryList.add("Breakfast & Brunch");
+        appCategoryList.add("Budget Cooking");
+        appCategoryList.add("Cake");
+        appCategoryList.add("Casseroles");
+        appCategoryList.add("Chicken");
+        appCategoryList.add("Chinese");
+        appCategoryList.add("Cookie");
+        appCategoryList.add("Dairy-Free");
+        appCategoryList.add("Dessert");
+        appCategoryList.add("Dinner");
+        appCategoryList.add("English");
+        appCategoryList.add("Entertaining");
+        appCategoryList.add("Five Minutes Craft");
+        appCategoryList.add("French");
+        appCategoryList.add("German");
+        appCategoryList.add("Gluten-Free");
+        appCategoryList.add("Greek");
+        appCategoryList.add("Hawaiian");
+        appCategoryList.add("Healthy");
+        appCategoryList.add("Indian");
+        appCategoryList.add("Irish");
+        appCategoryList.add("Italian");
+        appCategoryList.add("Japanese");
+        appCategoryList.add("Kid-Friendly");
+        appCategoryList.add("Lamb");
+        appCategoryList.add("Low-Calorie");
+        appCategoryList.add("Low-Fat");
+        appCategoryList.add("Main Dish");
+        appCategoryList.add("Mexican");
+        appCategoryList.add("Miscellaneous");
+        appCategoryList.add("Paste & Noodle");
+        appCategoryList.add("Pastries");
+        appCategoryList.add("Salad");
+        appCategoryList.add("Salmon");
+        appCategoryList.add("Seafood");
+        appCategoryList.add("Side Dish");
+        appCategoryList.add("Slow Cooker");
+        appCategoryList.add("Soups,Stews & Chili");
+        appCategoryList.add("Southern");
+        appCategoryList.add("Spanish");
+        appCategoryList.add("Vegan");
+        appCategoryList.add("Vegetarian");
+        appCategoryList.add("Weight-Loss");
+        appCategoryList.add("World Cuisine");
     }
 
     private void initRecyclerView() {

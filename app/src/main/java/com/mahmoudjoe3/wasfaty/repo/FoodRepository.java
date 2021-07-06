@@ -158,20 +158,5 @@ public class FoodRepository {
         return foodApi.getRangedRecipes(page);
     }
 
-    public double BertClassify(String commentText, Context context) {
-            // Initialization
-            BertNLClassifier classifier2 = null;
-            try {
-                classifier2 = BertNLClassifier.createFromFile(context, prevalent.modelFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            BertNLClassifier finalClassifier1 = classifier2;
-            List<Category> results = finalClassifier1.classify(commentText);
-            Log.d("tag###", "onClick: " + commentText + results.get(0).getLabel() + results.get(0).getScore()
-                    + results.get(1).getLabel() + results.get(1).getScore());
-            double neg = results.get(0).getScore();
-            double pos = results.get(1).getScore();
-            return (neg > pos) ? -1 * neg : pos;
-    }
+
 }

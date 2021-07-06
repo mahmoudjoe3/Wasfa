@@ -47,7 +47,7 @@ import java.util.List;
 
 public class MyLogic {
 
-    public static CommentAdapter commentAdapter=new CommentAdapter();;
+    public static CommentAdapter commentAdapter=new CommentAdapter();
 
     public static boolean haveNetworkConnection(Context application) {
         ConnectivityManager connectivityManager = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);

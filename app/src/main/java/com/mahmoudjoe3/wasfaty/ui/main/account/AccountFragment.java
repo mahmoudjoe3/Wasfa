@@ -131,12 +131,7 @@ public class AccountFragment extends Fragment {
 
             }
         });
-        MyLogic.commentAdapter.setOnAddCommentListenner(new CommentAdapter.OnAddCommentListenner() {
-            @Override
-            public void onAdded(Comment comment) {
-                interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(), comment.getUserImageUrl(), "Commented On"));
-            }
-        });
+
 
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
@@ -159,7 +154,7 @@ public class AccountFragment extends Fragment {
                                             int p=Integer.parseInt(posts.getText().toString());
                                             posts.setText((p-1)+"");
                                             dialog.dismiss();
-                                            posts.setText(Integer.parseInt(posts.getText().toString())-1);
+                                            posts.setText(""+(Integer.parseInt(posts.getText().toString())-1));
                                         }else {
                                             Toast.makeText(getActivity(), "Faild to delete recipe response code "+response.code(), Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:theme="@style/NoActionAppTheme"
     android:background="@color/black"
-    tools:context=".ui.main.MainActivity">
+    tools:context=".ui.main.MainActivity"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -45,6 +46,9 @@
         android:background="@drawable/nav_button_bg"
         android:elevation="16dp"
         android:padding="8dp"
+
         app:cnb_menuResource="@menu/main" />
+
+
 
 </RelativeLayout>

@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <item
         android:id="@+id/menu_home"
         android:icon="@drawable/ic_home"
-        android:title="Home"
+        android:title="@string/home"
         app:cnb_iconColor="#ffffff"
         app:cnb_backgroundColor="@color/colorTap"
         app:cnb_textColor="#ffffff"/>
     <item
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_search"
-        android:title="Search"
+        android:title="@string/search"
         app:cnb_iconColor="#ffffff"
         app:cnb_backgroundColor="@color/colorTap"
         app:cnb_textColor="#ffffff"/>
     <item
         android:id="@+id/menu_post"
         android:icon="@drawable/ic_post"
-        android:title="Post"
+        android:title="@string/post"
         app:cnb_iconColor="#ffffff"
         app:cnb_backgroundColor="@color/colorTap"
         app:cnb_textColor="#ffffff"/>
     <item
         android:id="@+id/menu_favorites"
         android:icon="@drawable/ic_notify"
-        android:title="Interaction"
+        android:title="@string/interaction"
         app:cnb_iconColor="#ffffff"
         app:cnb_backgroundColor="@color/colorTap"
         app:cnb_textColor="#ffffff"/>
     <item
         android:id="@+id/menu_account"
         android:icon="@drawable/ic_account"
-        android:title="Account"
+        android:title="@string/account"
         app:cnb_iconColor="#ffffff"
         app:cnb_backgroundColor="@color/colorTap"
         app:cnb_textColor="#ffffff"/>

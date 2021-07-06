@@ -14,8 +14,7 @@
     <string name="choose_category">Choose Category</string>
     <string name="add_photos">Add Photos / Videos</string>
     <string name="desc_hint">What recipe do you want talk about?</string>
-    <string name="public_tag">Public</string>
-    <string name="post">Post</string>
+    <string name="public_tag" translatable="false">Public</string>
     <string name="category_msg">Recipe Category </string>
     <string name="ingredients_msg">The Recipe ingredients</string>
     <string name="no_ingredients">No ingredients yet</string>
@@ -31,24 +30,23 @@
     <string name="search_people">Search people</string>
     <string name="search_recipe">Search recipes</string>
     <string name="edit">Edit</string>
-    <string name="my_name">Mahmoud Mamdouh</string>
-    <string name="youssef">Youssef Mohamed</string>
-    <string name="tst">the most popular chef in the world that will make the best recipes in the worldthe most popular chef in the world that will make the best recipes in the worldthe most popular chef in the world that will make the best recipes in the world</string>
-    <string name="bio_test">the most popular chef in the world that will make the best recipes in the world</string>
+    <string name="my_name" translatable="false">Mahmoud Mamdouh</string>
+    <string name="youssef" translatable="false">Youssef Mohamed</string>
+    <string name="tst" translatable="false">the most popular chef in the world that will make the best recipes in the worldthe most popular chef in the world that will make the best recipes in the worldthe most popular chef in the world that will make the best recipes in the world</string>
+    <string name="bio_test" translatable="false">the most popular chef in the world that will make the best recipes in the world</string>
     <string name="interactions">Interactions</string>
-    <string name="search">Search</string>
     <string name="you">You</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="login">Login</string>
     <string name="register_now">Register Now</string>
     <string name="or">or</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
+    <string name="male" translatable="false">Male</string>
+    <string name="female" translatable="false">Female</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="phone_number">Phone Number</string>
     <string name="password">Password</string>
     <string name="email_address">Email address</string>
-    <string name="user_name">Email, Phone Number</string>
+    <string name="user_name">UserName</string>
     <string name="register">Register</string>
     <string name="forget_password">Forget Password?</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
@@ -79,14 +77,21 @@
     <string name="steps">Steps:</string>
     <string name="share_recipe">Share recipe</string>
     <string name="the_recipe_steps">The recipe steps</string>
-    <string name="_2">+2</string>
+    <string name="_2" translatable="false">+2</string>
 
     <string name="share">Share</string>
     <string name="comment">Comment</string>
     <string name="love">Love</string>
-    <string name="privacy1">Public</string>
+    <string name="privacy1" translatable="false">Public</string>
     <string name="anyone_if_follower_or_not">Anyone if follower or not</string>
-    <string name="only_me">Only Me</string>
+    <string name="only_me" translatable="false">Only Me</string>
     <string name="only_you_can_see_this_recipe">Only You can see this recipe</string>
     <string name="nationality">Nationality</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="post">Post</string>
+    <string name="interaction">Interaction</string>
+    <string name="account">Account</string>
+    <string name="No_internet_connection">No Interner Connection</string>
+    <string name="Exit">Exit</string>
 </resources>

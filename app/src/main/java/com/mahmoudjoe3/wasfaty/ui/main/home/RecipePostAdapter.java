@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.logic.MyLogic;
+import com.mahmoudjoe3.wasfaty.pojo.Comment;
 import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
@@ -59,9 +60,12 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
     public void addAll(List<Recipe> recipes) {
         if(recipes==null){
             this.recipes=new ArrayList<>();
-        }else
-            this.recipes.addAll(recipes);
-        notifyDataSetChanged();
+        }else {
+            for(Recipe r:recipes){
+                this.recipes.add(r);
+                notifyItemInserted(this.recipes.size());
+            }
+        }
     }
     public void setFollowing(List<Following> followings) {
         this.followings=followings;
@@ -217,6 +221,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             vh.post_love_btn_lotti.playAnimation();
         }
 
+
         List<Integer> finalLoveList = loveList;
         vh.post_love_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,9 +231,11 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     vh.post_love_txt.setTextColor(vh.itemView.getContext().getColor(R.color.colorTap));
                     vh.post_love_btn.setTag("on");
                     vh.post_love_btn_lotti.playAnimation();
+                    if(vh.post_love_number.getText().toString().isEmpty())
+                        vh.post_love_number.setText("0");
                     vh.post_love_number.setText((Integer.parseInt(vh.post_love_number.getText().toString())+1)+"");
                     if(mOninteractionClickListener!=null)
-                        mOninteractionClickListener.onlove(recipe);
+                        mOninteractionClickListener.onlove(recipe,vh.post_love_number,vh.post_love_number_ic);
 
                     finalLoveList.add(recipe.getId());
 
@@ -239,7 +246,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     vh.post_love_btn_lotti.setProgress(0f);
                     vh.post_love_number.setText((Integer.parseInt(vh.post_love_number.getText().toString())-1)+"");
                     if(mOninteractionClickListener!=null)
-                        mOninteractionClickListener.onDislove(recipe);
+                        mOninteractionClickListener.onDislove(recipe,vh.post_love_number,vh.post_love_number_ic);
                     for(int i = 0; i < finalLoveList.size(); i ++){
                         if(finalLoveList.get(i) == recipe.getId()) {
                             finalLoveList.remove(i);
@@ -257,6 +264,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             @Override
             public void onClick(View v) {
                 //open comment sheet
+
                 vh.post_comment_btn_lotti.playAnimation();
                 mOnCommentClickListener.onClick(recipe);
             }
@@ -269,6 +277,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                 if(vh.post_shares_number.getText().toString().trim().equals(""))
                     vh.post_shares_number.setText("0 Share");
                 vh.post_shares_number.setText((Integer.parseInt(vh.post_shares_number.getText().toString().split(" ")[0])+1)+" Share");
+                vh.post_shares_number.setVisibility(View.VISIBLE);
                 if(mOninteractionClickListener!=null)
                     mOninteractionClickListener.onshare(recipe,vh.post_image_1);
             }
@@ -527,8 +536,8 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
     public interface OninteractionClickListener{
         void onshare(Recipe recipe,ImageView img);
-        void onlove(Recipe recipe);
-        void onDislove(Recipe recipe);
+        void onlove(Recipe recipe, TextView post_love_number, ImageView post_love_number_ic);
+        void onDislove(Recipe recipe, TextView post_love_number, ImageView post_love_number_ic);
         void onfollow(Recipe recipe);
     }
 
