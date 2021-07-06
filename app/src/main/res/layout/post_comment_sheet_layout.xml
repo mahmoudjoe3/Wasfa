@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/post_username_margin"
             android:fontFamily="sans-serif-medium"
-            android:text="14.9K comments"
+            android:text="@string/comments"
             android:textColor="@color/black"
             android:textSize="@dimen/_9ssp" />
 
@@ -44,7 +44,7 @@
         <TextView android:id="@+id/comment_sheet_show_addComment_sheet"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:text="Add Comment"
+            android:text="@string/add_comment"
             android:textSize="16sp"
             android:gravity="center_vertical"
             android:paddingBottom="@dimen/standered_margin"

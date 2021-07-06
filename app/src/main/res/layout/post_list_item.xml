@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/post_list_item_card"
@@ -16,7 +17,7 @@
         android:padding="@dimen/_2sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="add salad"
+        tools:text="add salad"
         android:textColor="@color/colorWhite"
         android:paddingStart="@dimen/post_username_margin"
         android:paddingEnd="@dimen/post_username_margin"

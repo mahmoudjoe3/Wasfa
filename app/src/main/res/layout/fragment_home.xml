@@ -23,11 +23,13 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:paddingTop="11dp"
-                android:text="Most common"
+                android:text="@string/most_common"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
 
             <androidx.recyclerview.widget.RecyclerView

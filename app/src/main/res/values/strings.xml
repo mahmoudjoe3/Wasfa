@@ -6,10 +6,6 @@
     <string name="following">Following</string>
     <string name="name">Name</string>
     <string name="address">Address</string>
-    <string name="bio">Bio</string>
-    <string name="instagram">Instagram</string>
-    <string name="facebook">Facebook</string>
-    <string name="youtube">Youtube</string>
     <string name="prepare_time">Prepare Time:</string>
     <string name="categories">Categories:</string>
     <string name="send_to">Send to</string>
@@ -25,7 +21,6 @@
     <string name="no_ingredients">No ingredients yet</string>
     <string name="who_can_msg">Who can see this post?</string>
     <string name="privacy_msg">Your post will be visible on feed, on your profile and in search results</string>
-    <string name="only_me">Only Me</string>
     <string name="ingredient_hint">Enter the ingredient</string>
     <string name="recipe_steps_hint">Enter the recipe steps</string>
     <string name="recipe_from">Recipe from</string>
@@ -61,4 +56,37 @@
     <string name="copy_right">Copyright © 2021 WASFA. All right reserved</string>
     <string name="remember_me">Remember me</string>
     <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="your_name">Your Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="bio">Bio</string>
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="youtube">Youtube</string>
+    <string name="take_photo">Take photo</string>
+    <string name="select_from_gallery">Select from Gallery</string>
+    <string name="view_photo">View photo</string>
+    <string name="cancel">Cancel</string>
+    <string name="most_common">Most common</string>
+    <string name="people">People</string>
+    <string name="recipes">Recipes</string>
+    <string name="enter_a_few_words_to_search_in_wasfa">Enter a few words to search in Wasfa</string>
+    <string name="no_result_found">No result found</string>
+    <string name="add_comment">Add Comment</string>
+    <string name="comments">comments</string>
+    <string name="show_more">Show more</string>
+    <string name="ingredient">Ingredient:</string>
+    <string name="steps">Steps:</string>
+    <string name="share_recipe">Share recipe</string>
+    <string name="the_recipe_steps">The recipe steps</string>
+    <string name="_2">+2</string>
+
+    <string name="share">Share</string>
+    <string name="comment">Comment</string>
+    <string name="love">Love</string>
+    <string name="privacy1">Public</string>
+    <string name="anyone_if_follower_or_not">Anyone if follower or not</string>
+    <string name="only_me">Only Me</string>
+    <string name="only_you_can_see_this_recipe">Only You can see this recipe</string>
+    <string name="nationality">Nationality</string>
 </resources>

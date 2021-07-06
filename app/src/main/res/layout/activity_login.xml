@@ -97,7 +97,8 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/muli"
                     android:text="@string/forget_password"
-                    android:textSize="@dimen/_11ssp" />
+                    android:textSize="@dimen/_11ssp"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
 
@@ -118,7 +119,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/or"
+                tools:text="@string/or"
+
                 android:textAllCaps="true" />
 
 
@@ -131,7 +133,8 @@
                 android:drawableStart="@drawable/google_icon_reshape"
                 android:text="@string/sign_in_with_google"
                 android:textAllCaps="false"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -161,10 +164,7 @@
                     android:paddingTop="@dimen/_5sdp"
                     android:paddingBottom="@dimen/_5sdp"/>
             </LinearLayout>
-
         </LinearLayout>
-
-
     </RelativeLayout>
 </ScrollView>
 

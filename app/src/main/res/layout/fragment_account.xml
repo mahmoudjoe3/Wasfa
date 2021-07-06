@@ -28,7 +28,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/back"
                 android:layout_centerVertical="true"
-                android:text="Thanos ebrahim"
+                tools:text="Thanos ebrahim"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
             <ImageButton
@@ -86,11 +86,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/standered_margin"
             android:maxLength="14"
-            android:text="Thanos ebrahim"
+            tools:text="Thanos ebrahim"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black" />
 
-        <LinearLayout
+        <LinearLayout android:id="@+id/links_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/standered_margin"
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/standered_margin"
-            android:text="King of the fucking world "
+            tools:text="King of the fucking world "
             android:textColor="@color/colorSecText"
             />
 
@@ -155,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="191"
+                tools:text="191"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="10K"
+                tools:text="10K"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
@@ -177,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="26"
+                android:text="0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />

@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Thanos ebrahim"
+                tools:text="Thanos ebrahim"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -62,7 +62,7 @@
             android:layout_height="@dimen/_80sdp"
             android:layout_marginTop="@dimen/standered_margin"
             android:scaleType="centerCrop"
-            android:src="@drawable/thanos_mcu"
+            tools:src="@drawable/thanos_mcu"
             app:civ_border_color="#FFFFFFFF" />
 
         <TextView
@@ -72,7 +72,7 @@
             android:layout_marginTop="@dimen/standered_margin"
             android:layout_marginBottom="@dimen/standered_margin"
             android:maxLength="14"
-            android:text="Thanos ebrahim"
+            tools:text="Thanos ebrahim"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black" />
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="191"
+                tools:text="191"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="10K"
+                tools:text="10K"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="26"
+                tools:text="26"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
@@ -225,7 +225,7 @@
             android:id="@+id/bio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="King of the fucking world "
+            tools:text="King of the fucking world "
             android:textColor="@color/colorSecText"
             />
 

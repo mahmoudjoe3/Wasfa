@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="center"
-                android:text="People"
+                android:text="@string/people"
                 android:textColor="@color/black"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="center"
-                android:text="Recipes"
+                android:text="@string/recipes"
                 android:textColor="@color/black"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
@@ -144,7 +144,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter a few words to search in \nWasfa"
+            android:text="@string/enter_a_few_words_to_search_in_wasfa"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
     </LinearLayout>
@@ -165,7 +165,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No result found"
+            android:text="@string/no_result_found"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
     </LinearLayout>

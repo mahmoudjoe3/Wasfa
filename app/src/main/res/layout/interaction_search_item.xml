@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
@@ -48,7 +49,7 @@
                     android:id="@+id/interaction_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loved"
+                    tools:text="Loved"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
 
@@ -57,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="Mahmoud Mamdouh"
+                    tools:text="Mahmoud Mamdouh"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -66,7 +67,7 @@
                     android:id="@+id/post_account_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="'s post"
+                    tools:text="'s post"
                     android:textColor="@color/black"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -75,7 +76,7 @@
                 android:id="@+id/date_time_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="May 2,2021 - 7:17PM"
+                tools:text="May 2,2021 - 7:17PM"
                 android:textSize="12sp" />
 
         </LinearLayout>

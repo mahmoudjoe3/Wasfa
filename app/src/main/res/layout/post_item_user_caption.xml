@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="@dimen/standered_margin">
 
     <androidx.cardview.widget.CardView
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/post_username_margin"
             android:maxLength="24"
-            android:text="Thanos Ahmed mahmoud"
+            tools:text="Thanos Ahmed mahmoud"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
             android:textColor="#000000"
             android:textStyle="bold" />
@@ -43,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/post_username_margin"
-            android:text="Follow"
+            android:text="@string/follow"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
             android:textColor="@color/colorTap"
             android:textSize="@dimen/_11ssp"
@@ -74,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/post_username_margin"
-            android:text="41m"
+            tools:text="41m"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
         <androidx.cardview.widget.CardView
@@ -92,14 +93,6 @@
             android:layout_height="@dimen/_15sdp"
             android:layout_marginStart="@dimen/post_username_margin"
             android:src="@drawable/ic_earth" />
-        <RatingBar android:id="@+id/post_rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@id/post_user_nationality"
-            android:layout_marginStart="@dimen/post_username_margin"
-            style="?android:attr/ratingBarStyleSmall"
-            android:numStars="5"
-            android:rating="3.6"
-            />
+
     </LinearLayout>
 </RelativeLayout>

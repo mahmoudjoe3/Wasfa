@@ -1,20 +1,17 @@
 package com.mahmoudjoe3.wasfaty.ui.main.home;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,10 +41,6 @@ import com.mahmoudjoe3.wasfaty.ui.main.viewImage.ViewImageActivity;
 import com.mahmoudjoe3.wasfaty.viewModel.HomeViewModel;
 import com.mahmoudjoe3.wasfaty.viewModel.InteractionsViewModel;
 
-import org.tensorflow.lite.support.label.Category;
-import org.tensorflow.lite.task.text.nlclassifier.BertNLClassifier;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,6 +73,8 @@ public class HomeFragment extends Fragment {
     RecyclerView mostCommonRecycle;//home_nestedScroll
     @BindView(R.id.home_nestedScroll)
     NestedScrollView home_nestedScroll;
+    @BindView(R.id.interaction_label)
+    TextView mostCommonLabel;
     private int REC_AUTH_CODE = 1;
 
     RecipePostAdapter adapter;
@@ -205,8 +200,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 adapter.setRecipes(new ArrayList<>());
-                Toast.makeText(getActivity(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -220,6 +213,11 @@ public class HomeFragment extends Fragment {
                     mostCommonRecycle.setVisibility(View.VISIBLE);
                     mostCommon_shimmer.stopShimmer();
                     mostCommon_shimmer.setVisibility(View.GONE);
+                    if(!posts.isEmpty()) {
+                        mostCommonLabel.setVisibility(View.VISIBLE);
+                    }else {
+
+                    }
                     mostCommonAdapter.setRecipeList(posts);
 
                 } else {
@@ -231,7 +229,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 mostCommonAdapter.setRecipeList(new ArrayList<>());
-                Toast.makeText(getActivity(), "Error " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -429,7 +426,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onAdded(Comment comment) {
                 double commentPolarity = 0;
-                commentPolarity = BertClassify(comment.getCommentText());
+                commentPolarity = homeViewModel.BertClassify(comment.getCommentText(),getActivity());
                 CommentPost commentPost = new CommentPost(comment, commentPolarity);
                 homeViewModel.postComment(commentPost).enqueue(new Callback<String>() {
                     @Override
@@ -457,30 +454,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-    }
-
-    private double BertClassify(String commentText) {
-        String modelFile = "mobilebert_model.tflite";
-        // Initialization
-        BertNLClassifier classifier2 = null;
-        try {
-            classifier2 = BertNLClassifier.createFromFile(getActivity(), modelFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        BertNLClassifier finalClassifier1 = classifier2;
-
-
-            List<Category> results = finalClassifier1.classify(commentText);
-            Log.d("tag###", "onClick: " + commentText + results.get(0).getLabel() + results.get(0).getScore()
-                    + results.get(1).getLabel() + results.get(1).getScore());
-            double neg = results.get(0).getScore();
-            double pos = results.get(1).getScore();
-
-
-
-        return (neg > pos) ? -1 * neg : pos;
     }
 
 

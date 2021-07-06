@@ -28,7 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/edit_back"
-            android:text="Thanos ebrahim"
+            tools:text="Thanos ebrahim"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -88,7 +88,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/thanos_mcu"
                     app:civ_border_color="#FFFFFFFF"
                     app:civ_border_width="10dp" />
 
@@ -107,7 +106,7 @@
                 android:id="@+id/edit_acc_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Your Name"
+                android:hint="@string/your_name"
                 app:met_clearButton="true"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="Your name"
@@ -121,7 +120,7 @@
                 android:id="@+id/edit_acc_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:text=""
                 app:met_clearButton="true"
                 app:met_floatingLabel="highlight"
@@ -135,7 +134,7 @@
                 android:id="@+id/edit_acc_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Phone"
+                android:hint="@string/phone"
                 android:text=""
                 app:met_maxCharacters="14"
                 android:inputType="number"
@@ -151,7 +150,7 @@
                 android:id="@+id/edit_Bio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bio"
+                android:hint="@string/bio"
                 app:met_clearButton="true"
                 app:met_floatingLabel="highlight"
                 app:met_floatingLabelText="Bio"
@@ -183,7 +182,7 @@
                         android:id="@+id/male"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Male"
+                        android:text="@string/male"
                         android:textColor="@color/black"
                         />
 
@@ -191,7 +190,7 @@
                         android:id="@+id/female"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Female"
+                        android:text="@string/female"
                         android:textColor="@color/black"
                         android:layout_marginStart="@dimen/standered_margin"/>
                 </RadioGroup>
@@ -212,7 +211,7 @@
                 android:id="@+id/instagram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Instagram"
+                android:hint="@string/instagram"
                 android:text=""
                 app:met_baseColor="#D81B60"
                 app:met_clearButton="true"
@@ -226,7 +225,7 @@
                 android:id="@+id/facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Facebook"
+                android:hint="@string/facebook"
                 android:text=""
                 app:met_baseColor="#1E88E5"
                 app:met_clearButton="true"
@@ -240,7 +239,7 @@
                 android:id="@+id/youtube"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Youtube"
+                android:hint="@string/youtube"
                 android:text=""
                 app:met_baseColor="#B50C00"
                 app:met_clearButton="true"

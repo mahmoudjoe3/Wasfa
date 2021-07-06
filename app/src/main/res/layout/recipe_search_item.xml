@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="10dp"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp">
@@ -28,7 +29,7 @@
                 android:id="@+id/name_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mahmoud Mamdouh"
+                tools:text="Mahmoud Mamdouh"
                 android:layout_gravity="top"
                 android:textSize="14sp"
                 android:layout_toEndOf="@id/profile_circleImageView"
@@ -50,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:text="2 hours"/>
+                    tools:text="2 hours"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -101,7 +102,7 @@
                         android:id="@+id/topCategory_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Healthy Food"
+                        tools:text="Healthy Food"
                         android:textColor="@color/white"
                         android:layout_marginTop="10dp"
                         android:textSize="10sp"
@@ -133,7 +134,7 @@
                         android:id="@+id/imageCount_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+2"
+                        tools:text="@string/_2"
                         android:layout_centerInParent="true"
                         android:textColor="@color/white"/>
 
@@ -165,7 +166,7 @@
                     android:id="@+id/loveCount_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="200"
+                    tools:text="200"
                     android:textSize="12sp"
                     android:layout_marginStart="3dp"/>
             </LinearLayout>
@@ -182,7 +183,7 @@
                     android:id="@+id/commentCount_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="200"
+                    tools:text="200"
                     android:textSize="12sp"
                     android:layout_marginStart="3dp"
                     android:textColor="@color/black"/>
@@ -190,10 +191,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Comments"
+                    android:text="@string/comments"
                     android:textSize="12sp"
                     android:layout_marginStart="3dp"
                     android:textColor="@color/black"/>
+                <RatingBar android:id="@+id/post_rate_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/post_username_margin"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:numStars="5"
+                    android:rating="3.6"
+
+                    />
             </LinearLayout>
         </RelativeLayout>
 

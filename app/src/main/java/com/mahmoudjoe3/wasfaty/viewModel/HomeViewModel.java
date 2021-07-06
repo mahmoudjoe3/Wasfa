@@ -1,5 +1,7 @@
 package com.mahmoudjoe3.wasfaty.viewModel;
 
+import android.content.Context;
+
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.ViewModel;
 
@@ -46,5 +48,9 @@ public class HomeViewModel extends ViewModel {
 
     public Call<String> postComment(CommentPost comment) {
         return repository.postComment(comment);
+    }
+
+    public double BertClassify(String commentText, Context context) {
+        return repository.BertClassify(commentText,context);
     }
 }

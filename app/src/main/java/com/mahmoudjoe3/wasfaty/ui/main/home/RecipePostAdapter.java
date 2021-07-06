@@ -163,7 +163,11 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         initIngredientList(vh,recipe.getIngredients());
         initStepsList(vh,recipe.getSteps());
         initImages(vh,recipe);
-        vh.post_love_number.setText(recipe.getLoveCount()+"");
+        if(recipe.getLoveCount()>0) {
+            vh.post_love_number.setText(recipe.getLoveCount()+"");
+            vh.post_love_number.setVisibility(View.VISIBLE);
+            vh.post_love_number_ic.setVisibility(View.VISIBLE);
+        }
         if(recipe.getComments().size()>0) {
             vh.post_comments_number.setText(recipe.getComments().size() + " Comment");
             vh.post_comments_number.setVisibility(View.VISIBLE);
@@ -451,6 +455,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         public TextView post_love_txt;
         public LottieAnimationView post_love_btn_lotti,post_comment_btn_lotti,post_share_btn_lotti;
         public LinearLayout post_comment_share_love_RelativeLayout;
+        public ImageView post_love_number_ic;
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -489,6 +494,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             post_more_images_btn=itemView.findViewById(R.id.post_more_images_btn);
 
             post_love_number=itemView.findViewById(R.id.post_love_number);
+            post_love_number_ic=itemView.findViewById(R.id.post_love_number_ic);
             post_comments_number=itemView.findViewById(R.id.post_comments_number);
             post_shares_number=itemView.findViewById(R.id.post_shares_number);
             post_love_btn=itemView.findViewById(R.id.post_love_btn);

@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Share recipe"
+                android:text="@string/share_recipe"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:layout_marginStart="10dp"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
-            android:text="The recipe steps"
+            android:text="@string/the_recipe_steps"
             android:textColor="@color/black" />
     </LinearLayout>
 

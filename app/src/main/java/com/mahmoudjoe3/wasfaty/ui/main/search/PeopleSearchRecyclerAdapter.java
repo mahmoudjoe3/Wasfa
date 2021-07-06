@@ -76,9 +76,11 @@ public class PeopleSearchRecyclerAdapter extends RecyclerView.Adapter<PeopleSear
     }
 
     public void setUserList(List<UserPost> userList) {
-        user = userList.get(userList.size() - 1);
-        userList.remove(userList.size()-1);
-        this.userList = userList;
+        if(!userList.isEmpty()) {
+            user = userList.get(userList.size() - 1);
+            userList.remove(userList.size() - 1);
+            this.userList = userList;
+        }else this.userList=new ArrayList<>();
         notifyDataSetChanged();
     }
 

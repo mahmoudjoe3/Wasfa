@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ public class RecipeSearchRecyclerAdapter extends RecyclerView.Adapter<RecipeSear
             desc = desc.substring(0,247);
             desc += "...";
         }
+        holder.post_rate_search.setRating((float) (recipeList.get(position).getReviewsRateTotal()/2));
         holder.descriptionTextView.setText(desc);
         holder.topCategoryTextView.setText(recipeList.get(position).getCategories().get(0));
         holder.loveCountTextView.setText(String.valueOf(recipeList.get(position).getLoveCount()));
@@ -73,12 +75,14 @@ public class RecipeSearchRecyclerAdapter extends RecyclerView.Adapter<RecipeSear
     }
 
     public static class RecipeSearchViewHolder extends RecyclerView.ViewHolder {
+        RatingBar post_rate_search;
         TextView nameTextView, createdDateTextView, descriptionTextView, topCategoryTextView, loveCountTextView, commentCountTextView, imageCountTextView;
         ImageView postImageView;
         CircleImageView profile_circleImageView;
         View imageBackgroundView;
         public RecipeSearchViewHolder(@NonNull View itemView) {
             super(itemView);
+            post_rate_search=itemView.findViewById(R.id.post_rate_search);
             nameTextView = itemView.findViewById(R.id.name_textView);
             createdDateTextView = itemView.findViewById(R.id.createdDate_textView);
             descriptionTextView = itemView.findViewById(R.id.description_textView);

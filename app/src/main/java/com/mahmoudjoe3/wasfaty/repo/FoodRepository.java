@@ -1,17 +1,24 @@
 package com.mahmoudjoe3.wasfaty.repo;
 
+import android.content.Context;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.database.InteractionsDao;
 import com.mahmoudjoe3.wasfaty.networking.FoodApi;
-import com.mahmoudjoe3.wasfaty.pojo.Comment;
 import com.mahmoudjoe3.wasfaty.pojo.CommentPost;
 import com.mahmoudjoe3.wasfaty.pojo.Following;
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.pojo.RecipePost;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
+import com.mahmoudjoe3.wasfaty.prevalent.prevalent;
 
+import org.tensorflow.lite.support.label.Category;
+import org.tensorflow.lite.task.text.nlclassifier.BertNLClassifier;
+
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -149,5 +156,22 @@ public class FoodRepository {
 
     public Call<JsonObject> getRangedRecipes(int page, int limit) {
         return foodApi.getRangedRecipes(page);
+    }
+
+    public double BertClassify(String commentText, Context context) {
+            // Initialization
+            BertNLClassifier classifier2 = null;
+            try {
+                classifier2 = BertNLClassifier.createFromFile(context, prevalent.modelFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            BertNLClassifier finalClassifier1 = classifier2;
+            List<Category> results = finalClassifier1.classify(commentText);
+            Log.d("tag###", "onClick: " + commentText + results.get(0).getLabel() + results.get(0).getScore()
+                    + results.get(1).getLabel() + results.get(1).getScore());
+            double neg = results.get(0).getScore();
+            double pos = results.get(1).getScore();
+            return (neg > pos) ? -1 * neg : pos;
     }
 }

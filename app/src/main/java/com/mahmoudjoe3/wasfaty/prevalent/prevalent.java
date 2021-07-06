@@ -10,4 +10,5 @@ public class prevalent {
 
     public static String refStorage_RecipeImage="wasfaImages";
     public static String refUserImages="userImages";
+    public static String modelFile="mobilebert_model.tflite";
 }

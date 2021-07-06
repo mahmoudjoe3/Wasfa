@@ -30,6 +30,7 @@ import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
 import com.mahmoudjoe3.wasfaty.ui.activities.profile.profileActivity;
+import com.mahmoudjoe3.wasfaty.ui.main.home.comment.CommentAdapter;
 import com.mahmoudjoe3.wasfaty.viewModel.InteractionsViewModel;
 import com.mahmoudjoe3.wasfaty.viewModel.SearchViewModel;
 
@@ -155,17 +156,13 @@ public class SearchFragment extends Fragment {
                 });
             }
         });
-        /*
-        MyLogic.setOnReviewListener(new MyLogic.OnReviewListener() {
-
+        MyLogic.commentAdapter.setOnAddCommentListenner(new CommentAdapter.OnAddCommentListenner() {
             @Override
-            public void onReview(Comment comment) {
+            public void onAdded(Comment comment) {
                 interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(),comment.getUserImageUrl(),"Commented On"));
+
             }
         });
-
-         */
-
 
         recipeSearchRecyclerAdapter.setOnItemClickListener(new RecipeSearchRecyclerAdapter.OnItemClickListener() {
             @Override
@@ -210,6 +207,9 @@ public class SearchFragment extends Fragment {
                 recipesView.setVisibility(View.INVISIBLE);
                 searchImageButton.setTag("people");
                 searchEditText.setHint(R.string.search_people);
+                noResultSearchLayout.setVisibility(View.GONE);
+                lottiNoResult.pauseAnimation();
+
             }
         });
 
@@ -222,6 +222,9 @@ public class SearchFragment extends Fragment {
                 recipesView.setVisibility(View.VISIBLE);
                 searchImageButton.setTag("recipes");
                 searchEditText.setHint(R.string.search_recipe);
+                noResultSearchLayout.setVisibility(View.GONE);
+                lottiNoResult.pauseAnimation();
+
             }
         });
 
@@ -232,6 +235,9 @@ public class SearchFragment extends Fragment {
                 recipeSearchRecyclerAdapter.setRecipeList(new ArrayList<>());
                 searchEditText.setText("");
                 getActivity().onBackPressed();
+                noResultSearchLayout.setVisibility(View.GONE);
+                lottiNoResult.pauseAnimation();
+
             }
         });
 
@@ -254,6 +260,10 @@ public class SearchFragment extends Fragment {
                                 List<UserPost> userPostList = UserPost.parseUserResponseList(response.body().toString());
                                 userPostList.add(user);
                                 peopleSearchRecyclerAdapter.setUserList(userPostList);
+                                if(userPostList.isEmpty()) {
+                                    noResultSearchLayout.setVisibility(View.VISIBLE);
+                                    lottiNoResult.playAnimation();
+                                }
 
                             }
 
@@ -278,6 +288,10 @@ public class SearchFragment extends Fragment {
                                 recipeSearchRecyclerAdapter.setRecipeList(recipes);
                                 lotti_search.setVisibility(View.GONE);
                                 lotti_search.pauseAnimation();
+                                if(recipes.isEmpty()) {
+                                    noResultSearchLayout.setVisibility(View.VISIBLE);
+                                    lottiNoResult.playAnimation();
+                                }
                             }
                         }
 

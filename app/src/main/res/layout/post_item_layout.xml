@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/_10sdp">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standered_margin"
             android:layout_marginEnd="@dimen/standered_margin"
-            android:text="this recipe is is easy and we can make it at home as we can make it with our family and friends  "
+            tools:text="this recipe is is easy and we can make it at home as we can make it with our family and friends  "
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
         <androidx.cardview.widget.CardView
@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Show more"
+                    android:text="@string/show_more"
                     android:layout_marginEnd="@dimen/_2sdp"/>
                 <ImageView
                     android:id="@+id/post_show_details_layout_btn_ch_2_img"
@@ -75,7 +75,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nationality:"
+                    android:text="@string/nationality"
                     />
                 <ImageView
                     android:layout_width="@dimen/_15sdp"
@@ -114,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="30 min"
+                        tools:text="30 min"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -159,7 +159,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="@dimen/post_username_margin"
                                 android:paddingEnd="@dimen/post_username_margin"
-                                android:text="meets"
+                                tools:text="meets"
                                 android:textColor="@color/colorWhite" />
                         </androidx.cardview.widget.CardView>
 
@@ -175,7 +175,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="@dimen/post_username_margin"
                                 android:paddingEnd="@dimen/post_username_margin"
-                                android:text="vegiterian"
+                                tools:text="vegiterian"
                                 android:textColor="@color/colorWhite" />
                         </androidx.cardview.widget.CardView>
 
@@ -191,7 +191,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="@dimen/post_username_margin"
                                 android:paddingEnd="@dimen/post_username_margin"
-                                android:text="fish"
+                                tools:text="fish"
                                 android:textColor="@color/colorWhite" />
                         </androidx.cardview.widget.CardView>
 
@@ -207,7 +207,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="@dimen/post_username_margin"
                                 android:paddingEnd="@dimen/post_username_margin"
-                                android:text="well-cocked"
+                                tools:text="well-cocked"
                                 android:textColor="@color/colorWhite" />
                         </androidx.cardview.widget.CardView>
 
@@ -223,7 +223,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="@dimen/post_username_margin"
                                 android:paddingEnd="@dimen/post_username_margin"
-                                android:text="small meals"
+                                tools:text="small meals"
                                 android:textColor="@color/colorWhite" />
                         </androidx.cardview.widget.CardView>
 
@@ -238,7 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/post_username_margin"
-                android:text="Ingredient: " />
+                android:text="@string/ingredient" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/post_ing_ChipGroup"
@@ -261,7 +261,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="meets"
+                        tools:text="meets"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -277,7 +277,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="fat"
+                        tools:text="fat"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -293,7 +293,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="salad"
+                        tools:text="salad"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -309,7 +309,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="parsley"
+                        tools:text="parsley"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -325,7 +325,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="Spices Kofta"
+                        tools:text="Spices Kofta"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -341,7 +341,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="Onions"
+                        tools:text="Onions"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -357,7 +357,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="garlic"
+                        tools:text="garlic"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -373,7 +373,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="latency"
+                        tools:text="latency"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -389,7 +389,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="vinegar"
+                        tools:text="vinegar"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
 
@@ -399,9 +399,8 @@
                 android:id="@+id/ste_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/post_ing_ChipGroup"
                 android:layout_marginTop="@dimen/post_username_margin"
-                android:text="Steps: " />
+                android:text="@string/steps" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/post_steps_ChipGroup"
@@ -421,7 +420,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/post_username_margin"
-                        android:text="In the bottom of large mixing bowl, add the shawarma spices. Add the olive oil, vinegar, and zest and juice of one lemon. Using a spoon, mix to combine."
+                        tools:text="In the bottom of large mixing bowl, add the shawarma spices. Add the olive oil, vinegar, and zest and juice of one lemon. Using a spoon, mix to combine."
                         android:textColor="@color/colorWhite"
 
                         />
@@ -439,7 +438,7 @@
 
                         android:layout_height="wrap_content"
                         android:padding="@dimen/post_username_margin"
-                        android:text=" Add the olive oil, vinegar. Using a spoon, mix to combine."
+                        tools:text=" Add the olive oil, vinegar. Using a spoon, mix to combine."
                         android:textColor="@color/colorWhite"
 
                         />
@@ -457,7 +456,7 @@
 
                         android:layout_height="wrap_content"
                         android:padding="@dimen/post_username_margin"
-                        android:text="add the shawarma spices."
+                        tools:text="add the shawarma spices."
                         android:textColor="@color/colorWhite"
 
                         />
@@ -476,7 +475,7 @@
                         android:padding="@dimen/post_username_margin"
                         android:paddingStart="@dimen/post_username_margin"
                         android:paddingEnd="@dimen/post_username_margin"
-                        android:text="add salad"
+                        tools:text="add salad"
                         android:textColor="@color/colorWhite" />
                 </androidx.cardview.widget.CardView>
             </com.google.android.material.chip.ChipGroup>

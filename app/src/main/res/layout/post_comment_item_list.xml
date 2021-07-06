@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="@dimen/standered_margin">
 
     <androidx.cardview.widget.CardView
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/post_username_margin"
             android:maxLength="24"
-            android:text="keemokazi"
+            tools:text="keemokazi"
             android:textColor="@color/black" />
         <androidx.cardview.widget.CardView
             android:id="@+id/card_dot"
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:layout_marginStart="3dp"
-            android:text="2m" />
+            tools:text="2m" />
         <TextView
             android:id="@+id/comment_creator_tag"
             android:layout_width="wrap_content"
@@ -59,7 +60,7 @@
             android:layout_marginStart="3dp"
             android:fontFamily="sans-serif-medium"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:text="Creator"
+            tools:text="Creator"
             android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 
@@ -71,7 +72,7 @@
         android:layout_toEndOf="@id/card"
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginStart="@dimen/post_username_margin"
-        android:text="U can tell she wanted to hilt tou but then remembered you have a broken collar bone then remembered you have a broken collar bone"
+        tools:text="U can tell she wanted to hilt tou but then remembered you have a broken collar bone then remembered you have a broken collar bone"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
 

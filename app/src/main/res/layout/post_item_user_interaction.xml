@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout android:id="@+id/post_comment_share_love_RelativeLayout"
@@ -14,31 +15,35 @@
         android:padding="@dimen/_12sdp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center_vertical|start">
-            <ImageView
+            <ImageView android:id="@+id/post_love_number_ic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_love"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter"
+                android:visibility="gone"/>
 
             <TextView android:id="@+id/post_love_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="325" />
+                tools:text="325"
+                android:visibility="gone"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical|end">
+
             <TextView android:id="@+id/post_comments_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="43 Comments"
-                android:visibility="gone"/>
+                tools:text="43 Comments"
+                android:visibility="gone"
+                />
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/share_card_dot"
@@ -56,8 +61,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:text="12 Shares"
-                android:visibility="gone"/>
+                tools:text="12 Shares"
+                android:visibility="gone"
+                />
+            <RatingBar android:id="@+id/post_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/post_username_margin"
+                style="?android:attr/ratingBarStyleSmall"
+                android:numStars="5"
+                android:rating="3.6"
+
+                />
         </LinearLayout>
 
     </LinearLayout>
@@ -100,7 +115,7 @@
                 <TextView android:id="@+id/post_love_txt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Love"
+                    android:text="@string/love"
                     android:textColor="@color/transparentDark"
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:gravity="start|center_vertical"/>
@@ -135,7 +150,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Comment"
+                    android:text="@string/comment"
                     android:textColor="@color/transparentDark"
 
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"
@@ -170,7 +185,7 @@
                 <TextView android:id="@+id/post_share_btn_txt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Share"
+                    android:text="@string/share"
                     android:textColor="@color/transparentDark"
                     android:textAppearance="@style/TextAppearance.AppCompat.Button"
                     android:gravity="start|center_vertical"/>

@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:paddingStart="@dimen/standered_margin"
+    android:paddingEnd="@dimen/standered_margin"
     android:layout_below="@id/comment_sheet_recycle_view"
     android:id="@+id/post_add_comment_text_layout_inner">
 
@@ -16,7 +17,7 @@
         android:minHeight="@dimen/_40sdp"
         android:paddingTop="@dimen/standered_margin"
         android:paddingBottom="@dimen/standered_margin"
-        android:hint="Add Comment"
+        android:hint="@string/add_comment"
         />
     <com.airbnb.lottie.LottieAnimationView android:id="@+id/comment_sheet_add_comment_btn"
         android:layout_width="@dimen/_40sdp"

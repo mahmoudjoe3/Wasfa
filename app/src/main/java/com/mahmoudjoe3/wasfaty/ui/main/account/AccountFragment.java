@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +25,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mahmoudjoe3.wasfaty.R;
 import com.mahmoudjoe3.wasfaty.logic.MyLogic;
+import com.mahmoudjoe3.wasfaty.pojo.Comment;
 import com.mahmoudjoe3.wasfaty.pojo.Interaction;
 import com.mahmoudjoe3.wasfaty.pojo.Recipe;
 import com.mahmoudjoe3.wasfaty.pojo.UserPost;
 import com.mahmoudjoe3.wasfaty.prevalent.prevalent;
 import com.mahmoudjoe3.wasfaty.ui.activities.auth.LoginActivity;
+import com.mahmoudjoe3.wasfaty.ui.main.home.comment.CommentAdapter;
 import com.mahmoudjoe3.wasfaty.viewModel.AccountViewModel;
 import com.mahmoudjoe3.wasfaty.viewModel.InteractionsViewModel;
 import com.mahmoudjoe3.wasfaty.ui.main.viewImage.ViewImageActivity;
@@ -73,6 +76,8 @@ public class AccountFragment extends Fragment {
     ImageButton userFacebook;
     @BindView(R.id.post_recycle)
     RecyclerView postRecycle;
+    @BindView(R.id.links_layout)
+    LinearLayout links_layout;
 
     profilePostItemAdapter adapter;
     UserPost mUser;
@@ -126,13 +131,12 @@ public class AccountFragment extends Fragment {
 
             }
         });
-        /*
-        MyLogic.setOnReviewListener(new MyLogic.OnReviewListener() {
+        MyLogic.commentAdapter.setOnAddCommentListenner(new CommentAdapter.OnAddCommentListenner() {
             @Override
-            public void onReview(Comment comment) {
+            public void onAdded(Comment comment) {
                 interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(), comment.getUserImageUrl(), "Commented On"));
             }
-        });*/
+        });
 
         postRecycle.setAdapter(adapter);
         postRecycle.setHasFixedSize(true);
@@ -155,6 +159,7 @@ public class AccountFragment extends Fragment {
                                             int p=Integer.parseInt(posts.getText().toString());
                                             posts.setText((p-1)+"");
                                             dialog.dismiss();
+                                            posts.setText(Integer.parseInt(posts.getText().toString())-1);
                                         }else {
                                             Toast.makeText(getActivity(), "Faild to delete recipe response code "+response.code(), Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();
@@ -252,6 +257,7 @@ public class AccountFragment extends Fragment {
             userFacebook.setVisibility(View.GONE);
             userInstgram.setVisibility(View.GONE);
             userYoutube.setVisibility(View.GONE);
+            links_layout.setVisibility(View.GONE);
         }
         accountViewModel.getUserRecipes(mUser.getId()).enqueue(new Callback<JsonObject>() {
             @Override
