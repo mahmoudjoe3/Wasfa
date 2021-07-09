@@ -206,23 +206,23 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
         sharedPreferences = vh.post_love_btn.getContext().getSharedPreferences("userShared", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        List<Integer> loveList = new ArrayList<>();
+        List<String> loveList = new ArrayList<>();
         String loveString = sharedPreferences.getString("love", null);
         if(loveString == null)
             loveList=new ArrayList<>();
         else{
 
-            loveList = new Gson().fromJson(loveString, new TypeToken<List<Integer>>(){}.getType());
+            loveList = new Gson().fromJson(loveString, new TypeToken<List<String>>(){}.getType());
         }
 
-        if(loveList.contains(recipe.getId())) {
+        if(loveList.contains(recipe.getId()+","+recipe.getUserId())) {
             vh.post_love_txt.setTextColor(vh.itemView.getContext().getColor(R.color.colorTap));
             vh.post_love_btn.setTag("on");
             vh.post_love_btn_lotti.playAnimation();
         }
 
 
-        List<Integer> finalLoveList = loveList;
+        List<String> finalLoveList = loveList;
         vh.post_love_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,7 +237,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     if(mOninteractionClickListener!=null)
                         mOninteractionClickListener.onlove(recipe,vh.post_love_number,vh.post_love_number_ic);
 
-                    finalLoveList.add(recipe.getId());
+                    finalLoveList.add(recipe.getId()+","+recipe.getUserId());
 
                 }else {
                     vh.post_love_txt.setTextColor(vh.itemView.getContext().getColor(R.color.transparentDark));
@@ -248,7 +248,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     if(mOninteractionClickListener!=null)
                         mOninteractionClickListener.onDislove(recipe,vh.post_love_number,vh.post_love_number_ic);
                     for(int i = 0; i < finalLoveList.size(); i ++){
-                        if(finalLoveList.get(i) == recipe.getId()) {
+                        if(finalLoveList.get(i).equals(recipe.getId()+","+recipe.getUserId())) {
                             finalLoveList.remove(i);
                             break;
                         }
