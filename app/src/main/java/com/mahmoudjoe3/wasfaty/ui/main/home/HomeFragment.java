@@ -427,6 +427,10 @@ public class HomeFragment extends Fragment {
                             List<Comment> comments=recipe1.getComments();
                             comments.add(comment);
                             recipe1.setComments(comments);
+                            if(!response.body().toString().isEmpty()) {
+                                double revRate = Double.parseDouble(response.body().toString()) ;
+                                recipe1.setReviewsRateTotal(revRate);
+                            }
                             recipeList.set(i,recipe1);
                             adapter.notifyItemChanged(i);
                             interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(), comment.getUserImageUrl(), "Commented On"));
