@@ -433,7 +433,7 @@ public class HomeFragment extends Fragment {
                             }
                             recipeList.set(i,recipe1);
                             adapter.notifyItemChanged(i);
-                            interactionsViewModel.insertInteraction(new Interaction(comment.getUsername(), comment.getUserImageUrl(), "Commented On"));
+                            interactionsViewModel.insertInteraction(new Interaction(recipe1.getUserName(), recipe1.getUserProfileThumbnail(), "Commented On"));
                         } else {
                             Toast.makeText(getActivity(), response.code(), Toast.LENGTH_SHORT).show();
                         }

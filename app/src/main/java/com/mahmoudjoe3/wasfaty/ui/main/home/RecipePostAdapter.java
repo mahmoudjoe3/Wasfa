@@ -163,6 +163,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
         }
         vh.post_description.setText(desc);
         vh.prepare_time.setText(recipe.getPrepareTime());
+        vh.nationality.setText(recipe.getNationality());
         initCategoryList(vh,recipe.getCategories());
         initIngredientList(vh,recipe.getIngredients());
         initStepsList(vh,recipe.getSteps());
@@ -278,6 +279,8 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
                     vh.post_shares_number.setText("0 Share");
                 vh.post_shares_number.setText((Integer.parseInt(vh.post_shares_number.getText().toString().split(" ")[0])+1)+" Share");
                 vh.post_shares_number.setVisibility(View.VISIBLE);
+                if(recipe.getComments().size()>0)
+                    vh.itemView.findViewById(R.id.share_card_dot).setVisibility(View.VISIBLE);
                 if(mOninteractionClickListener!=null)
                     mOninteractionClickListener.onshare(recipe,vh.post_image_1);
             }
@@ -436,7 +439,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
 
         //post caption
         public TextView post_title,post_description,prepare_time;
-        public ImageView nationality;
+        public TextView nationality;
 
         public CardView post_show_details_layout_btn_p_card;
         public ImageView post_show_details_layout_btn_ch_2_img;
@@ -478,7 +481,7 @@ public class RecipePostAdapter extends RecyclerView.Adapter<RecipePostAdapter.VH
             post_username=itemView.findViewById(R.id.post_username);
             post_from_time=itemView.findViewById(R.id.post_from_time);
 
-            //nationality=itemView.findViewById(R.id.post_nationality);
+            nationality=itemView.findViewById(R.id.post_nationality);
             post_description=itemView.findViewById(R.id.post_description);
 
             post_show_details_layout_btn_p_card=itemView.findViewById(R.id.post_show_details_layout_btn_p_card);

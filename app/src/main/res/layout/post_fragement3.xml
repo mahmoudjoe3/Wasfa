@@ -49,6 +49,16 @@
             android:background="@drawable/next_ripple"
             android:clickable="true"
             android:focusable="true"/>
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/post_progress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:layout_alignParentBottom="true"
+            app:trackColor="@color/chip_background"
+            app:indicatorColor="@color/black"
+            android:visibility="gone"
+            android:indeterminate="true"
+            />
 
     </RelativeLayout>
 

@@ -30,7 +30,9 @@ import com.akexorcist.snaptimepicker.SnapTimePickerDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
@@ -42,6 +44,8 @@ import com.mahmoudjoe3.wasfaty.pojo.RecipePost;
 import com.mahmoudjoe3.wasfaty.prevalent.prevalent;
 import com.mahmoudjoe3.wasfaty.viewModel.PostSharedViewModel;
 import com.mahmoudjoe3.wasfaty.viewModel.PostViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -68,6 +72,7 @@ public class PostFragment3 extends Fragment {
     private EditText stepEditText;
     private TextView postTextView;
     private Recipe recipe;
+    private LinearProgressIndicator post_progress;
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -223,6 +228,7 @@ public class PostFragment3 extends Fragment {
         backImageButton = view.findViewById(R.id.back_imageButton);
         stepEditText = view.findViewById(R.id.step_EditText);
         postTextView = view.findViewById(R.id.post_textView);
+        post_progress = view.findViewById(R.id.post_progress);
         recipe = new Recipe();
         sharedPreferences = getActivity().getSharedPreferences("new_user", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -246,6 +252,7 @@ public class PostFragment3 extends Fragment {
 
 
     public void postRecipe(Recipe recipe) {
+        post_progress.setVisibility(View.VISIBLE);
         List<Uri> imgs = recipe.getImageUris();
         recipe.setImgUrls(new ArrayList<>());
         RecipePost recipePost = RecipePost.makeRecipe(recipe);
@@ -290,31 +297,6 @@ public class PostFragment3 extends Fragment {
         return bitmap;
     }
 
-    private void up(ArrayList<Uri> imgs, RecipePost recipePost) {
-        for (Uri i : imgs) {
-
-            StorageReference reference = RecipeImageReference.child(i.getLastPathSegment());
-            reference.putFile(i).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Log.d("TAG####", "upload: " + uri);
-                            recipePost.getImagesUrls().add(String.valueOf(uri));
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("TAG####", "upload: " + e.getMessage());
-                }
-            });
-        }
-    }
-
-
     private void upload(ArrayList<Uri> mImageUri, int i, RecipePost recipe) {
         if (i >= mImageUri.size()) {
             postViewModel.PostRecipe(recipe).enqueue(new Callback<JsonObject>() {
@@ -323,6 +305,7 @@ public class PostFragment3 extends Fragment {
                     if (!(response.code() >= 200) && !(response.code() < 300))
                         Toast.makeText(getActivity(), "Faild to post recipe", Toast.LENGTH_SHORT).show();
                     else {
+                        post_progress.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "post recipe Successfully", Toast.LENGTH_SHORT).show();
                         getParentFragmentManager().beginTransaction().replace(
                                 R.id.fragment_container, PostFragment1.getInstance()
@@ -364,7 +347,13 @@ public class PostFragment3 extends Fragment {
                                 });
                             }
                         }
-                    })
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
+                    double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                    post_progress.setProgressCompat((int)progress,true);
+                }
+            })
                     .addOnFailureListener(e -> {
                         Toast.makeText(getActivity(), "Uploading image error :: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d("TAG####", "upload: "+e.getMessage());

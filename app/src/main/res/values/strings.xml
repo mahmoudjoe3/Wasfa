@@ -94,4 +94,5 @@
     <string name="account">Account</string>
     <string name="No_internet_connection">No Interner Connection</string>
     <string name="Exit">Exit</string>
+    <string name="phone_or_pass">Phone / Email</string>
 </resources>

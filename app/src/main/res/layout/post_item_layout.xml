@@ -57,9 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone"
             android:layout_marginTop="@dimen/post_username_margin"
             android:layout_marginEnd="@dimen/standered_margin"
+            android:visibility="gone"
             android:layout_marginStart="@dimen/standered_margin"
             >
 
@@ -77,10 +77,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/nationality"
                     />
-                <ImageView
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:src="@drawable/ic_earth"
+                <TextView android:id="@+id/post_nationality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/post_username_margin"
                     />
 

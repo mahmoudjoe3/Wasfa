@@ -43,7 +43,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/user_name"
+                android:hint="@string/phone_or_pass"
                 app:boxStrokeColor="@color/colorPrimary"
                 app:counterEnabled="true"
                 app:counterMaxLength="50"

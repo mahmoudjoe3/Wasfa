@@ -81,4 +81,5 @@
     <string name="account">الحساب</string>
     <string name="No_internet_connection">لا يوجد اتصال بالانترنت</string>
     <string name="Exit">خروج</string>
+    <string name="phone_or_pass">رقم الهاتف \\ البريد</string>
 </resources>

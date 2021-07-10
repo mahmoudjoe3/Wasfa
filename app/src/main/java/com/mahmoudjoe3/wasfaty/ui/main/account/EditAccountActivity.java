@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -187,6 +188,8 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
 
         user.setLinks(lnks);
 
+        if(imageUri==null)
+            imageUri=bitMapToUri(((BitmapDrawable) accImage.getDrawable()).getBitmap());
         upload(imageUri, user);
 
 
@@ -240,7 +243,6 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
                     @Override
                     public void onProgress(@NonNull @NotNull UploadTask.TaskSnapshot snapshot) {
                         double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-
                         edit_progress.setProgressCompat((int)progress,true);
                     }
                 })
@@ -297,6 +299,8 @@ public class EditAccountActivity extends AppCompatActivity implements EasyPermis
     private void viewPhoto() {
         Intent intent = new Intent(this, ViewImageActivity.class);
         ArrayList<String> imgs = new ArrayList<>();
+        if(imageUri==null)
+            imageUri=bitMapToUri(((BitmapDrawable) accImage.getDrawable()).getBitmap());
         imgs.add(String.valueOf(imageUri));
         intent.putStringArrayListExtra(ViewImageActivity.IMG_URLS, imgs);
         intent.putExtra(ViewImageActivity.IMG_POS, 0);
